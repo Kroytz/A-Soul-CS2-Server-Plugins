@@ -128,7 +128,6 @@ namespace MatchZy
                 { ".start", OnStartCommand },
                 { ".restart", OnRestartMatchCommand },
                 { ".abort", OnRestartMatchCommand },
-                { ".reloadmap", OnMapReloadCommand },
                 { ".settings", OnMatchSettingsCommand },
                 { ".whitelist", OnWLCommand },
                 { ".globalnades", OnSaveNadesAsGlobalCommand },

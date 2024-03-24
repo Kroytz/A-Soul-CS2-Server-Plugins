@@ -310,30 +310,30 @@ namespace MatchZy
             }
         }
 
-        [ConsoleCommand("css_map", "Changes the map using changelevel")]
-        public void OnChangeMapCommand(CCSPlayerController? player, CommandInfo command) {
-            var mapName = command.ArgByIndex(1);
-            HandleMapChangeCommand(player, mapName);
-        }
+        //[ConsoleCommand("css_map", "Changes the map using changelevel")]
+        //public void OnChangeMapCommand(CCSPlayerController? player, CommandInfo command) {
+        //    var mapName = command.ArgByIndex(1);
+        //    HandleMapChangeCommand(player, mapName);
+        //}
 
-        [ConsoleCommand("css_rmap", "Reloads the current map")]
-        private void OnMapReloadCommand(CCSPlayerController? player, CommandInfo? command) {
+        //[ConsoleCommand("css_rmap", "Reloads the current map")]
+        //private void OnMapReloadCommand(CCSPlayerController? player, CommandInfo? command) {
 
-            if (!IsPlayerAdmin(player)) {
-                SendPlayerNotAdminMessage(player);
-                return;
-            }
-            string currentMapName = Server.MapName;
-            if (long.TryParse(currentMapName, out _)) { // Check if mapName is a long for workshop map ids
-                Server.ExecuteCommand($"bot_kick");
-                Server.ExecuteCommand($"host_workshop_map \"{currentMapName}\"");
-            } else if (Server.IsMapValid(currentMapName)) {
-                Server.ExecuteCommand($"bot_kick");
-                Server.ExecuteCommand($"changelevel \"{currentMapName}\"");
-            } else {
-                ReplyToUserCommand(player, "Invalid map name!");
-            }
-        }
+        //    if (!IsPlayerAdmin(player)) {
+        //        SendPlayerNotAdminMessage(player);
+        //        return;
+        //    }
+        //    string currentMapName = Server.MapName;
+        //    if (long.TryParse(currentMapName, out _)) { // Check if mapName is a long for workshop map ids
+        //        Server.ExecuteCommand($"bot_kick");
+        //        Server.ExecuteCommand($"host_workshop_map \"{currentMapName}\"");
+        //    } else if (Server.IsMapValid(currentMapName)) {
+        //        Server.ExecuteCommand($"bot_kick");
+        //        Server.ExecuteCommand($"changelevel \"{currentMapName}\"");
+        //    } else {
+        //        ReplyToUserCommand(player, "Invalid map name!");
+        //    }
+        //}
 
         [ConsoleCommand("css_start", "Force starts the match")]
         public void OnStartCommand(CCSPlayerController? player, CommandInfo? command) {

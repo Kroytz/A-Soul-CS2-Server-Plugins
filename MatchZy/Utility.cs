@@ -137,15 +137,15 @@ namespace MatchZy
             if (isPaused && matchStarted) {
                 var pauseTeamName = unpauseData["pauseTeam"];
                 if ((string)pauseTeamName == "Admin") {
-                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}Admin{ChatColors.Default} has paused the match.");
+                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}狗管理{ChatColors.Default} 暂停了比赛.");
                 } else if ((string)pauseTeamName == "RoundRestore" && !(bool)unpauseData["t"] && !(bool)unpauseData["ct"]) {
                     Server.PrintToChatAll($"{chatPrefix} Match has been paused because of Round Restore. Both teams need to type {ChatColors.Green}.unpause{ChatColors.Default} to unpause the match");
                 } else if ((bool)unpauseData["t"] && !(bool)unpauseData["ct"]) {
-                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{reverseTeamSides["TERRORIST"].teamName}{ChatColors.Default} wants to unpause the match. {ChatColors.Green}{reverseTeamSides["CT"].teamName}{ChatColors.Default}, please write !unpause to confirm.");
+                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{reverseTeamSides["TERRORIST"].teamName}{ChatColors.Default} 想要解除暂停. {ChatColors.Green}{reverseTeamSides["CT"].teamName}{ChatColors.Default}, 输入 .unpause 来解除暂停.");
                 } else if (!(bool)unpauseData["t"] && (bool)unpauseData["ct"]) {
-                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{reverseTeamSides["CT"].teamName}{ChatColors.Default} wants to unpause the match. {ChatColors.Green}{reverseTeamSides["TERRORIST"].teamName}{ChatColors.Default}, please write !unpause to confirm.");
+                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{reverseTeamSides["CT"].teamName}{ChatColors.Default} 想要解除暂停. {ChatColors.Green}{reverseTeamSides["TERRORIST"].teamName}{ChatColors.Default}, 输入 .unpause 来解除暂停.");
                 } else if (!(bool)unpauseData["t"] && !(bool)unpauseData["ct"]) {
-                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{pauseTeamName}{ChatColors.Default} has paused the match. Type .unpause to unpause the match");
+                    Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{pauseTeamName}{ChatColors.Default} 暂停了比赛. 输入 .unpause 取消暂停.");
                 }
             }
         }
@@ -1137,7 +1137,7 @@ namespace MatchZy
         {
             if (isPractice)
             {
-                ReplyToUserCommand(player, "Available commands: .spawn, .ctspawn, .tspawn, .bot, .nobots, .god, .clear, .fastforward, .dryrun");
+                ReplyToUserCommand(player, "可用指令: .spawn, .ctspawn, .tspawn, .bot, .nobots, .god, .clear, .fastforward, .dryrun");
                 ReplyToUserCommand(player, ".loadnade <name>, .savenade <name>, .importnade <code> .listnades <optional filter>");
                 ReplyToUserCommand(player, ".ct, .t, .spec, .fas");
                 ReplyToUserCommand(player, ".rethrow, .throwindex <index>, .lastindex, .last, .back <number>, .delay <number>");
@@ -1145,18 +1145,18 @@ namespace MatchZy
             }
             if (readyAvailable)
             {
-                ReplyToUserCommand(player, "Available commands: !ready, !unready");
+                ReplyToUserCommand(player, "可用指令: !ready, !unready");
                 return;
             }
             if (isSideSelectionPhase)
             {
-                ReplyToUserCommand(player, "Available commands: !stay, !switch");
+                ReplyToUserCommand(player, "可用指令: !stay, !switch");
                 return;
             }
             if (matchStarted)
             {
                 string stopCommandMessage = isStopCommandAvailable ? ", !stop" : "";
-                ReplyToUserCommand(player, $"Available commands: !pause, !unpause, !tac, !tech{stopCommandMessage}");
+                ReplyToUserCommand(player, $"可用指令: !pause, !unpause, !tac, !tech{stopCommandMessage}");
                 return;
             }
         }
