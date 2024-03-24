@@ -102,7 +102,7 @@ public partial class InventorySimulator : BasePlugin
         var steamId = player.SteamID;
         FetchPlayerInventory(steamId);
 
-        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}]" + " 换肤请浏览器打开: https://inventory.cstrike.app/");
+        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}https://inventory.cstrike.app/{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr");
 
         return HookResult.Continue;
     }

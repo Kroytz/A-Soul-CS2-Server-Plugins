@@ -154,7 +154,7 @@ namespace MatchZy
             Server.PrintToChatAll($"{chatPrefix} {action}");
 
             string mapListAsString = string.Join(", ", matchConfig.MapsLeftInVetoPool);
-            Server.PrintToChatAll($"{chatPrefix} Remaining Maps: {mapListAsString}");
+            Server.PrintToChatAll($"{chatPrefix}  £”‡µÿÕº: {mapListAsString}");
 
             playerData[client].PrintToChat($"{chatPrefix} {stepMessage}");
         }

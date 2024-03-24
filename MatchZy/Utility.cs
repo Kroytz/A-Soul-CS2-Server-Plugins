@@ -116,9 +116,9 @@ namespace MatchZy
                 }
                 if (unreadyPlayers.Count > 0) {
                     string unreadyPlayerList = string.Join(", ", unreadyPlayers);
-                    string minimumReadyRequiredMessage = isMatchSetup ? "" : $"[Minimum ready players required: {ChatColors.Green}{minimumReadyRequired}{ChatColors.Default}]";
+                    string minimumReadyRequiredMessage = isMatchSetup ? "" : minimumReadyRequired == 0 ? "" : $"[Minimum ready players required: {ChatColors.Green}{minimumReadyRequired}{ChatColors.Default}]";
 
-                    Server.PrintToChatAll($"{chatPrefix} Unready players: {unreadyPlayerList}. Please type .ready to ready up! {minimumReadyRequiredMessage}");
+                    Server.PrintToChatAll($"{chatPrefix} 未准备玩家: {unreadyPlayerList}. 输入 .ready 完成准备! {minimumReadyRequiredMessage}");
                 } else {
                     int countOfReadyPlayers = playerReadyStatus.Count(kv => kv.Value == true);
                     if (isMatchSetup)
@@ -203,7 +203,7 @@ namespace MatchZy
 
         private void SendSideSelectionMessage() {
             if (isSideSelectionPhase) {
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{knifeWinnerName}{ChatColors.Default} Won the knife. Waiting for them to type {ChatColors.Green}.stay{ChatColors.Default} or {ChatColors.Green}.switch{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{knifeWinnerName}{ChatColors.Default} 刀局胜利. 输入 {ChatColors.Green}.stay{ChatColors.Default} 或 {ChatColors.Green}.swap{ChatColors.Default} 完成选边");
             }
         }
 
@@ -212,7 +212,7 @@ namespace MatchZy
             ExecWarmupCfg();
             knifeWinnerName = knifeWinner == 3 ? reverseTeamSides["CT"].teamName : reverseTeamSides["TERRORIST"].teamName;
             ShowDamageInfo();
-            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{knifeWinnerName}{ChatColors.Default} Won the knife. Waiting for them to type {ChatColors.Green}.stay{ChatColors.Default} or {ChatColors.Green}.switch{ChatColors.Default}");
+            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{knifeWinnerName}{ChatColors.Default} 刀局胜利. 输入 {ChatColors.Green}.stay{ChatColors.Default} 或 {ChatColors.Green}.swap{ChatColors.Default} 完成选边");
             if (sideSelectionMessageTimer == null) {
                 sideSelectionMessageTimer = AddTimer(chatTimerDelay, SendSideSelectionMessage, TimerFlags.REPEAT);
             }
@@ -718,13 +718,13 @@ namespace MatchZy
                 return;
             }
             if (matchzyTeam1.seriesScore > matchzyTeam2.seriesScore) {
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} is winning the series {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} 获胜! {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
 
             } else if (matchzyTeam2.seriesScore > matchzyTeam1.seriesScore) {
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} is winning the series {ChatColors.Green}{matchzyTeam2.seriesScore}-{matchzyTeam1.seriesScore}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} 获胜! {ChatColors.Green}{matchzyTeam2.seriesScore}-{matchzyTeam1.seriesScore}{ChatColors.Default}");
 
             } else {
-                Server.PrintToChatAll($"{chatPrefix} The series is tied at {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
+                Server.PrintToChatAll($"{chatPrefix} 平局! {ChatColors.Green}{matchzyTeam1.seriesScore}-{matchzyTeam2.seriesScore}{ChatColors.Default}");
             }
             matchConfig.CurrentMapNumber += 1;
             string nextMap = matchConfig.Maplist[matchConfig.CurrentMapNumber];
@@ -1008,7 +1008,7 @@ namespace MatchZy
                 } else {
                     return;
                 }
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{pauseTeamName}{ChatColors.Default} has paused the match. Type .unpause to unpause the match");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{pauseTeamName}{ChatColors.Default} 暂停了比赛. 输入 .unpause 取消暂停.");
 
                 SetMatchPausedFlags();
             }
@@ -1041,7 +1041,7 @@ namespace MatchZy
                 return;
             }
             unpauseData["pauseTeam"] = "Admin";
-            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}Admin{ChatColors.Default} has paused the match.");
+            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}狗管理{ChatColors.Default} 暂停了比赛.");
             if (player == null) {
                 Server.PrintToConsole($"[MatchZy] Admin has paused the match.");
             } 
@@ -1055,7 +1055,7 @@ namespace MatchZy
                     SendPlayerNotAdminMessage(player);
                     return;
                 }
-                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}Admin{ChatColors.Default} has unpaused the match, resuming the match!");
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}狗管理{ChatColors.Default} 解除暂停, 比赛恢复!");
                 UnpauseMatch();
 
                 if (player == null) {
