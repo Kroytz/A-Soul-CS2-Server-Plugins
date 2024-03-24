@@ -50,9 +50,9 @@ public partial class InventorySimulator : BasePlugin
         }
 
         var steamId = player.SteamID;
-        FetchPlayerInventory(steamId);
+        FetchPlayerInventoryAsync(steamId);
 
-        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}]" + " 你的信息已被刷新. 注意刷新操作会导致服务器卡顿, 请勿频繁使用!");
+        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}]" + " 你的信息已被刷新.");
     }
 
     public override void Load(bool hotReload)
@@ -100,7 +100,7 @@ public partial class InventorySimulator : BasePlugin
             return HookResult.Continue;
 
         var steamId = player.SteamID;
-        FetchPlayerInventory(steamId);
+        FetchPlayerInventoryAsync(steamId);
 
         player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}https://inventory.cstrike.app/{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr");
 
