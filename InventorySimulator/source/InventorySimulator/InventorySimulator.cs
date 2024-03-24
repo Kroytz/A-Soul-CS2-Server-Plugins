@@ -12,6 +12,8 @@ using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API;
 using System.Runtime.InteropServices;
+using CounterStrikeSharp.API.Modules.Commands;
+using CounterStrikeSharp.API.Modules.Utils;
 
 namespace InventorySimulator;
 
@@ -32,6 +34,26 @@ public partial class InventorySimulator : BasePlugin
 
     public FakeConVar<int> MinModelsCvar = new("css_minmodels", "Limits the number of custom models in-game.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
     public FakeConVar<string> InvSimCvar = new("css_inventory_simulator", "Inventory Simulator's URL to consume API.", "https://inventory.cstrike.app");
+
+    [ConsoleCommand("css_wsr", "Refresh your InventorySimulator data")]
+    [ConsoleCommand("css_rws", "Refresh your InventorySimulator data")]
+    public void OnReloadWsCommand(CCSPlayerController? player, CommandInfo command)
+    {
+        if (player == null) return;
+
+        if (!IsPlayerHumanAndValid(player))
+            return;
+
+        if (!g_PlayerInventoryLocked.Contains(player.SteamID))
+        {
+            g_PlayerInventory.Remove(player.SteamID);
+        }
+
+        var steamId = player.SteamID;
+        FetchPlayerInventory(steamId);
+
+        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}]" + " 你的信息已被刷新. 注意刷新操作会导致服务器卡顿, 请勿频繁使用!");
+    }
 
     public override void Load(bool hotReload)
     {
@@ -57,18 +79,18 @@ public partial class InventorySimulator : BasePlugin
         }
     }
 
-    [GameEventHandler]
-    public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
-    {
-        CCSPlayerController? player = @event.Userid;
-        if (!IsPlayerHumanAndValid(player))
-            return HookResult.Continue;
+    //[GameEventHandler]
+    //public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
+    //{
+    //    CCSPlayerController? player = @event.Userid;
+    //    if (!IsPlayerHumanAndValid(player))
+    //        return HookResult.Continue;
 
-        var steamId = player.SteamID;
-        FetchPlayerInventory(steamId);
+    //    var steamId = player.SteamID;
+    //    FetchPlayerInventory(steamId);
 
-        return HookResult.Continue;
-    }
+    //    return HookResult.Continue;
+    //}
 
     [GameEventHandler]
     public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo _)
@@ -79,6 +101,8 @@ public partial class InventorySimulator : BasePlugin
 
         var steamId = player.SteamID;
         FetchPlayerInventory(steamId);
+
+        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}]" + " 换肤请浏览器打开: https://inventory.cstrike.app/");
 
         return HookResult.Continue;
     }
