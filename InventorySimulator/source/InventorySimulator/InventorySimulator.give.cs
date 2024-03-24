@@ -52,6 +52,13 @@ public partial class InventorySimulator
                 }
             }
 
+            string model = player.PlayerPawn.Value.CBodyComponent?.SceneNode?.GetSkeletonInstance()?.ModelState.ModelName ?? string.Empty;
+            if (!string.IsNullOrEmpty(model))
+            {
+                player.PlayerPawn.Value.SetModel("characters/models/tm_jumpsuit/tm_jumpsuit_varianta.vmdl");
+                player.PlayerPawn.Value.SetModel(model);
+            }
+
             player.PlayerPawn.Value.MyWearables.RemoveAll();
             var glove = player.PlayerPawn.Value.EconGloves;
             glove.ItemDefinitionIndex = itemDef;

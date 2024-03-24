@@ -116,7 +116,10 @@ public partial class InventorySimulator : BasePlugin
 
         GivePlayerMusicKit(player);
         GivePlayerAgent(player);
-        GivePlayerGloves(player);
+        Server.NextFrame(() =>
+        {
+            GivePlayerGloves(player);
+        });
         GivePlayerPin(player);
 
         return HookResult.Continue;
