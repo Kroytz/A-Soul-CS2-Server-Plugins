@@ -6,5 +6,6 @@ A plugins collection used in [A-Soul](https://steamcommunity.com/groups/A_sou_l)
 [CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp)  
 
 ### 10-Man
-[MatchZy](https://github.com/shobhit-pathak/MatchZy)
-[Inventory Simulator](https://github.com/ianlucas/cs2-inventory-simulator-plugin)
+[MatchZy](https://github.com/shobhit-pathak/MatchZy)  
+[Inventory Simulator](https://github.com/ianlucas/cs2-inventory-simulator-plugin)  
+[CS2-Admin](https://github.com/schwarper/cs2-admin)
