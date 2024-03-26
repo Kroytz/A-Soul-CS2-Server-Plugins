@@ -477,7 +477,7 @@ namespace MatchZy
                 {
                     Server.PrintToChatAll($"{chatPrefix} 狗管理 {ChatColors.Green}重新随机分配队伍{ChatColors.Default} !");
 
-                    var players = Utilities.GetPlayers().Where(players => players.Team > CsTeam.Terrorist).ToList();
+                    var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
                     ListShuffle(players);
                     bool isTr = false;
                     foreach (var p in players)
