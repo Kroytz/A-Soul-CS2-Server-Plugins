@@ -23,7 +23,7 @@ public partial class InventorySimulator : BasePlugin
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
     public override string ModuleName => "InventorySimulator";
-    public override string ModuleVersion => "1.0.0-beta.10";
+    public override string ModuleVersion => "1.0.0-beta.12";
 
     private readonly string g_InventoriesFilePath = "csgo/css_inventories.json";
     private readonly Dictionary<ulong, PlayerInventory> g_PlayerInventory = new();
@@ -33,7 +33,8 @@ public partial class InventorySimulator : BasePlugin
     private readonly bool g_IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
     public FakeConVar<int> MinModelsCvar = new("css_minmodels", "Limits the number of custom models in-game.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
-    public FakeConVar<string> InvSimCvar = new("css_inventory_simulator", "Inventory Simulator's URL to consume API.", "https://inventory.cstrike.app");
+    public FakeConVar<string> InvSimProtocolCvar = new("css_inventory_simulator_protocol", "Inventory Simulator's protocol to consume API", "https");
+    public FakeConVar<string> InvSimCvar = new("css_inventory_simulator", "Inventory Simulator's host to consume API.", "inventory.cstrike.app");
 
     [ConsoleCommand("css_wsr", "Refresh your InventorySimulator data")]
     [ConsoleCommand("css_rws", "Refresh your InventorySimulator data")]

@@ -40,7 +40,7 @@ public partial class InventorySimulator
         // Reserves the inventory for the player in the dictionary.
         g_PlayerInventory[steamId] = new PlayerInventory();
 
-        var playerInventory = await Fetch<Dictionary<string, object>>($"{InvSimCvar.Value}/api/equipped/{steamId}.json");
+        var playerInventory = await Fetch<Dictionary<string, object>>($"{InvSimProtocolCvar.Value}://{InvSimCvar.Value}/api/equipped/{steamId}.json");
         if (playerInventory != null)
         {
             g_PlayerInventory[steamId] = new PlayerInventory(playerInventory);
