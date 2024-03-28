@@ -368,11 +368,11 @@ namespace MatchZy
                     commandActions[message](player, null);
                 }
 
-                if (message.StartsWith(".map")) {
-                    string command = ".map";
-                    string mapName = message.Substring(command.Length).Trim();
-                    HandleMapChangeCommand(player, mapName);
-                }
+                //if (message.StartsWith(".map")) {
+                //    string command = ".map";
+                //    string mapName = message.Substring(command.Length).Trim();
+                //    HandleMapChangeCommand(player, mapName);
+                //}
                 if (message.StartsWith(".readyrequired")) {
                     string command = ".readyrequired";
                     string commandArg = message.Substring(command.Length).Trim();
@@ -466,16 +466,16 @@ namespace MatchZy
 
                     HandleTeamNameChangeCommand(player, commandArg, 2);
                 }
-                if (originalMessage.StartsWith(".rcon")) {
-                    string command = ".rcon";
-                    string commandArg = originalMessage.Substring(command.Length).Trim();
-                    if (IsPlayerAdmin(player, "css_rcon", "@css/rcon")) {
-                        Server.ExecuteCommand(commandArg);
-                        ReplyToUserCommand(player, "Command sent successfully!");
-                    } else {
-                        SendPlayerNotAdminMessage(player);
-                    }
-                }
+                //if (originalMessage.StartsWith(".rcon")) {
+                //    string command = ".rcon";
+                //    string commandArg = originalMessage.Substring(command.Length).Trim();
+                //    if (IsPlayerAdmin(player, "css_rcon", "@css/rcon")) {
+                //        Server.ExecuteCommand(commandArg);
+                //        ReplyToUserCommand(player, "Command sent successfully!");
+                //    } else {
+                //        SendPlayerNotAdminMessage(player);
+                //    }
+                //}
                 if (message.StartsWith(".coach")) {
                     string command = ".coach";
                     string coachSide = message.Substring(command.Length).Trim();
