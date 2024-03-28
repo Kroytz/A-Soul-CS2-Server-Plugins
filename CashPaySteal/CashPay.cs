@@ -10,6 +10,7 @@ using CounterStrikeSharp.API.Modules.Commands;
 using System.Numerics;
 using Vector = CounterStrikeSharp.API.Modules.Utils.Vector;
 using CounterStrikeSharp.API.Modules.Commands.Targeting;
+using CounterStrikeSharp.API.Modules.Entities;
 
 namespace cashpay;
 
@@ -35,12 +36,17 @@ public class CashPay : BasePlugin
             origin.Z = @event.Z;
 
             double min_distance = 64.0;
+
+            var host = @event.Userid;
+            if (host.PlayerPawn.Value is null) return HookResult.Continue;
+
             CCSPlayerController? victim = null;
 
             var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
 
             foreach (var player in playerEntities)
             {
+                if (player == host) continue;
                 var pawn = player.PlayerPawn.Value;
                 if (pawn is null) continue;
                 Vector? ply_origin = pawn.AbsOrigin;
@@ -58,9 +64,6 @@ public class CashPay : BasePlugin
                 }
             }
 
-            var host = @event.Userid;
-
-            if (host.PlayerPawn.Value is null) return HookResult.Continue;
             if (victim is null) return HookResult.Continue;
             if (victim.PlayerPawn.Value is null) return HookResult.Continue;
 
@@ -206,11 +209,6 @@ public class CashPay : BasePlugin
             return;
         }
 
-        foreach (CCSPlayerController target in players)
-        {
-            target.VoiceFlags = VoiceFlags.Muted;
-        }
-
         var _cashnum = commandInfo.GetArg(2);
         int cashnum = Int32.Parse(_cashnum);
 
@@ -245,37 +243,46 @@ public class CashPay : BasePlugin
     [CommandHelper(minArgs: 3, usage: "[userid1],[userid2],[cashnum]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
     public void OnPayForce(CCSPlayerController? player, CommandInfo commandInfo)
     {
-        var _userid = commandInfo.GetArg(1);
-        var _userid_2 = commandInfo.GetArg(2);
-        var _cashnum = commandInfo.GetArg(3);
-        int userid = Int32.Parse(_userid);
-        int userid_2 = Int32.Parse(_userid_2);
-        int cashnum = Int32.Parse(_cashnum);
+        (List<CCSPlayerController> givers, string givername) = FindTarget(player, commandInfo, 1, false, false, MultipleFlags.NORMAL);
+        (List<CCSPlayerController> receivers, string receivername) = FindTarget(player, commandInfo, 2, false, false, MultipleFlags.NORMAL);
 
-        player = Utilities.GetPlayerFromUserid(userid);
-        var victim = Utilities.GetPlayerFromUserid(userid_2);
-
-        if (player == null
-            || victim == null
-            || player.InGameMoneyServices == null
-            || victim.InGameMoneyServices == null
-            || player.PlayerPawn.Value == null
-            || !player.PlayerPawn.Value.IsValid
-            || player.PlayerPawn.Value.Health <= 0
-            || victim.PlayerPawn.Value == null
-            || !victim.PlayerPawn.Value.IsValid
-            || victim.PlayerPawn.Value.Health <= 0) return;
-
-        if (cashnum <= 0)
+        if (givers.Count == 0 || receivers.Count == 0)
         {
-            player.ExecuteClientCommand($"play sounds/ui/armsrace_level_down.vsnd");
-            player.PrintToCenter("Get More Money First");
             return;
         }
 
-        if (cashnum >= player.InGameMoneyServices.Account) cashnum = player.InGameMoneyServices.Account;
+        var _cashnum = commandInfo.GetArg(3);
+        int cashnum = Int32.Parse(_cashnum);
 
-        Pay(player, victim, cashnum);
+        foreach (CCSPlayerController giver in givers)
+        {
+            foreach (CCSPlayerController victim in receivers)
+            {
+                if (giver == null
+                || victim == null
+                || giver.InGameMoneyServices == null
+                || victim.InGameMoneyServices == null
+                || giver.PlayerPawn.Value == null
+                || !giver.PlayerPawn.Value.IsValid
+                || giver.PlayerPawn.Value.Health <= 0
+                || victim.PlayerPawn.Value == null
+                || !victim.PlayerPawn.Value.IsValid
+                || victim.PlayerPawn.Value.Health <= 0) return;
+
+                if (cashnum <= 0)
+                {
+                    giver.ExecuteClientCommand($"play sounds/ui/armsrace_level_down.vsnd");
+                    giver.PrintToCenter("Get More Money First");
+                    return;
+                }
+
+                if (cashnum >= giver.InGameMoneyServices.Account)
+                    cashnum = giver.InGameMoneyServices.Account;
+
+                Pay(giver, victim, cashnum);
+            }
+
+        }
 
         return;
     }
@@ -338,7 +345,7 @@ public class CashPay : BasePlugin
         if (cashnum > 0)
         {
             player.PrintToCenter("Pay " + victim.PlayerName.ToString() + " $" + cashnum.ToString());
-            victim.PrintToCenter("Receive " + " $" + cashnum.ToString() + "from" + player.PlayerName.ToString());
+            victim.PrintToCenter("Receive " + " $" + cashnum.ToString() + " from " + player.PlayerName.ToString());
         }
         else
         {
