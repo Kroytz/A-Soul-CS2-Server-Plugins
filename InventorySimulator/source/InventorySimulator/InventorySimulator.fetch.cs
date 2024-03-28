@@ -33,9 +33,12 @@ public partial class InventorySimulator
     public async void FetchPlayerInventoryAsync(ulong steamId, bool force = false)
     {
         if (!force && g_PlayerInventory.ContainsKey(steamId))
-        {
             return;
-        }
+
+        if (g_FetchInProgress.Contains(steamId))
+            return;
+
+        g_FetchInProgress.Add(steamId);
 
         // Reserves the inventory for the player in the dictionary.
         g_PlayerInventory[steamId] = new PlayerInventory();
@@ -45,5 +48,7 @@ public partial class InventorySimulator
         {
             g_PlayerInventory[steamId] = new PlayerInventory(playerInventory);
         }
+
+        g_FetchInProgress.Remove(steamId);
     }
 }

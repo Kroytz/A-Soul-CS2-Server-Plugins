@@ -23,12 +23,13 @@ public partial class InventorySimulator : BasePlugin
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
     public override string ModuleName => "InventorySimulator";
-    public override string ModuleVersion => "1.0.0-beta.12";
+    public override string ModuleVersion => "1.0.0-beta.14";
 
+    private readonly HashSet<ulong> g_FetchInProgress = new();
     private readonly string g_InventoriesFilePath = "csgo/css_inventories.json";
     private readonly Dictionary<ulong, PlayerInventory> g_PlayerInventory = new();
     private readonly HashSet<ulong> g_PlayerInventoryLocked = new();
-    private ulong g_ItemId = UInt64.MaxValue - 65536;
+    private ulong g_ItemId = 68719476736;
 
     private readonly bool g_IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
