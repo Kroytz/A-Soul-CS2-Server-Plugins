@@ -1,0 +1,8 @@
+{
+    "PublicChatTrigger": [ "!", "." ],
+    "SilentChatTrigger": [ "/" ],
+    "FollowCS2ServerGuidelines": false,
+    "PluginHotReloadEnabled": true,
+    "PluginAutoLoadEnabled": true,
+    "ServerLanguage": "en"
+}
