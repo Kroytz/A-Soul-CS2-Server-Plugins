@@ -482,7 +482,7 @@ namespace MatchZy
                     bool isTr = false;
                     foreach (var p in players)
                     {
-                        p.ChangeTeam(isTr ? CsTeam.Terrorist : CsTeam.CounterTerrorist);
+                        p.SwitchTeam(isTr ? CsTeam.Terrorist : CsTeam.CounterTerrorist);
                         isTr = !isTr;
                     }
                 }
