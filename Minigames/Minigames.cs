@@ -12,6 +12,7 @@ using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Utils;
 using CounterStrikeSharp.API.Modules.Timers;
 using CounterStrikeSharp.API.Modules.Entities;
+using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
 
 namespace Minigames;
 
@@ -23,7 +24,9 @@ public partial class Minigames : BasePlugin
     public override string ModuleName => "Minigames";
     public override string ModuleVersion => "1.0.0";
 
+    public Timer? g_TraiterTimer;
     public int g_iTraiterCountdown = 3;
+
     public FakeConVar<bool> SetPushScale = new("css_set_pushscale", "Set phys_pushscale on round start", false, ConVarFlags.FCVAR_RELEASE);
     public FakeConVar<bool> ShuffleAtRoundEnd = new("css_shuffle_on_round_end", "Auto shuffle teams on round end", false, ConVarFlags.FCVAR_RELEASE);
 
@@ -69,27 +72,36 @@ public partial class Minigames : BasePlugin
 
         g_iTraiterCountdown = 3;
 
-        AddTimer(1.0f, () => 
-        { 
+        g_TraiterTimer = AddTimer(1.0f, () =>
+        {
             if (g_iTraiterCountdown > 0)
             {
                 VirtualFunctions.ClientPrintAll(HudDestination.Alert,
-               $"25 仔将在 {g_iTraiterCountdown} 秒后出现",
+                $"25 仔将在 {g_iTraiterCountdown} 秒后出现",
                 0, 0, 0, 0);
                 g_iTraiterCountdown--;
+                return;
             }
-            else
+
+            var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
+            ListShuffle(players);
+            bool isTr = false;
+            foreach (var p in players)
             {
-                var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
-                ListShuffle(players);
-                bool isTr = false;
-                foreach (var p in players)
-                {
-                    p.SwitchTeam(isTr ? CsTeam.Terrorist : CsTeam.CounterTerrorist);
-                    isTr = !isTr;
-                }
+                p.SwitchTeam(isTr ? CsTeam.Terrorist : CsTeam.CounterTerrorist);
+                isTr = !isTr;
             }
-        }, TimerFlags.STOP_ON_MAPCHANGE);
+
+            VirtualFunctions.ClientPrintAll(HudDestination.Alert,
+            $"25 仔已出现",
+            0, 0, 0, 0);
+
+            if (g_TraiterTimer != null)
+            {
+                g_TraiterTimer.Kill();
+                g_TraiterTimer = null;
+            }
+        }, TimerFlags.REPEAT | TimerFlags.STOP_ON_MAPCHANGE);
 
         return HookResult.Continue;
     }
