@@ -42,13 +42,13 @@ public class CashPay : BasePlugin
 
             CCSPlayerController? victim = null;
 
-            var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
+            var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist && players.IsValid).ToList();
 
             foreach (var player in playerEntities)
             {
                 if (player == host) continue;
+                if (player.PlayerPawn == null || player.PlayerPawn.Value == null || !player.PlayerPawn.IsValid) continue;
                 var pawn = player.PlayerPawn.Value;
-                if (pawn is null) continue;
                 Vector? ply_origin = pawn.AbsOrigin;
                 if (ply_origin is null) continue;
 
@@ -302,18 +302,17 @@ public class CashPay : BasePlugin
     [ConsoleCommand("css_pay_steal", "Toggle the steal switch of the plugin")]
     [RequiresPermissions("@css/admin")]
     [CommandHelper(minArgs: 1, usage: "[toggle]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
-    public void OnPaySteal(CCSPlayerController? player, CommandInfo commandInfo)
+    public void OnPayStealSwitch(CCSPlayerController? player, CommandInfo commandInfo)
     {
-        var temp = commandInfo.GetArg(1);
-        if (temp != "0" || temp != "1" || temp != "2") temp = "0";
+        var temp = commandInfo.ArgByIndex(1);
         PaySteal = Int32.Parse(temp);
+        if (PaySteal < 0 || PaySteal > 2) PaySteal = 0;
         switch (PaySteal)
         {
-            case 0: Server.PrintToChatAll(ModuleName + "You Can Steal live or dead."); break;
-            case 1: Server.PrintToChatAll(ModuleName + "You Can Steal only live."); break;
-            case 2: Server.PrintToChatAll(ModuleName + "You Can Steal only dead."); break;
+            case 0: Server.PrintToChatAll(ModuleName + " You can now steal EVERYONE."); break;
+            case 1: Server.PrintToChatAll(ModuleName + " You can now steal only ALIVE PLAYERS."); break;
+            case 2: Server.PrintToChatAll(ModuleName + " You can now steal only DEAD PLAYERS."); break;
         }
-        return;
     }
 
     public void Pay(CCSPlayerController player, CCSPlayerController victim, int cashnum)
