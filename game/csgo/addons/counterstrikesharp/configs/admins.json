@@ -77,5 +77,29 @@
     "flags": [
       "@css/root"
     ]
+  },
+  "shizhang": {
+    "identity": "76561199191528198",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "yuluan": {
+    "identity": "76561198379293428",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "CYC": {
+    "identity": "76561198357957183",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "aqua": {
+    "identity": "76561198112190438",
+    "flags": [
+      "@css/root"
+    ]
   }
 }
