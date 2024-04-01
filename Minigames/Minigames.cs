@@ -24,25 +24,69 @@ public partial class Minigames : BasePlugin
     public override string ModuleName => "Minigames";
     public override string ModuleVersion => "1.0.0";
 
+    public string PL_PREFIX = $" [{ChatColors.Green}MiniGames{ChatColors.Default}] ";
+
     public Timer? g_TraiterTimer;
     public int g_iTraiterCountdown = 3;
 
+    public bool g_bRespawn = false;
+    public long[] g_iLastDeathTime = new long[64 + 1];
+
+    public FakeConVar<bool> AutoRespawn = new("css_auto_respawn", "Auto detect repeat killer and disable respawn", false, ConVarFlags.FCVAR_RELEASE);
     public FakeConVar<bool> SetPushScale = new("css_set_pushscale", "Set phys_pushscale on round start", false, ConVarFlags.FCVAR_RELEASE);
     public FakeConVar<bool> ShuffleAtRoundEnd = new("css_shuffle_on_round_end", "Auto shuffle teams on round end", false, ConVarFlags.FCVAR_RELEASE);
+
+    public bool IsPluginEnable()
+    {
+        return AutoRespawn.Value || SetPushScale.Value || ShuffleAtRoundEnd.Value;
+    }
 
     [GameEventHandler]
     public HookResult OnRoundStart(EventRoundStart @event, GameEventInfo _)
     {
-        if (!SetPushScale.Value)
+        string functionNotice = "已开启功能: ";
+        if (AutoRespawn.Value)
         {
-            return HookResult.Continue;
+            for (int i = 0; i <= 64; i++)
+            {
+                g_iLastDeathTime[i] = 0;
+            }
+
+            functionNotice += $" 重生 ";
+            ToggleRespawn(true);
         }
 
-        var phys_pushscale = ConVar.Find("phys_pushscale");
-        if (phys_pushscale != null)
+        if (g_TraiterTimer != null)
         {
-            phys_pushscale.Flags = ConVarFlags.FCVAR_RELEASE;
-            phys_pushscale.SetValue(250.0f);
+            g_TraiterTimer.Kill();
+            g_TraiterTimer = null;
+        }
+
+        if (ShuffleAtRoundEnd.Value)
+        {
+            functionNotice += $" 25仔 ";
+        }
+
+        if (SetPushScale.Value)
+        {
+            var phys_pushscale = ConVar.Find("phys_pushscale");
+            if (phys_pushscale != null)
+            {
+                phys_pushscale.Flags = ConVarFlags.FCVAR_RELEASE;
+                phys_pushscale.SetValue(250.0f);
+            }
+            else
+            {
+                Server.PrintToChatAll($"{PL_PREFIX}PhysFix: Unable to find ConVar phys_pushscale!");
+            }
+
+            functionNotice += $" 物理增强 ";
+        }
+
+        if (IsPluginEnable())
+        {
+            Server.PrintToChatAll($"{PL_PREFIX}欢迎来到 ASOUL 小游戏服务器, 玩得开心!");
+            Server.PrintToChatAll($"{PL_PREFIX}{functionNotice}");
         }
 
         return HookResult.Continue;
@@ -104,5 +148,29 @@ public partial class Minigames : BasePlugin
         }, TimerFlags.REPEAT | TimerFlags.STOP_ON_MAPCHANGE);
 
         return HookResult.Continue;
+    }
+
+    [GameEventHandler]
+    public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo _)
+    {
+        CCSPlayerController? player = @event.Userid;
+        if (player != null)
+        {
+            DateTime currentTime = DateTime.UtcNow;
+            long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
+            if (g_iLastDeathTime[player.Index] - unixTime <= 2)
+            {
+                Server.PrintToChatAll($"{PL_PREFIX}检测到复活点杀手, 重生已关闭. 死亡玩家将于下回合再次重生.");
+                ToggleRespawn(false);
+            }
+        }
+
+        return HookResult.Continue;
+    }
+
+    public void ToggleRespawn(bool enable = false)
+    {
+        ConVar.Find("mp_respawn_on_death_ct")!.SetValue(enable);
+        ConVar.Find("mp_respawn_on_death_t")!.SetValue(enable);
     }
 }
