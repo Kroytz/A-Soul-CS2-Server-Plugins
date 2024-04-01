@@ -32,13 +32,14 @@ public partial class Minigames : BasePlugin
     public bool g_bRespawn = false;
     public long[] g_iLastDeathTime = new long[64 + 1];
 
+    public FakeConVar<bool> AutoAllTalk = new("css_auto_alltalk", "Auto alltalk on round end", false, ConVarFlags.FCVAR_RELEASE);
     public FakeConVar<bool> AutoRespawn = new("css_auto_respawn", "Auto detect repeat killer and disable respawn", false, ConVarFlags.FCVAR_RELEASE);
     public FakeConVar<bool> SetPushScale = new("css_set_pushscale", "Set phys_pushscale on round start", false, ConVarFlags.FCVAR_RELEASE);
     public FakeConVar<bool> ShuffleAtRoundEnd = new("css_shuffle_on_round_end", "Auto shuffle teams on round end", false, ConVarFlags.FCVAR_RELEASE);
 
     public bool IsPluginEnable()
     {
-        return AutoRespawn.Value || SetPushScale.Value || ShuffleAtRoundEnd.Value;
+        return AutoAllTalk.Value || AutoRespawn.Value || SetPushScale.Value || ShuffleAtRoundEnd.Value;
     }
 
     [GameEventHandler]
@@ -69,10 +70,10 @@ public partial class Minigames : BasePlugin
 
         if (SetPushScale.Value)
         {
+            // IDK WHY ALWAYS NULL
             var phys_pushscale = ConVar.Find("phys_pushscale");
             if (phys_pushscale != null)
             {
-                phys_pushscale.Flags = ConVarFlags.FCVAR_RELEASE;
                 phys_pushscale.SetValue(250.0f);
             }
             else
@@ -81,6 +82,14 @@ public partial class Minigames : BasePlugin
             }
 
             functionNotice += $" 物理增强 ";
+        }
+
+        if (AutoAllTalk.Value)
+        {
+            Server.ExecuteCommand("sv_alltalk 0");
+            Server.PrintToChatAll($"{PL_PREFIX} >> 全局语音已关闭.");
+
+            functionNotice += $" 全局麦 ";
         }
 
         if (IsPluginEnable())
@@ -109,6 +118,12 @@ public partial class Minigames : BasePlugin
     [GameEventHandler]
     public HookResult OnRoundEnd(EventRoundEnd @event, GameEventInfo _)
     {
+        if (AutoAllTalk.Value)
+        {
+            Server.ExecuteCommand("sv_alltalk 1");
+            Server.PrintToChatAll($"{PL_PREFIX} >> 全局语音已开启.");
+        }
+
         if (!ShuffleAtRoundEnd.Value)
         {
             return HookResult.Continue;
@@ -156,12 +171,20 @@ public partial class Minigames : BasePlugin
         CCSPlayerController? player = @event.Userid;
         if (player != null)
         {
-            DateTime currentTime = DateTime.UtcNow;
-            long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
-            if (g_iLastDeathTime[player.Index] - unixTime <= 2)
+            if (AutoRespawn.Value)
             {
-                Server.PrintToChatAll($"{PL_PREFIX}检测到复活点杀手, 重生已关闭. 死亡玩家将于下回合再次重生.");
-                ToggleRespawn(false);
+                if (g_bRespawn)
+                {
+                    DateTime currentTime = DateTime.UtcNow;
+                    long unixTime = ((DateTimeOffset)currentTime).ToUnixTimeSeconds();
+                    if (unixTime - g_iLastDeathTime[player.Index] <= 2)
+                    {
+                        Server.PrintToChatAll($"{PL_PREFIX}检测到复活点杀手, 重生已关闭. 死亡玩家将于下回合再次重生.");
+                        ToggleRespawn(false);
+                    }
+
+                    g_iLastDeathTime[player.Index] = unixTime;
+                }
             }
         }
 
@@ -170,6 +193,7 @@ public partial class Minigames : BasePlugin
 
     public void ToggleRespawn(bool enable = false)
     {
+        g_bRespawn = enable;
         ConVar.Find("mp_respawn_on_death_ct")!.SetValue(enable);
         ConVar.Find("mp_respawn_on_death_t")!.SetValue(enable);
     }
