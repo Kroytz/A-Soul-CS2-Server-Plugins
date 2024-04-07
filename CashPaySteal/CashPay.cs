@@ -47,6 +47,7 @@ public class CashPay : BasePlugin
             foreach (var player in playerEntities)
             {
                 if (player == host) continue;
+                if (player.Connected != PlayerConnectedState.PlayerConnected) continue;
                 if (player.PlayerPawn == null || player.PlayerPawn.Value == null || !player.PlayerPawn.IsValid) continue;
                 var pawn = player.PlayerPawn.Value;
                 Vector? ply_origin = pawn.AbsOrigin;
