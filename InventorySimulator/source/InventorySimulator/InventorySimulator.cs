@@ -12,8 +12,8 @@ using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
 using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API;
 using System.Runtime.InteropServices;
-using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Modules.Utils;
+using CounterStrikeSharp.API.Modules.Commands;
 
 namespace InventorySimulator;
 
@@ -23,19 +23,21 @@ public partial class InventorySimulator : BasePlugin
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
     public override string ModuleName => "InventorySimulator";
-    public override string ModuleVersion => "1.0.0-beta.14";
+    public override string ModuleVersion => "1.0.0-beta.17";
 
-    private readonly HashSet<ulong> g_FetchInProgress = new();
-    private readonly string g_InventoriesFilePath = "csgo/css_inventories.json";
-    private readonly Dictionary<ulong, PlayerInventory> g_PlayerInventory = new();
-    private readonly HashSet<ulong> g_PlayerInventoryLocked = new();
-    private ulong g_ItemId = 68719476736;
+    private readonly string InventoryFilePath = "csgo/css_inventories.json";
+    private readonly Dictionary<ulong, PlayerInventory> InventoryManager = new();
+    private readonly HashSet<ulong> LoadedSteamIds = new();
+    private static readonly ulong MinimumCustomItemID = 68719476736;
+    private ulong NextItemId = MinimumCustomItemID;
 
-    private readonly bool g_IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    private readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
 
-    public FakeConVar<int> MinModelsCvar = new("css_minmodels", "Limits the number of custom models in-game.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
-    public FakeConVar<string> InvSimProtocolCvar = new("css_inventory_simulator_protocol", "Inventory Simulator's protocol to consume API", "https");
-    public FakeConVar<string> InvSimCvar = new("css_inventory_simulator", "Inventory Simulator's host to consume API.", "inventory.cstrike.app");
+    public FakeConVar<string> InvSimProtocolCvar = new("css_inventory_simulator_protocol", "Protocol used by Inventory Simulator to consume its API.", "https");
+    public FakeConVar<string> InvSimCvar = new("css_inventory_simulator", "Host of Inventory Simulator's API.", "inventory.cstrike.app");
+    public FakeConVar<string> InvSimApiKeyCvar = new("css_inventory_simulator_apikey", "API Key for Inventory Simulator.", "");
+    public FakeConVar<bool> StatTrakIgnoreBotsCvar = new("css_stattrak_ignore_bots", "Determines whether to ignore StatTrak increments for bot kills.", true);
+    public FakeConVar<int> MinModelsCvar = new("css_minmodels", "Limits the number of custom models allowed in-game.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
 
     [ConsoleCommand("css_wsr", "Refresh your InventorySimulator data")]
     [ConsoleCommand("css_rws", "Refresh your InventorySimulator data")]
@@ -46,53 +48,54 @@ public partial class InventorySimulator : BasePlugin
         if (!IsPlayerHumanAndValid(player))
             return;
 
-        if (!g_PlayerInventoryLocked.Contains(player.SteamID))
-        {
-            g_PlayerInventory.Remove(player.SteamID);
-        }
-
         var steamId = player.SteamID;
-        FetchPlayerInventoryAsync(steamId);
+        FetchPlayerInventory(steamId, true);
 
-        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}]" + " 你的信息已被刷新.");
+        player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}]" + " 你的信息已被加入刷新队列.");
     }
 
     public override void Load(bool hotReload)
     {
         LoadPlayerInventories();
 
-        if (g_IsWindows)
+        if (IsWindows)
         {
-            // As GiveNamedItem Post hook doesn't work properly on Windows, we hook OnEntityCreated.
-            // Should work well enough for vanilla gamemodes, but plugins may lack compatibility
-            // if they change items too fast (see MatchZy knife round for instance).
+            // Since the OnGiveNamedItemPost hook doesn't function reliably on Windows, we've opted to use the
+            // OnEntityCreated hook instead. This approach should work adequately for standard game modes. However,
+            // plugins might encounter compatibility issues if they frequently alter items, as observed in the
+            // MatchZy knife round, for example.
             RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
         }
         else
         {
-            // Using GiveNamedItem Post hook is the best place to update the item's attributes
-            // as OnEntityCreated and OnEntitySpawned will require calling Server.NextFrame, and
-            // that may cause some timing issues we can observe on knife round from MatchZy.
-            // Unfortunately, CounterStikeSharp's DynamicHooks seems really bugged on Windows,
-            // maybe this is related to GiveNamedItem implementation on Windows having some quirks,
-            // as initially noted we cannot give knives on Windows, but we can on Linux using the
-            // same function. So Linux is expected to have the better compatibility with other plugins.
+            // Using the GiveNamedItem Post hook remains the optimal choice for updating an item's attributes, as
+            // using OnEntityCreated or OnEntitySpawned would necessitate calling Server.NextFrame, potentially
+            // leading to timing problems similar to those seen in MatchZy's knife round. However, it's worth
+            // noting that CounterStrikeSharp's DynamicHooks appears to have significant bugs on Windows. This
+            // issue may be related to quirks in the GiveNamedItem implementation on Windows, as initially observed
+            // with the inability to give knives on Windows compared to Linux, where the same function works as
+            // expected. Therefore, Linux is likely to offer better compatibility with other plugins.
             VirtualFunctions.GiveNamedItemFunc.Hook(OnGiveNamedItemPost, HookMode.Post);
+
+            // We also hook into OnEntityCreated for cases where the plugin does not trigger the GiveNamedItem hook
+            // (e.g., CS2 Retakes). Most of the time, GiveNamedItem will be called first, and we will know that we
+            // have changed a weapon entity to avoid changing its attributes again.
+            RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
         }
     }
 
-    //[GameEventHandler]
-    //public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
-    //{
-    //    CCSPlayerController? player = @event.Userid;
-    //    if (!IsPlayerHumanAndValid(player))
-    //        return HookResult.Continue;
+    [GameEventHandler]
+    public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
+    {
+        CCSPlayerController? player = @event.Userid;
+        if (!IsPlayerHumanAndValid(player))
+            return HookResult.Continue;
 
-    //    var steamId = player.SteamID;
-    //    FetchPlayerInventory(steamId);
+        var steamId = player.SteamID;
+        FetchPlayerInventory(steamId);
 
-    //    return HookResult.Continue;
-    //}
+        return HookResult.Continue;
+    }
 
     [GameEventHandler]
     public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo _)
@@ -102,9 +105,10 @@ public partial class InventorySimulator : BasePlugin
             return HookResult.Continue;
 
         var steamId = player.SteamID;
-        FetchPlayerInventoryAsync(steamId);
+        FetchPlayerInventory(steamId);
 
-        player.PrintToChat($"[{ChatColors.Green}InventorySimulator{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}https://inventory.cstrike.app/{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr");
+        player.PrintToChat($"[{ChatColors.Green}A-SOUL{ChatColors.Default}] 本服为 {ChatColors.Blue}ASOUL组{ChatColors.Default} 私人满十服, 由 {ChatColors.LightRed}Kroytz 与 7ychu5{ChatColors.Default} 提供插件与维护.");
+        player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}https://inventory.cstrike.app/{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr");
 
         return HookResult.Continue;
     }
@@ -116,13 +120,27 @@ public partial class InventorySimulator : BasePlugin
         if (!IsPlayerHumanAndValid(player) || !IsPlayerPawnValid(player))
             return HookResult.Continue;
 
-        GivePlayerMusicKit(player);
-        GivePlayerAgent(player);
-        Server.NextFrame(() =>
-        {
-            GivePlayerGloves(player);
-        });
-        GivePlayerPin(player);
+        var inventory = GetPlayerInventory(player);
+        GivePlayerMusicKit(player, inventory);
+        GivePlayerAgent(player, inventory);
+        GivePlayerGloves(player, inventory);
+        GivePlayerPin(player, inventory);
+
+        return HookResult.Continue;
+    }
+
+    [GameEventHandler(HookMode.Pre)]
+    public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo _)
+    {
+        CCSPlayerController? attacker = @event.Attacker;
+        if (!IsPlayerHumanAndValid(attacker) || !IsPlayerPawnValid(attacker))
+            return HookResult.Continue;
+
+        CCSPlayerController? victim = @event.Userid;
+        if ((StatTrakIgnoreBotsCvar.Value ? !IsPlayerHumanAndValid(victim) : !IsPlayerValid(victim)) || !IsPlayerPawnValid(victim))
+            return HookResult.Continue;
+
+        GivePlayerStatTrakIncrease(attacker, @event.Weapon, @event.WeaponItemid);
 
         return HookResult.Continue;
     }
@@ -131,10 +149,12 @@ public partial class InventorySimulator : BasePlugin
     public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo _)
     {
         CCSPlayerController? player = @event.Userid;
-        if (IsPlayerHumanAndValid(player) && !g_PlayerInventoryLocked.Contains(player.SteamID))
+        if (IsPlayerHumanAndValid(player))
         {
-            g_PlayerInventory.Remove(player.SteamID);
+            RemovePlayerInventory(player.SteamID);
         }
+
+        PlayerInventoryCleanUp();
 
         return HookResult.Continue;
     }

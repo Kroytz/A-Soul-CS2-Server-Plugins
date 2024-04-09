@@ -7,59 +7,70 @@ A simple plugin for integrating with [CS2 Inventory Simulator](https://inventory
 
 ## Current Features
 
-- Weapon/Knife
-  - Paint Kit, Wear, Seed, Name tag, StatTrak, and Stickers.
+- Weapon
+  - Paint Kit, Wear, Seed, Name tag, StatTrak (with increment), and Stickers.
+- Knife
+  - Paint Kit, Wear, Seed, Name tag, and StatTrak (with increment).
 - Gloves
-  - Paint Kit, Wear, Seed. 
+  - Paint Kit, Wear, Seed.
 - Agents
+  - Patches.
 - Music Kit
 - Pins
 
 ## Feature Roadmap
 
-- StatTrak increment
-- ⛔ Agent Patches
 - ⛔ Graffiti
 
 > [!IMPORTANT]  
-> ⛔ means I'm not aware of a way to modify using CSSharp or C++ and is very unlikely to be implemented any time soon.
+> ⛔ indicates that I'm unaware of a way to modify using CSSharp or C++ and that it's highly unlikely to be implemented anytime soon.
 
 > [!WARNING]  
-> Right now I'm open to issue reports, please don't open feature request or suggestion issues - they will be closed. I may take your comments into account, but the issue is going to remain closed.
+> Currently, I'm accepting issue reports, but please refrain from opening feature requests or suggestion issues as they will be closed. While I may consider your comments, the issue will remain closed.
 
 ## Installation
 
 1. Make sure `FollowCS2ServerGuidelines` is `false` in `addons/counterstrikesharp/configs/core.json`.
-2. Add the contents of `gamedata/gamedata.json` to `addons/counterstrikesharp/gamedata/gamedata.json`.
-3. [Download](https://github.com/ianlucas/cs2-inventory-simulator-plugin/releases) the latest release of CS2 Inventory Simulator Plugin.
-4. Extract the .zip file into `addons/counterstrikesharp`.
+2. [Download the latest release](https://github.com/ianlucas/cs2-inventory-simulator-plugin/releases) of CS2 Inventory Simulator Plugin.
+3. Extract the ZIP file contents into `addons/counterstrikesharp`.
 
 ### Configuration
 
-#### `css_minmodels` ConVar
-
-* Description: Limits the usage of agents by the players.
-* Type: `int`
-* Default: `0`
-* Values:
-	- `0` - agents allowed.
-	- `1` - current map default agents. **Note:** currently the same as `2` as Valve is yet to add them back.
-	- `2` - SAS and Phoenix agents only.
-
 #### `css_inventory_simulator` ConVar
 
-* Description: The base url to be used to consume Inventory Simulator's API.
-* Type: `string`
-* Default: `https://inventory.cstrike.app`
+* Host of Inventory Simulator's API.
+* **Type:** `string`
+* **Default:** `inventory.cstrike.app`
+
+#### `css_inventory_simulator_apikey` ConVar
+
+* API Key for Inventory Simulator.
+* **Type:** `string`
+* **Default:** _empty_
+
+#### `css_stattrak_ignore_bots` ConVar
+
+* Determines whether to ignore StatTrak increments for bot kills.
+* **Type:** `bool`
+* **Default:** `true`
+
+#### `css_minmodels` ConVar
+
+* Limits the number of custom models allowed in-game.
+* **Type:** `int`
+* **Default:** `0`
+* **Values:**
+	- `0` - All agents allowed.
+	- `1` - Default agents for the current map. **Note:** Currently the same as `2` as Valve has not yet added them back.
+	- `2` - Only SAS and Phoenix agents allowed.
 
 ### Commands?
 
-Not right now. I'm planning on adding a command for refreshing the inventory, but it's not really high priority for me as I'm going to use this on competitive matches, and I don't want players messing with skins mid-game, so right now the skins are only fetched when the player connects to the server.
+Not at the moment. I'm considering adding a command for refreshing the inventory, but it's not high priority for me. Since I'll be using this during competitive matches, I don't want players to be able to change skins mid-game. Currently, skins are only fetched when a player connects to the server.
 
 ### Known Issues
 
-* MVP theme not playing for music kits.
-* Players own equipped gloves won't change. (Fixed?)
+* MVP theme does not play for music kits.
 
 ## See also
 
