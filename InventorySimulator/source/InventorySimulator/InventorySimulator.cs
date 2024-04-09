@@ -20,6 +20,9 @@ namespace InventorySimulator;
 [MinimumApiVersion(197)]
 public partial class InventorySimulator : BasePlugin
 {
+    private string ASoulNoticeLastModDate = $"24.04.09";
+    private string ASoulNoticeLastModDesc = $"InvenSim 同步更新至 beta.17";
+
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
     public override string ModuleName => "InventorySimulator";
@@ -108,6 +111,7 @@ public partial class InventorySimulator : BasePlugin
         FetchPlayerInventory(steamId);
 
         player.PrintToChat($"[{ChatColors.Green}A-SOUL{ChatColors.Default}] 本服为 {ChatColors.Blue}ASOUL组{ChatColors.Default} 私人满十服, 由 {ChatColors.LightRed}Kroytz 与 7ychu5{ChatColors.Default} 提供插件与维护.");
+        player.PrintToChat($"[{ChatColors.Green}A-SOUL{ChatColors.Default}] {ChatColors.Olive}最新更新: {ChatColors.Yellow}{ASoulNoticeLastModDate}{ChatColors.Default} {ASoulNoticeLastModDesc}");
         player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}https://inventory.cstrike.app/{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr");
 
         return HookResult.Continue;
