@@ -142,7 +142,7 @@ public partial class Minigames : BasePlugin
                 return;
             }
 
-            var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
+            var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist && players.Connected == PlayerConnectedState.PlayerConnected).ToList();
             ListShuffle(players);
             bool isTr = false;
             foreach (var p in players)
