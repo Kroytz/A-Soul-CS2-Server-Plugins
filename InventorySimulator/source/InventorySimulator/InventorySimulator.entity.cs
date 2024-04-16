@@ -10,6 +10,8 @@ namespace InventorySimulator;
 
 public partial class InventorySimulator
 {
+    public static readonly ulong MinimumCustomItemID = 68719476736;
+    public ulong NextItemId = MinimumCustomItemID;
 
     public void UpdateWeaponMeshGroupMask(CBaseEntity weapon, bool isLegacy)
     {
@@ -60,7 +62,7 @@ public partial class InventorySimulator
         return weapon.AttributeManager.Item.ItemID >= MinimumCustomItemID;
     }
 
-    public void SetPlayerModel(CCSPlayerController player, string model, List<uint>? patches = null)
+    public void SetPlayerModel(CCSPlayerController player, string model, bool voFallback = true, string voPrefix = "", bool voFemale = false, List<uint>? patches = null)
     {
         try
         {
@@ -73,8 +75,12 @@ public partial class InventorySimulator
                         player.PlayerPawn.Value!.PlayerPatchEconIndices[index] = patches[index];
                     }
                 }
+                if (!voFallback)
+                {
+                    player.PlayerPawn.Value!.StrVOPrefix = voPrefix;
+                    player.PlayerPawn.Value.HasFemaleVoice = voFemale;
+                }
                 player.PlayerPawn.Value!.SetModel(model);
-
             });
         }
         catch

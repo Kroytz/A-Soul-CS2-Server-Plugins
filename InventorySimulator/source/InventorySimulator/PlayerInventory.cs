@@ -13,6 +13,10 @@ namespace InventorySimulator;
 
 public partial class InventorySimulator
 {
+    public readonly string InventoryFilePath = "csgo/css_inventories.json";
+    public readonly Dictionary<ulong, PlayerInventory> InventoryManager = new();
+    public readonly Dictionary<ulong, MusicKitItem> MusicKitManager = new();
+    public readonly HashSet<ulong> LoadedSteamIds = new();
     public readonly PlayerInventory EmptyInventory = new();
 
     public void LoadPlayerInventories()
@@ -30,7 +34,7 @@ public partial class InventorySimulator
                 foreach (var pair in inventories)
                 {
                     LoadedSteamIds.Add(pair.Key);
-                    InventoryManager.Add(pair.Key, pair.Value);
+                    AddPlayerInventory(pair.Key, pair.Value);
                 }
             }
         }
@@ -38,6 +42,14 @@ public partial class InventorySimulator
         {
             // Ignore any error.
         }
+    }
+
+    public void AddPlayerInventory(ulong steamId, PlayerInventory inventory)
+    {
+        InventoryManager.Add(steamId, inventory);
+        if (inventory.MusicKit != null)
+            MusicKitManager.Add(steamId, inventory.MusicKit);
+        else MusicKitManager.Remove(steamId);
     }
 
     public void PlayerInventoryCleanUp()
@@ -55,6 +67,7 @@ public partial class InventorySimulator
         if (!LoadedSteamIds.Contains(steamId))
         {
             InventoryManager.Remove(steamId);
+            MusicKitManager.Remove(steamId);
         }
     }
 
@@ -132,30 +145,70 @@ public class AgentItem
 
     [JsonProperty("patches")]
     public required List<uint> Patches { get; set; }
+
+    [JsonProperty("vofallback")]
+    public required bool VoFallback { get; set; }
+
+    [JsonProperty("vofemale")]
+    public required bool VoFemale { get; set; }
+
+    [JsonProperty("voprefix")]
+    public required string VoPrefix { get; set; }
+}
+
+public class MusicKitItem
+{
+    [JsonProperty("def")]
+    public int Def { get; set; }
+
+    [JsonProperty("stattrak")]
+    public required int Stattrak { get; set; }
+
+    [JsonProperty("uid")]
+    public required int Uid { get; set; }
 }
 
 public class PlayerInventory
 {
     [JsonProperty("knives")]
-    public Dictionary<byte, WeaponEconItem> Knives { get; set; } = new();
+    public Dictionary<byte, WeaponEconItem> Knives { get; set; }
 
     [JsonProperty("gloves")]
-    public Dictionary<byte, BaseEconItem> Gloves { get; set; } = new();
+    public Dictionary<byte, BaseEconItem> Gloves { get; set; }
 
     [JsonProperty("tWeapons")]
-    public Dictionary<ushort, WeaponEconItem> TWeapons { get; set; } = new();
+    public Dictionary<ushort, WeaponEconItem> TWeapons { get; set; }
 
     [JsonProperty("ctWeapons")]
-    public Dictionary<ushort, WeaponEconItem> CTWeapons { get; set; } = new();
+    public Dictionary<ushort, WeaponEconItem> CTWeapons { get; set; }
 
     [JsonProperty("agents")]
-    public Dictionary<byte, AgentItem> Agents { get; set; } = new();
+    public Dictionary<byte, AgentItem> Agents { get; set; }
 
     [JsonProperty("pin")]
     public uint? Pin { get; set; }
 
     [JsonProperty("musicKit")]
-    public ushort? MusicKit { get; set; }
+    public MusicKitItem? MusicKit { get; set; }
+
+    [JsonConstructor]
+    public PlayerInventory(
+        Dictionary<byte, WeaponEconItem>? knives = null,
+        Dictionary<byte, BaseEconItem>? gloves = null,
+        Dictionary<ushort, WeaponEconItem>? tWeapons = null,
+        Dictionary<ushort, WeaponEconItem>? ctWeapons = null,
+        Dictionary<byte, AgentItem>? agents = null,
+        uint? pin = null,
+        MusicKitItem? musicKit = null)
+    {
+        Knives = knives ?? new();
+        Gloves = gloves ?? new();
+        TWeapons = tWeapons ?? new();
+        CTWeapons = ctWeapons ?? new();
+        Agents = agents ?? new();
+        Pin = pin;
+        MusicKit = musicKit;
+    }
 
     public WeaponEconItem? GetKnife(byte team)
     {
