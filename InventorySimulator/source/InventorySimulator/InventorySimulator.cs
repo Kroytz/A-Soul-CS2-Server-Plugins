@@ -20,13 +20,13 @@ namespace InventorySimulator;
 [MinimumApiVersion(197)]
 public partial class InventorySimulator : BasePlugin
 {
-    private string ASoulNoticeLastModDate = $"24.04.09";
-    private string ASoulNoticeLastModDesc = $"InvenSim 同步更新至 beta.17";
+    private string ASoulNoticeLastModDate = $"24.04.17";
+    private string ASoulNoticeLastModDesc = $"InvenSim 回退至 beta.18";
 
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
     public override string ModuleName => "InventorySimulator";
-    public override string ModuleVersion => "1.0.0-beta.17";
+    public override string ModuleVersion => "1.0.0-beta.18";
 
     private readonly string InventoryFilePath = "csgo/css_inventories.json";
     private readonly Dictionary<ulong, PlayerInventory> InventoryManager = new();

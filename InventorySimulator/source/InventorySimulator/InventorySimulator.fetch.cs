@@ -29,26 +29,4 @@ public partial class InventorySimulator
             return default;
         }
     }
-
-    public async void FetchPlayerInventoryAsync(ulong steamId, bool force = false)
-    {
-        if (!force && g_PlayerInventory.ContainsKey(steamId))
-            return;
-
-        if (g_FetchInProgress.Contains(steamId))
-            return;
-
-        g_FetchInProgress.Add(steamId);
-
-        // Reserves the inventory for the player in the dictionary.
-        g_PlayerInventory[steamId] = new PlayerInventory();
-
-        var playerInventory = await Fetch<Dictionary<string, object>>($"{InvSimProtocolCvar.Value}://{InvSimCvar.Value}/api/equipped/{steamId}.json");
-        if (playerInventory != null)
-        {
-            g_PlayerInventory[steamId] = new PlayerInventory(playerInventory);
-        }
-
-        g_FetchInProgress.Remove(steamId);
-    }
 }
