@@ -21,7 +21,7 @@ namespace InventorySimulator;
 public partial class InventorySimulator : BasePlugin
 {
     private string ASoulNoticeLastModDate = $"24.04.17";
-    private string ASoulNoticeLastModDesc = $"InvenSim 更新探员语音, 回退版本避免炸服";
+    private string ASoulNoticeLastModDesc = $"InvenSim 探员语音还是炸服, 恁吗";
 
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";

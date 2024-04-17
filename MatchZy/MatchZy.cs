@@ -76,7 +76,7 @@ namespace MatchZy
         public bool isPlayOutEnabled = false;
 
         // User command - action map
-        public Dictionary<string, Action<CCSPlayerController?, CommandInfo?>>? commandActions;
+        //public Dictionary<string, Action<CCSPlayerController?, CommandInfo?>>? commandActions;
 
         // SQLite/MySQL Database 
         private Database database = new();
@@ -103,78 +103,78 @@ namespace MatchZy
                 UpdatePlayersMap();
             }
 
-            commandActions = new Dictionary<string, Action<CCSPlayerController?, CommandInfo?>> {
-                { ".ready", OnPlayerReady },
-                { ".r", OnPlayerReady },
-                { ".forceready", OnForceReadyCommandCommand },
-                { ".unready", OnPlayerUnReady },
-                { ".ur", OnPlayerUnReady },
-                { ".stay", OnTeamStay },
-                { ".switch", OnTeamSwitch },
-                { ".swap", OnTeamSwitch },
-                { ".tech", OnTechCommand },
-                { ".p", OnPauseCommand },
-                { ".pause", OnPauseCommand },
-                { ".unpause", OnUnpauseCommand },
-                { ".up", OnUnpauseCommand },
-                { ".forcepause", OnForcePauseCommand },
-                { ".fp", OnForcePauseCommand },
-                { ".forceunpause", OnForceUnpauseCommand },
-                { ".fup", OnForceUnpauseCommand },
-                { ".tac", OnTacCommand },
-                { ".roundknife", OnKnifeCommand },
-                { ".rk", OnKnifeCommand },
-                { ".playout", OnPlayoutCommand },
-                { ".start", OnStartCommand },
-                { ".restart", OnRestartMatchCommand },
-                { ".abort", OnRestartMatchCommand },
-                { ".settings", OnMatchSettingsCommand },
-                { ".whitelist", OnWLCommand },
-                { ".globalnades", OnSaveNadesAsGlobalCommand },
-                { ".reload_admins", OnReloadAdmins },
-                { ".shuffle", OnShuffleCommand },
-                { ".prac", OnPracCommand },
-                { ".dryrun", OnDryRunCommand },
-                { ".dry", OnDryRunCommand },
-                { ".noflash", OnNoFlashCommand },
-                { ".break", OnBreakCommand },
-                { ".bot", OnBotCommand },
-                { ".crouchbot", OnCrouchBotCommand },
-                { ".boost", OnBoostBotCommand },
-                { ".crouchboost", OnCrouchBoostBotCommand },
-                { ".nobots", OnNoBotsCommand },
-                { ".god", OnGodCommand },
-                { ".ff", OnFastForwardCommand },
-                { ".fastforward", OnFastForwardCommand },
-                { ".clear", OnClearCommand },
-                { ".match", OnMatchCommand },
-                { ".uncoach", OnUnCoachCommand },
-                { ".exitprac", OnMatchCommand },
-                { ".stop", OnStopCommand },
-                { ".help", OnHelpCommand },
-                { ".t", OnTCommand },
-                { ".ct", OnCTCommand },
-                { ".spec", OnSpecCommand },
-                { ".fas", OnFASCommand },
-                { ".watchme", OnFASCommand },
-                { ".last", OnLastCommand },
-                { ".throw", OnRethrowCommand },
-                { ".rethrow", OnRethrowCommand },
-                { ".throwsmoke", OnRethrowSmokeCommand },
-                { ".rethrowsmoke", OnRethrowSmokeCommand },
-                { ".thrownade", OnRethrowGrenadeCommand },
-                { ".rethrownade", OnRethrowGrenadeCommand },
-                { ".rethrowgrenade", OnRethrowGrenadeCommand },
-                { ".throwgrenade", OnRethrowGrenadeCommand },
-                { ".rethrowflash", OnRethrowFlashCommand },
-                { ".throwflash", OnRethrowFlashCommand },
-                { ".rethrowdecoy", OnRethrowDecoyCommand },
-                { ".throwdecoy", OnRethrowDecoyCommand },
-                { ".throwmolotov", OnRethrowMolotovCommand },
-                { ".rethrowmolotov", OnRethrowMolotovCommand },
-                { ".timer", OnTimerCommand },
-                { ".lastindex", OnLastIndexCommand }
-            };
+            //commandActions = new Dictionary<string, Action<CCSPlayerController?, CommandInfo?>> {
+            //    { ".ready", OnPlayerReady },
+            //    { ".r", OnPlayerReady },
+            //    { ".forceready", OnForceReadyCommandCommand },
+            //    { ".unready", OnPlayerUnReady },
+            //    { ".ur", OnPlayerUnReady },
+            //    { ".stay", OnTeamStay },
+            //    { ".switch", OnTeamSwitch },
+            //    { ".swap", OnTeamSwitch },
+            //    { ".tech", OnTechCommand },
+            //    { ".p", OnPauseCommand },
+            //    { ".pause", OnPauseCommand },
+            //    { ".unpause", OnUnpauseCommand },
+            //    { ".up", OnUnpauseCommand },
+            //    { ".forcepause", OnForcePauseCommand },
+            //    { ".fp", OnForcePauseCommand },
+            //    { ".forceunpause", OnForceUnpauseCommand },
+            //    { ".fup", OnForceUnpauseCommand },
+            //    { ".tac", OnTacCommand },
+            //    { ".roundknife", OnKnifeCommand },
+            //    { ".rk", OnKnifeCommand },
+            //    { ".playout", OnPlayoutCommand },
+            //    { ".start", OnStartCommand },
+            //    { ".restart", OnRestartMatchCommand },
+            //    { ".abort", OnRestartMatchCommand },
+            //    { ".settings", OnMatchSettingsCommand },
+            //    { ".whitelist", OnWLCommand },
+            //    { ".globalnades", OnSaveNadesAsGlobalCommand },
+            //    { ".reload_admins", OnReloadAdmins },
+            //    { ".shuffle", OnShuffleCommand },
+            //    { ".prac", OnPracCommand },
+            //    { ".dryrun", OnDryRunCommand },
+            //    { ".dry", OnDryRunCommand },
+            //    { ".noflash", OnNoFlashCommand },
+            //    { ".break", OnBreakCommand },
+            //    { ".bot", OnBotCommand },
+            //    { ".crouchbot", OnCrouchBotCommand },
+            //    { ".boost", OnBoostBotCommand },
+            //    { ".crouchboost", OnCrouchBoostBotCommand },
+            //    { ".nobots", OnNoBotsCommand },
+            //    { ".god", OnGodCommand },
+            //    { ".ff", OnFastForwardCommand },
+            //    { ".fastforward", OnFastForwardCommand },
+            //    { ".clear", OnClearCommand },
+            //    { ".match", OnMatchCommand },
+            //    { ".uncoach", OnUnCoachCommand },
+            //    { ".exitprac", OnMatchCommand },
+            //    { ".stop", OnStopCommand },
+            //    { ".help", OnHelpCommand },
+            //    { ".t", OnTCommand },
+            //    { ".ct", OnCTCommand },
+            //    { ".spec", OnSpecCommand },
+            //    { ".fas", OnFASCommand },
+            //    { ".watchme", OnFASCommand },
+            //    { ".last", OnLastCommand },
+            //    { ".throw", OnRethrowCommand },
+            //    { ".rethrow", OnRethrowCommand },
+            //    { ".throwsmoke", OnRethrowSmokeCommand },
+            //    { ".rethrowsmoke", OnRethrowSmokeCommand },
+            //    { ".thrownade", OnRethrowGrenadeCommand },
+            //    { ".rethrownade", OnRethrowGrenadeCommand },
+            //    { ".rethrowgrenade", OnRethrowGrenadeCommand },
+            //    { ".throwgrenade", OnRethrowGrenadeCommand },
+            //    { ".rethrowflash", OnRethrowFlashCommand },
+            //    { ".throwflash", OnRethrowFlashCommand },
+            //    { ".rethrowdecoy", OnRethrowDecoyCommand },
+            //    { ".throwdecoy", OnRethrowDecoyCommand },
+            //    { ".throwmolotov", OnRethrowMolotovCommand },
+            //    { ".rethrowmolotov", OnRethrowMolotovCommand },
+            //    { ".timer", OnTimerCommand },
+            //    { ".lastindex", OnLastIndexCommand }
+            //};
 
             RegisterEventHandler<EventPlayerConnectFull>(EventPlayerConnectFullHandler);
             RegisterEventHandler<EventPlayerDisconnect>(EventPlayerDisconnectHandler);
@@ -364,9 +364,9 @@ namespace MatchZy
                 }
 
                 // Handling player commands
-                if (commandActions.ContainsKey(message)) {
-                    commandActions[message](player, null);
-                }
+                //if (commandActions.ContainsKey(message)) {
+                //    commandActions[message](player, null);
+                //}
 
                 //if (message.StartsWith(".map")) {
                 //    string command = ".map";
