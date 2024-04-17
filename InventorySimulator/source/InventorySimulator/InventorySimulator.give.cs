@@ -84,7 +84,7 @@ public partial class InventorySimulator
         if (inventory.Agents.TryGetValue(player.TeamNum, out var item))
         {
             var patches = item.Patches.Count != 5 ? Enumerable.Repeat((uint)0, 5).ToList() : item.Patches;
-            SetPlayerModel(player, GetAgentModelPath(item.Model), item.VoFallback, item.VoPrefix, item.VoFemale, patches);
+            SetPlayerModel(player, GetAgentModelPath(item.Model), patches);
         }
     }
 
