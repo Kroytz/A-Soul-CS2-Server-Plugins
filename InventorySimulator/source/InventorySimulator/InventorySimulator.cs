@@ -17,11 +17,11 @@ using CounterStrikeSharp.API.Modules.Commands;
 
 namespace InventorySimulator;
 
-[MinimumApiVersion(197)]
+[MinimumApiVersion(213)]
 public partial class InventorySimulator : BasePlugin
 {
     private string ASoulNoticeLastModDate = $"24.04.17";
-    private string ASoulNoticeLastModDesc = $"InvenSim 回退至 beta.18";
+    private string ASoulNoticeLastModDesc = $"InvenSim 更新探员语音, 回退版本避免炸服";
 
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
