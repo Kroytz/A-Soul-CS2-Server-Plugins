@@ -60,7 +60,7 @@ public partial class InventorySimulator
         return weapon.AttributeManager.Item.ItemID >= MinimumCustomItemID;
     }
 
-    public void SetPlayerModel(CCSPlayerController player, string model, List<uint>? patches = null)
+    public void SetPlayerModel(CCSPlayerController player, string model, bool voFallback = true, string voPrefix = "", bool voFemale = false, List<uint>? patches = null)
     {
         try
         {
@@ -73,8 +73,12 @@ public partial class InventorySimulator
                         player.PlayerPawn.Value!.PlayerPatchEconIndices[index] = patches[index];
                     }
                 }
+                if (!voFallback)
+                {
+                    player.PlayerPawn.Value!.StrVOPrefix = voPrefix;
+                    player.PlayerPawn.Value.HasFemaleVoice = voFemale;
+                }
                 player.PlayerPawn.Value!.SetModel(model);
-
             });
         }
         catch
