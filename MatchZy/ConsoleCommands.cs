@@ -46,7 +46,8 @@ namespace MatchZy
                 SendPlayerNotAdminMessage(player);
             }
         }
-        
+
+        [ConsoleCommand("css_r", "Marks the player ready")]
         [ConsoleCommand("css_ready", "Marks the player ready")]
         public void OnPlayerReady(CCSPlayerController? player, CommandInfo? command) {
             if (player == null) return;
@@ -68,6 +69,7 @@ namespace MatchZy
             }
         }
 
+        [ConsoleCommand("css_ur", "Marks the player unready")]
         [ConsoleCommand("css_unready", "Marks the player unready")]
         public void OnPlayerUnReady(CCSPlayerController? player, CommandInfo? command) {
             if (player == null) return;
@@ -122,6 +124,7 @@ namespace MatchZy
             PauseMatch(player, command);
         }
 
+        [ConsoleCommand("css_p", "Pause the match")]
         [ConsoleCommand("css_pause", "Pause the match")]
         public void OnPauseCommand(CCSPlayerController? player, CommandInfo? command) {     
             if (isPauseCommandForTactical)
@@ -148,6 +151,7 @@ namespace MatchZy
             ForceUnpauseMatch(player, command);
         }
 
+        [ConsoleCommand("css_up", "Unpause the match")]
         [ConsoleCommand("css_unpause", "Unpause the match")]
         public void OnUnpauseCommand(CCSPlayerController? player, CommandInfo? command) {
             if (isMatchLive && isPaused) {
@@ -296,6 +300,7 @@ namespace MatchZy
             }
         }
 
+        [ConsoleCommand("css_re", "Restarts the match")]
         [ConsoleCommand("css_restart", "Restarts the match")]
         [ConsoleCommand("css_abort", "Restarts the match")]
         public void OnRestartMatchCommand(CCSPlayerController? player, CommandInfo? command) {
@@ -477,7 +482,7 @@ namespace MatchZy
                 {
                     Server.PrintToChatAll($"{chatPrefix} 狗管理 {ChatColors.Green}重新随机分配队伍{ChatColors.Default} !");
 
-                    var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist).ToList();
+                    var players = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist && players.Connected == PlayerConnectedState.PlayerConnected).ToList();
                     ListShuffle(players);
                     bool isTr = false;
                     foreach (var p in players)
