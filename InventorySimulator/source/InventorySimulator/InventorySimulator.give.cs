@@ -6,19 +6,25 @@
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Utils;
 using CounterStrikeSharp.API;
+using CounterStrikeSharp.API.Modules.Cvars;
+using CounterStrikeSharp.API.Modules.Cvars.Validators;
 
 namespace InventorySimulator;
 
 public partial class InventorySimulator
 {
-    public void GivePlayerMusicKit(CCSPlayerController player, PlayerInventory inventory)
+    public FakeConVar<int> MinModelsCvar = new("css_minmodels", "Limits the number of custom models allowed in-game.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
+
+    public void GivePlayerMusicKit(CCSPlayerController player)
     {
+        if (!IsPlayerHumanAndValid(player)) return;
         if (player.InventoryServices == null) return;
-
-        var musicId = inventory.MusicKit;
-        if (musicId == null) return;
-
-        player.InventoryServices.MusicID = musicId.Value;
+        if (MusicKitManager.TryGetValue(player.SteamID, out var musicKit))
+        {
+            player.InventoryServices.MusicID = (ushort)musicKit.Def;
+            player.MusicKitID = musicKit.Def;
+            player.MusicKitMVPs = musicKit.Stattrak;
+        }
     }
 
     public void GivePlayerPin(CCSPlayerController player, PlayerInventory inventory)
@@ -52,15 +58,17 @@ public partial class InventorySimulator
                 glove.Initialized = true;
                 glove.ItemDefinitionIndex = item.Def;
                 UpdatePlayerEconItemID(glove);
+
                 glove.NetworkedDynamicAttributes.Attributes.RemoveAll();
-                glove.AttributeList.Attributes.RemoveAll();
                 SetOrAddAttributeValueByName(glove.NetworkedDynamicAttributes.Handle, "set item texture prefab", item.Paint);
                 SetOrAddAttributeValueByName(glove.NetworkedDynamicAttributes.Handle, "set item texture seed", item.Seed);
                 SetOrAddAttributeValueByName(glove.NetworkedDynamicAttributes.Handle, "set item texture wear", item.Wear);
-                // We also need to update AttributeList to overwrite owned glove attributes.
+
+                glove.AttributeList.Attributes.RemoveAll();
                 SetOrAddAttributeValueByName(glove.AttributeList.Handle, "set item texture prefab", item.Paint);
                 SetOrAddAttributeValueByName(glove.AttributeList.Handle, "set item texture seed", item.Seed);
                 SetOrAddAttributeValueByName(glove.AttributeList.Handle, "set item texture wear", item.Wear);
+
                 SetBodygroup(player.PlayerPawn.Value.Handle, "default_gloves", 1);
             });
         }
@@ -84,7 +92,7 @@ public partial class InventorySimulator
         if (inventory.Agents.TryGetValue(player.TeamNum, out var item))
         {
             var patches = item.Patches.Count != 5 ? Enumerable.Repeat((uint)0, 5).ToList() : item.Patches;
-            SetPlayerModel(player, GetAgentModelPath(item.Model), patches);
+            SetPlayerModel(player, GetAgentModelPath(item.Model), item.VoFallback, item.VoPrefix, item.VoFemale, patches);
         }
     }
 
@@ -124,6 +132,7 @@ public partial class InventorySimulator
         SetOrAddAttributeValueByName(weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture prefab", item.Paint);
         SetOrAddAttributeValueByName(weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture seed", item.Seed);
         SetOrAddAttributeValueByName(weapon.AttributeManager.Item.NetworkedDynamicAttributes.Handle, "set item texture wear", item.Wear);
+
         weapon.AttributeManager.Item.AttributeList.Attributes.RemoveAll();
         SetOrAddAttributeValueByName(weapon.AttributeManager.Item.AttributeList.Handle, "set item texture prefab", item.Paint);
         SetOrAddAttributeValueByName(weapon.AttributeManager.Item.AttributeList.Handle, "set item texture seed", item.Seed);
@@ -154,7 +163,10 @@ public partial class InventorySimulator
         }
     }
 
-    public void GivePlayerStatTrakIncrease(CCSPlayerController player, string designerName, string weaponItemId)
+    public void GivePlayerWeaponStatTrakIncrease(
+        CCSPlayerController player,
+        string designerName,
+        string weaponItemId)
     {
         try
         {
@@ -195,6 +207,15 @@ public partial class InventorySimulator
         catch
         {
             // Ignore any errors.
+        }
+    }
+
+    public void GivePlayerMusicKitStatTrakIncrease(CCSPlayerController player)
+    {
+        if (MusicKitManager.TryGetValue(player.SteamID, out var musicKit))
+        {
+            musicKit.Stattrak += 1;
+            SendStatTrakIncrease(player.SteamID, musicKit.Uid);
         }
     }
 }

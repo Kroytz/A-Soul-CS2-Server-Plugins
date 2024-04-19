@@ -3,6 +3,7 @@
  *  Licensed under the MIT License. See License.txt in the project root for license information.
  *--------------------------------------------------------------------------------------------*/
 
+using CounterStrikeSharp.API.Modules.Cvars;
 using Microsoft.Extensions.Logging;
 using Newtonsoft.Json;
 using System.Net;
@@ -12,7 +13,11 @@ namespace InventorySimulator;
 
 public partial class InventorySimulator
 {
-    private readonly HashSet<ulong> FetchingInventory = new();
+    public readonly FakeConVar<string> InvSimProtocolCvar = new("css_inventory_simulator_protocol", "Inventory Simulator API's protocol.", "https");
+    public readonly FakeConVar<string> InvSimCvar = new("css_inventory_simulator", "Inventory Simulator API's domain.", "inventory.cstrike.app");
+    public readonly FakeConVar<string> InvSimApiKeyCvar = new("css_inventory_simulator_apikey", "Inventory Simulator API's key.", "");
+
+    public readonly HashSet<ulong> FetchingInventory = new();
 
     public string GetApiUrl(string uri)
     {
@@ -72,12 +77,12 @@ public partial class InventorySimulator
             try
             {
                 var playerInventory = await Fetch<PlayerInventory>(
-                    $"/api/equipped/v2/{steamId}.json", true
+                    $"/api/equipped/v3/{steamId}.json", true
                 );
 
                 if (playerInventory != null)
                 {
-                    InventoryManager.Add(steamId, playerInventory);
+                    AddPlayerInventory(steamId, playerInventory);
                 }
 
                 FetchingInventory.Remove(steamId);
