@@ -16,7 +16,7 @@ namespace cashpay;
 
 public class CashPay : BasePlugin
 {
-    public override string ModuleName => "[CashPay]";
+    public override string ModuleName => "CashPay";
     public override string ModuleVersion => "0.0.2";
     public override string ModuleAuthor => "7ychu5";
     public override string ModuleDescription => "Pay your game cash to the other player";
@@ -42,12 +42,11 @@ public class CashPay : BasePlugin
 
             CCSPlayerController? victim = null;
 
-            var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist && players.IsValid).ToList();
+            var playerEntities = Utilities.GetPlayers().Where(players => players.Team >= CsTeam.Terrorist && players.Connected == PlayerConnectedState.PlayerConnected && players.IsValid).ToList();
 
             foreach (var player in playerEntities)
             {
                 if (player == host) continue;
-                if (player.Connected != PlayerConnectedState.PlayerConnected) continue;
                 if (player.PlayerPawn == null || player.PlayerPawn.Value == null || !player.PlayerPawn.IsValid) continue;
                 var pawn = player.PlayerPawn.Value;
                 Vector? ply_origin = pawn.AbsOrigin;
@@ -65,8 +64,7 @@ public class CashPay : BasePlugin
                 }
             }
 
-            if (victim is null) return HookResult.Continue;
-            if (victim.PlayerPawn.Value is null) return HookResult.Continue;
+            if (victim is null || victim.PlayerPawn.Value is null || !victim.PlayerPawn.IsValid) return HookResult.Continue;
 
             if (host.PlayerPawn.Value.TeamNum != victim.PlayerPawn.Value.TeamNum)
             {
@@ -333,8 +331,11 @@ public class CashPay : BasePlugin
 
         if (cashnum == 0)
         {
-            if (victim.InGameMoneyServices.Account == 0) victim.PrintToCenter("You have been bankruptcy !");
-            if (player.InGameMoneyServices.Account == 0) player.PrintToCenter("You got no money !");
+            if (victim.InGameMoneyServices.Account == 0)
+            {
+                victim.PrintToCenter("你被偷的底裤都不剩了!");
+                player.PrintToCenter("他已经身无分文了! 鳖偷了!");
+            }
             return;
         }
 
@@ -344,13 +345,13 @@ public class CashPay : BasePlugin
         victim.ExecuteClientCommand($"play sounds/ui/armsrace_level_up_e.vsnd");
         if (cashnum > 0)
         {
-            player.PrintToCenter("Pay " + victim.PlayerName.ToString() + " $" + cashnum.ToString());
-            victim.PrintToCenter("Receive " + " $" + cashnum.ToString() + " from " + player.PlayerName.ToString());
+            player.PrintToCenter($"赠与 {victim.PlayerName} ${cashnum}");
+            victim.PrintToCenter($"慷慨的 {player.PlayerName} 赠与了你 ${cashnum}");
         }
         else
         {
-            victim.PrintToCenter(" $" + (cashnum * -1).ToString() + " stolen by " + player.PlayerName.ToString());
-            player.PrintToCenter("Steal " + victim.PlayerName.ToString() + " $" + (cashnum * -1).ToString());
+            victim.PrintToCenter($"你被沟槽的 {player.PlayerName} 偷了 ${cashnum * -1}");
+            player.PrintToCenter($"你偷了 {victim.PlayerName} ${cashnum * -1}");
         }
 
         Utilities.SetStateChanged(player, "CCSPlayerController", "m_pInGameMoneyServices");
