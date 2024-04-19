@@ -121,8 +121,8 @@
       "scoreboard": "狗管理"
     },
     "everyone": {
-      "team_chat": false,
-      "prefix": "{Grey}[A-Soul✦ ",
+      "team_chat": true,
+      "prefix": "{Grey}[A-Soul] ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "A-Soul"
