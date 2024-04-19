@@ -1,0 +1,131 @@
+{
+  "tags": {
+    "76561198840491548": {
+      "prefix": "{Purple}✦萤烛✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "萤火虫"
+    },
+    "76561199299003091": {
+      "prefix": "{Purple}✦德克萨斯✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "拉普兰德"
+    },
+    "76561199048770008": {
+      "prefix": "{Purple}✦大朗✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "大朗"
+    },
+    "76561197967281863": {
+      "prefix": "{Purple}✦男娘爱好者✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "纳西妲"
+    },
+    "76561198379293428": {
+      "prefix": "{Purple}✦狗管理✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "鱼卵"
+    },
+    "76561199019716291": {
+      "prefix": "{Purple}✦狗管理✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "若杨"
+    },
+    "76561198112190438": {
+      "prefix": "{Purple}✦狗管理✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "A-QUA"
+    },
+    "76561198357957183": {
+      "prefix": "{Purple}✦狗管理✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "CYC"
+    },
+    "76561199191528198": {
+      "prefix": "{Purple}✦市长✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "未成年"
+    },
+    "76561198297330289": {
+      "prefix": "{Purple}✦meaqua✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "咩夸"
+    },
+    "76561198428518437": {
+      "prefix": "{Purple}✦萌二✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "萌二"
+    },
+    "76561198316936300": {
+      "prefix": "{Purple}✦Lisesama✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "东百蛇哥"
+    },
+    "76561198198361779": {
+      "prefix": "{Purple}✦娇喘✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "韩国人"
+    },
+    "76561198279949702": {
+      "prefix": "{Purple}✦嘤嘤怪✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "嘤嘤嘤"
+    },
+    "76561198257958684": {
+      "prefix": "{Purple}✦包特零肆✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "男娘大神"
+    },
+    "76561198269364976": {
+      "prefix": "{Purple}✦噗噗✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "大噗老师"
+    },
+    "76561198153557885": {
+      "prefix": "{Purple}✦狗妹妹✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "犬娘"
+    },
+    "76561198988402213": {
+      "prefix": "{Purple}✦瓦度窝✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "高考加油"
+    },
+    "76561198145110742": {
+      "prefix": "{Purple}✦米花糖✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "米神"
+    },
+    "#css/admin": {
+      "prefix": "{RED}[狗管理] ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "狗管理"
+    },
+    "everyone": {
+      "team_chat": false,
+      "prefix": "{Grey}[A-Soul✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "A-Soul"
+    }
+  }
+}

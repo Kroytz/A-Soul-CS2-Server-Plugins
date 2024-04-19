@@ -101,5 +101,41 @@
     "flags": [
       "@css/root"
     ]
+  },
+  "lyrics": {
+    "identity": "76561198413953272",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "kr1ya": {
+    "identity": "76561199019716291",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "dalang": {
+    "identity": "76561199048770008",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "luzidunrou": {
+    "identity": "76561198410489809",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "yzyuricas": {
+    "identity": "76561198840491548",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "dekesasi": {
+    "identity": "76561199299003091",
+    "flags": [
+      "@css/root"
+    ]
   }
 }
