@@ -61,40 +61,55 @@
       "name": "Mag-7 | 曙光",
       "path": "models/weapons/shuguang/shuguang.vmdl"
     },
-    "ump45_asoul": {
-      "itemdef": 24,
-      "name": "UMP-45 | ASOUL",
-      "path": "models/weapons/ump45_asoul/ump45_asoul.vmdl"
-    },
-    "mp5_neon": {
-      "itemdef": 23,
-      "name": "MP5SD | 霓虹",
-      "path": "models/weapons/mp5_neon/mp5_neon.vmdl"
-    },
     "m4a4_baihu": {
       "itemdef": 16,
       "name": "M4A4 | 白虎",
       "path": "models/weapons/ump45_baihu/scar_tiger.vmdl"
     },
-    "akwzzx": {
-      "itemdef": 7,
-      "name": "AK47 | 王者之心",
-      "path": "models/akwzzx/akwzzx.vmdl"
-    },
     "akxies": {
       "itemdef": 7,
-      "name": "AK47 | 邪神",
+      "name": "AK-47 | 邪神",
       "path": "models/akxies/akxies.vmdl"
     },
     "81yuanrang": {
       "itemdef": 7,
-      "name": "AK47 | 八一式元让",
+      "name": "AK-47 | 八一式元让",
       "path": "models/81yuanrang/81yuanrang.vmdl"
     },
     "novaprintl": {
       "itemdef": 35,
       "name": "Nova | 印花集",
       "path": "models/weapons/nova_printl/nova_printl.vmdl"
+    },
+    "cyberrifle": {
+      "itemdef": 7,
+      "name": "AK-47 | 赛博步枪",
+      "path": "weapons/7ychu5/models/rif_ak/cyber_ak_rifle/cyber_ak_rifle.vmdl"
+    },
+    "awpr7": {
+      "itemdef": 9,
+      "name": "AWP | R-7",
+      "path": "weapons/7ychu5/models/snip_awp/r7_x_sniper/r7_x_sniper.vmdl"
+    },
+    "kunai": {
+      "itemdef": 0,
+      "name": "苦无",
+      "path": "weapons/models/knife/knife_default_ct/kunai.vmdl"
+    },
+    "xm1014_hoshino": {
+      "itemdef": 25,
+      "name": "XM1014 | 小鸟游星野",
+      "path": "weapons/7ychu5/models/shot_xm1014/xm1014_hoshino/xm1014_hoshino.vmdl"
+    },
+    "famas_asuna": {
+      "itemdef": 25,
+      "name": "FAMAS | 明日奈",
+      "path": "weapons/7ychu5/models/rif_famas/famas_asuna/famas_asuna.vmdl"
+    },
+    "ump45_kurumi": {
+      "itemdef": 24,
+      "name": "UMP45 | 胡桃",
+      "path": "weapons/7ychu5/models/smg_ump45/ump45_kurumi/ump45_kurumi.vmdl"
     }
   },
   "MenuType": "chat",
