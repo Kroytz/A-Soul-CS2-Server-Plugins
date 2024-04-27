@@ -21,16 +21,6 @@
       "name": "M4A1-S | 仙狐",
       "path": "models/weapons/m4a1_xianhu/m4a1_xianhu.vmdl"
     },
-    "mp9_prin": {
-      "itemdef": 34,
-      "name": "MP9 | 印花集",
-      "path": "models/weapons/mp9_prin/mp9_prin.vmdl"
-    },
-    "p90_prin": {
-      "itemdef": 19,
-      "name": "P90 | 印花集",
-      "path": "models/weapons/p90_prin/p90_prin.vmdl"
-    },
     "p90_jxt": {
       "itemdef": 19,
       "name": "P90 | SB瓦杜窝",
@@ -51,20 +41,10 @@
       "name": "炎龙",
       "path": "models/yanlong/yanlong.vmdl"
     },
-    "scarzq": {
-      "itemdef": 13,
-      "name": "Galil | Scar 朱雀",
-      "path": "models/scarzq/scarzq.vmdl"
-    },
     "shuguang": {
       "itemdef": 27,
       "name": "Mag-7 | 曙光",
       "path": "models/weapons/shuguang/shuguang.vmdl"
-    },
-    "m4a4_baihu": {
-      "itemdef": 16,
-      "name": "M4A4 | 白虎",
-      "path": "models/weapons/ump45_baihu/scar_tiger.vmdl"
     },
     "akxies": {
       "itemdef": 7,
@@ -96,13 +76,18 @@
       "name": "苦无",
       "path": "weapons/models/knife/knife_default_ct/kunai.vmdl"
     },
+    "deagle_mari": {
+      "itemdef": 1,
+      "name": "Deagle | 玛丽",
+      "path": "weapons/models/pist_deagle/deagle_mari/deagle_mari.vmdl"
+    },
     "xm1014_hoshino": {
       "itemdef": 25,
       "name": "XM1014 | 小鸟游星野",
       "path": "weapons/7ychu5/models/shot_xm1014/xm1014_hoshino/xm1014_hoshino.vmdl"
     },
     "famas_asuna": {
-      "itemdef": 25,
+      "itemdef": 10,
       "name": "FAMAS | 明日奈",
       "path": "weapons/7ychu5/models/rif_famas/famas_asuna/famas_asuna.vmdl"
     },
@@ -110,6 +95,36 @@
       "itemdef": 24,
       "name": "UMP45 | 胡桃",
       "path": "weapons/7ychu5/models/smg_ump45/ump45_kurumi/ump45_kurumi.vmdl"
+    },
+    "deagle_hinata": {
+      "itemdef": 1,
+      "name": "Deagle | 日向",
+      "path": "weapons/7ychu5/models/pist_deagle/deagle_hinata/deagle_hinata.vmdl"
+    },
+    "awp_otogi": {
+      "itemdef": 9,
+      "name": "AWP | 音葵",
+      "path": "weapons/7ychu5/models/snip_awp/sniper_otogi/sniper_otogi.vmdl"
+    },
+    "deagle_asoul": {
+      "itemdef": 1,
+      "name": "Deagle | A手",
+      "path": "models/weapons/de_asoul/de_asoul.vmdl"
+    },
+    "usp_kayoko": {
+      "itemdef": 61,
+      "name": "USP-S | 佳代子",
+      "path": "models/weapons/usp_kayoko/usp_kayoko.vmdl"
+    },
+    "mp5_asoul": {
+      "itemdef": 23,
+      "name": "MP5SD | 贝拉",
+      "path": "models/weapons/mp5_asoul/mp5_asoul.vmdl"
+    },
+    "mp5_mikamo": {
+      "itemdef": 23,
+      "name": "MP5SD | 妮露",
+      "path": "models/weapons/mp5_mikamo/mp5_mikamo.vmdl"
     }
   },
   "MenuType": "chat",

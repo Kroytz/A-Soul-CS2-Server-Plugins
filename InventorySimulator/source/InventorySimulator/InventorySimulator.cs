@@ -20,7 +20,7 @@ namespace InventorySimulator;
 public partial class InventorySimulator : BasePlugin
 {
     private string ASoulNoticeLastModDate = $"24.04.19";
-    private string ASoulNoticeLastModDesc = $"InvenSim 同步更新至 beta.21";
+    private string ASoulNoticeLastModDesc = $"现在无权限玩家可以对全体说话了";
 
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
