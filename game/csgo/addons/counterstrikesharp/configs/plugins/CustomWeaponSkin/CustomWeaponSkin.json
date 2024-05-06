@@ -125,6 +125,11 @@
       "itemdef": 23,
       "name": "MP5SD | 妮露",
       "path": "models/weapons/mp5_mikamo/mp5_mikamo.vmdl"
+    },
+    "m9_tonfa": {
+      "itemdef": 0,
+      "name": "M9 刺刀 | 紫晶仙人刺",
+      "path": "models/weapons/m9_tonfa/m9_tonfa.vmdl"
     }
   },
   "MenuType": "chat",
