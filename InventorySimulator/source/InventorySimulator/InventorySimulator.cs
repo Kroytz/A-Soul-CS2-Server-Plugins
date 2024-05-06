@@ -16,20 +16,23 @@ using CounterStrikeSharp.API.Modules.Commands;
 
 namespace InventorySimulator;
 
-[MinimumApiVersion(211)]
+[MinimumApiVersion(227)]
 public partial class InventorySimulator : BasePlugin
 {
-    private string ASoulNoticeLastModDate = $"24.04.19";
-    private string ASoulNoticeLastModDesc = $"现在无权限玩家可以对全体说话了";
+    private string ASoulNoticeLastModDate = $"24.05.06";
+    private string ASoulNoticeLastModDesc = $"InvenSim 同步更新至 beta.24";
 
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
     public override string ModuleName => "InventorySimulator";
-    public override string ModuleVersion => "1.0.0-beta.21";
+    public override string ModuleVersion => "1.0.0-beta.24";
 
-    public readonly FakeConVar<bool> StatTrakIgnoreBotsCvar = new("css_stattrak_ignore_bots", "Determines whether to ignore StatTrak increments for bot kills.", true);
-    
     public readonly bool IsWindows = RuntimeInformation.IsOSPlatform(OSPlatform.Windows);
+    public readonly Dictionary<ulong, long> PlayerCooldownManager = new();
+
+    public readonly FakeConVar<bool> invsim_stattrak_ignore_bots = new("invsim_stattrak_ignore_bots", "Whether to ignore StatTrak increments for bot kills.", true);
+    public readonly FakeConVar<bool> invsim_ws_enabled = new("invsim_ws_enabled", "Whether players can refresh their inventory using !ws.", false);
+    public readonly FakeConVar<int> invsim_ws_cooldown = new("invsim_ws_cooldown", "Cooldown in seconds between player inventory refreshes.", 30);
 
     [ConsoleCommand("css_wsr", "Refresh your InventorySimulator data")]
     [ConsoleCommand("css_rws", "Refresh your InventorySimulator data")]
@@ -40,8 +43,14 @@ public partial class InventorySimulator : BasePlugin
         if (!IsPlayerHumanAndValid(player))
             return;
 
+        if (FetchingPlayerInventory.Contains(player.SteamID))
+        {
+            player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}]" + " 信息未处理完成, 请耐心等待.");
+            return;
+        }
+
         var steamId = player.SteamID;
-        FetchPlayerInventory(steamId, true);
+        RefreshPlayerInventory(player, true);
 
         player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}]" + " 你的信息已被加入刷新队列.");
     }
@@ -50,43 +59,25 @@ public partial class InventorySimulator : BasePlugin
     {
         LoadPlayerInventories();
 
-        if (IsWindows)
+        if (!IsWindows)
         {
-            // Since the OnGiveNamedItemPost hook doesn't function reliably on Windows, we've opted to use the
-            // OnEntityCreated hook instead. This approach should work adequately for standard game modes. However,
-            // plugins might encounter compatibility issues if they frequently alter items, as observed in the
-            // MatchZy knife round, for example. (See CounterStrikeSharp#377)
-            RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
-        }
-        else
-        {
-            // Using the GiveNamedItem Post hook remains the optimal choice for updating an item's attributes, as
-            // using OnEntityCreated or OnEntitySpawned would necessitate calling Server.NextFrame, potentially
-            // leading to timing problems similar to those seen in MatchZy's knife round. However, it's worth
-            // noting that CounterStrikeSharp's DynamicHooks appears to have significant bugs on Windows. This
-            // issue may be related to quirks in the GiveNamedItem implementation on Windows, as initially observed
-            // with the inability to give knives on Windows compared to Linux, where the same function works as
-            // expected. Therefore, Linux is likely to offer better compatibility with other plugins.
+            // GiveNamedItemFunc hooking is not working on Windows due an issue with CounterStrikeSharp's
+            // DynamicHooks. See: https://github.com/roflmuffin/CounterStrikeSharp/issues/377
             VirtualFunctions.GiveNamedItemFunc.Hook(OnGiveNamedItemPost, HookMode.Post);
-
-            // We also hook into OnEntityCreated for cases where the plugin does not trigger the GiveNamedItem hook
-            // (e.g., CS2 Retakes). Most of the time, GiveNamedItem will be called first, and we will know that we
-            // have changed a weapon entity to avoid changing its attributes again.
-            RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
         }
 
         RegisterListener<Listeners.OnTick>(OnTick);
+        RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
     }
 
     [GameEventHandler]
     public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
     {
-        CCSPlayerController? player = @event.Userid;
-        if (!IsPlayerHumanAndValid(player))
-            return HookResult.Continue;
-
-        var steamId = player.SteamID;
-        FetchPlayerInventory(steamId);
+        var player = @event.Userid;
+        if (player != null && IsPlayerHumanAndValid(player))
+        {
+            RefreshPlayerInventory(player);
+        }
 
         return HookResult.Continue;
     }
@@ -94,16 +85,15 @@ public partial class InventorySimulator : BasePlugin
     [GameEventHandler]
     public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo _)
     {
-        CCSPlayerController? player = @event.Userid;
-        if (!IsPlayerHumanAndValid(player))
-            return HookResult.Continue;
-
-        var steamId = player.SteamID;
-        FetchPlayerInventory(steamId);
+        var player = @event.Userid;
+        if (player != null && IsPlayerHumanAndValid(player))
+        {
+            RefreshPlayerInventory(player);
+        }
 
         player.PrintToChat($"[{ChatColors.Green}A-SOUL{ChatColors.Default}] 本服为 {ChatColors.Blue}ASOUL组{ChatColors.Default} 私人满十服, 由 {ChatColors.LightRed}Kroytz 与 7ychu5{ChatColors.Default} 提供插件与维护.");
         player.PrintToChat($"[{ChatColors.Green}A-SOUL{ChatColors.Default}] {ChatColors.Olive}最新更新: {ChatColors.Yellow}{ASoulNoticeLastModDate}{ChatColors.Default} {ASoulNoticeLastModDesc}");
-        player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}https://inventory.cstrike.app/{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr");
+        player.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}{GetApiUrl()}{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr{ChatColors.Default} - 自定义枪皮: {ChatColors.Gold}.cws");
 
         return HookResult.Continue;
     }
@@ -111,14 +101,30 @@ public partial class InventorySimulator : BasePlugin
     [GameEventHandler]
     public HookResult OnPlayerSpawn(EventPlayerSpawn @event, GameEventInfo _)
     {
-        CCSPlayerController? player = @event.Userid;
-        if (!IsPlayerHumanAndValid(player) || !IsPlayerPawnValid(player))
-            return HookResult.Continue;
+        var player = @event.Userid;
+        if (player != null &&
+            IsPlayerHumanAndValid(player) &&
+            IsPlayerPawnValid(player))
+        {
+            GiveOnPlayerSpawn(player);
+        }
 
-        var inventory = GetPlayerInventory(player);
-        GivePlayerAgent(player, inventory);
-        GivePlayerGloves(player, inventory);
-        GivePlayerPin(player, inventory);
+        return HookResult.Continue;
+    }
+
+    [GameEventHandler]
+    public HookResult OnItemPickup(EventItemPickup @event, GameEventInfo _)
+    {
+        if (IsWindows)
+        {
+            var player = @event.Userid;
+            if (player != null &&
+                IsPlayerHumanAndValid(player) &&
+                IsPlayerPawnValid(player))
+            {
+                GiveOnItemPickup(player);
+            }
+        }
 
         return HookResult.Continue;
     }
@@ -126,15 +132,21 @@ public partial class InventorySimulator : BasePlugin
     [GameEventHandler(HookMode.Pre)]
     public HookResult OnPlayerDeath(EventPlayerDeath @event, GameEventInfo _)
     {
-        CCSPlayerController? attacker = @event.Attacker;
-        if (!IsPlayerHumanAndValid(attacker) || !IsPlayerPawnValid(attacker))
-            return HookResult.Continue;
-
-        CCSPlayerController? victim = @event.Userid;
-        if ((StatTrakIgnoreBotsCvar.Value ? !IsPlayerHumanAndValid(victim) : !IsPlayerValid(victim)) || !IsPlayerPawnValid(victim))
-            return HookResult.Continue;
-
-        GivePlayerWeaponStatTrakIncrease(attacker, @event.Weapon, @event.WeaponItemid);
+        var attacker = @event.Attacker;
+        var victim = @event.Userid;
+        if (attacker != null && victim != null)
+        {
+            var isValidAttacker = IsPlayerHumanAndValid(attacker) && !IsPlayerPawnValid(attacker);
+            var isValidVictim = (
+                invsim_stattrak_ignore_bots.Value
+                    ? IsPlayerHumanAndValid(victim)
+                    : IsPlayerValid(victim)) &&
+                IsPlayerPawnValid(victim);
+            if (isValidAttacker && isValidVictim)
+            {
+                GivePlayerWeaponStatTrakIncrease(attacker, @event.Weapon, @event.WeaponItemid);
+            }
+        }
 
         return HookResult.Continue;
     }
@@ -142,11 +154,13 @@ public partial class InventorySimulator : BasePlugin
     [GameEventHandler(HookMode.Pre)]
     public HookResult OnRoundMvp(EventRoundMvp @event, GameEventInfo _)
     {
-        CCSPlayerController? player = @event.Userid;
-        if (!IsPlayerHumanAndValid(player) || !IsPlayerPawnValid(player))
-            return HookResult.Continue;
-
-        GivePlayerMusicKitStatTrakIncrease(player);
+        var player = @event.Userid;
+        if (player != null &&
+            IsPlayerHumanAndValid(player) &&
+            IsPlayerPawnValid(player))
+        {
+            GivePlayerMusicKitStatTrakIncrease(player);
+        }
 
         return HookResult.Continue;
     }
@@ -154,8 +168,8 @@ public partial class InventorySimulator : BasePlugin
     [GameEventHandler]
     public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo _)
     {
-        CCSPlayerController? player = @event.Userid;
-        if (IsPlayerHumanAndValid(player))
+        var player = @event.Userid;
+        if (player != null && IsPlayerHumanAndValid(player))
         {
             RemovePlayerInventory(player.SteamID);
             ClearInventoryManager();
@@ -166,9 +180,9 @@ public partial class InventorySimulator : BasePlugin
 
     public void OnTick()
     {
-        // Those familiar with the proper method of modification might find amusement in our temporary fix and
-        // workaround, which appears to be effective. (However, we're uncertain whether other players can hear
-        // the MVP sound, which needs verification.)
+        // According to @bklol the right way to change the Music Kit is to update the player's inventory, I'm
+        // pretty sure that's the best way to change anything inventory-related, but that's not something
+        // public and we brute force the setting of the Music Kit here.
         foreach (var player in Utilities.GetPlayers())
             GivePlayerMusicKit(player);
     }
@@ -208,5 +222,11 @@ public partial class InventorySimulator : BasePlugin
         }
 
         return HookResult.Continue;
+    }
+
+    [ConsoleCommand("css_ws", "Refreshes player's inventory.")]
+    public void OnCommandWS(CCSPlayerController? player, CommandInfo _)
+    {
+        player?.PrintToChat($"[{ChatColors.Green}InvenSim{ChatColors.Default}] 换肤请浏览器打开: {ChatColors.Gold}{GetApiUrl()}{ChatColors.Default} - 游戏内重载: {ChatColors.Gold}.wsr{ChatColors.Default} - 自定义枪皮: {ChatColors.Gold}.cws");
     }
 }

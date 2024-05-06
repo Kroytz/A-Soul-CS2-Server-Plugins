@@ -4,16 +4,16 @@
  *--------------------------------------------------------------------------------------------*/
 
 using CounterStrikeSharp.API.Core;
+using CounterStrikeSharp.API.Modules.Cvars.Validators;
+using CounterStrikeSharp.API.Modules.Cvars;
 using CounterStrikeSharp.API.Modules.Utils;
 using CounterStrikeSharp.API;
-using CounterStrikeSharp.API.Modules.Cvars;
-using CounterStrikeSharp.API.Modules.Cvars.Validators;
 
 namespace InventorySimulator;
 
 public partial class InventorySimulator
 {
-    public FakeConVar<int> MinModelsCvar = new("css_minmodels", "Limits the number of custom models allowed in-game.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
+    public readonly FakeConVar<int> invsim_minmodels = new("invsim_minmodels", "Allows agents or use specific models for each team.", 0, flags: ConVarFlags.FCVAR_NONE, new RangeValidator<int>(0, 2));
 
     public void GivePlayerMusicKit(CCSPlayerController player)
     {
@@ -22,8 +22,11 @@ public partial class InventorySimulator
         if (MusicKitManager.TryGetValue(player.SteamID, out var musicKit))
         {
             player.InventoryServices.MusicID = (ushort)musicKit.Def;
+            Utilities.SetStateChanged(player, "CCSPlayerController", "m_pInventoryServices");
             player.MusicKitID = musicKit.Def;
+            Utilities.SetStateChanged(player, "CCSPlayerController", "m_iMusicKitID");
             player.MusicKitMVPs = musicKit.Stattrak;
+            Utilities.SetStateChanged(player, "CCSPlayerController", "m_iMusicKitMVPs");
         }
     }
 
@@ -37,22 +40,19 @@ public partial class InventorySimulator
         for (var index = 0; index < player.InventoryServices.Rank.Length; index++)
         {
             player.InventoryServices.Rank[index] = index == 5 ? (MedalRank_t)pin.Value : MedalRank_t.MEDAL_RANK_NONE;
+            Utilities.SetStateChanged(player, "CCSPlayerController", "m_pInventoryServices");
         }
     }
 
     public void GivePlayerGloves(CCSPlayerController player, PlayerInventory inventory)
     {
-        if (player.PlayerPawn.Value!.Handle == IntPtr.Zero)
-        {
-            // Some plugin or specific game scenario is throwing exceptions at this point whenever we try to access
-            // any member from the Player Pawn. We perform the actual check that triggers the exception. (I've
-            // tried catching it in the past, but it seems it won't work...)
+        var pawn = player.PlayerPawn.Value;
+        if (pawn == null || pawn.Handle == IntPtr.Zero)
             return;
-        }
 
         if (inventory.Gloves.TryGetValue(player.TeamNum, out var item))
         {
-            var glove = player.PlayerPawn.Value.EconGloves;
+            var glove = pawn.EconGloves;
             Server.NextFrame(() =>
             {
                 glove.Initialized = true;
@@ -69,14 +69,14 @@ public partial class InventorySimulator
                 SetOrAddAttributeValueByName(glove.AttributeList.Handle, "set item texture seed", item.Seed);
                 SetOrAddAttributeValueByName(glove.AttributeList.Handle, "set item texture wear", item.Wear);
 
-                SetBodygroup(player.PlayerPawn.Value.Handle, "default_gloves", 1);
+                SetBodygroup(pawn.Handle, "default_gloves", 1);
             });
         }
     }
 
     public void GivePlayerAgent(CCSPlayerController player, PlayerInventory inventory)
     {
-        if (MinModelsCvar.Value > 0)
+        if (invsim_minmodels.Value > 0)
         {
             // For now any value non-zero will force SAS & Phoenix.
             // In the future: 1 - Map agents only, 2 - SAS & Phoenix.
@@ -216,6 +216,43 @@ public partial class InventorySimulator
         {
             musicKit.Stattrak += 1;
             SendStatTrakIncrease(player.SteamID, musicKit.Uid);
+        }
+    }
+
+    public void GiveOnPlayerSpawn(CCSPlayerController player)
+    {
+        var inventory = GetPlayerInventory(player);
+        GivePlayerPin(player, inventory);
+        GivePlayerAgent(player, inventory);
+        GivePlayerGloves(player, inventory);
+    }
+
+    public void GiveOnPlayerInventoryRefresh(CCSPlayerController player)
+    {
+        var inventory = GetPlayerInventory(player);
+        GivePlayerPin(player, inventory);
+    }
+
+    // Nuke this when roflmuffin/CounterStrikeSharp#377 is resolved. This workaround makes sure the
+    // subclass of a knife will be changed as soon as the player receives it. Only needed on Windows
+    // because on Linux we hook GiveNamedItem that happens a bit early than this event.
+    public void GiveOnItemPickup(CCSPlayerController player)
+    {
+        var pawn = player.PlayerPawn.Value;
+        if (pawn != null)
+        {
+            var myWeapons = pawn.WeaponServices?.MyWeapons;
+            if (myWeapons != null)
+            {
+                foreach (var handle in myWeapons)
+                {
+                    var weapon = handle.Value;
+                    if (weapon != null && IsKnifeClassName(weapon.DesignerName))
+                    {
+                        GivePlayerWeaponSkin(player, weapon);
+                    }
+                }
+            }
         }
     }
 }

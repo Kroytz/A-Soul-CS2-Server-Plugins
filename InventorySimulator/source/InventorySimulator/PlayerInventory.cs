@@ -14,7 +14,7 @@ namespace InventorySimulator;
 
 public partial class InventorySimulator
 {
-    public readonly string InventoryFilePath = "csgo/css_inventories.json";
+    public readonly string InventoryFilePath = "csgo/addons/counterstrikesharp/configs/plugins/InventorySimulator/inventories.json";
     public readonly Dictionary<ulong, PlayerInventory> InventoryManager = new();
     public readonly Dictionary<ulong, MusicKitItem> MusicKitManager = new();
     public readonly HashSet<ulong> LoadedSteamIds = new();
@@ -41,15 +41,15 @@ public partial class InventorySimulator
         }
         catch
         {
-            Logger.LogError($"Error when processing \"css_inventories.json\".");
+            Logger.LogError($"Error when processing \"inventories.json\".");
         }
     }
 
     public void AddPlayerInventory(ulong steamId, PlayerInventory inventory)
     {
-        InventoryManager.Add(steamId, inventory);
+        InventoryManager[steamId] = inventory;
         if (inventory.MusicKit != null)
-            MusicKitManager.Add(steamId, inventory.MusicKit);
+            MusicKitManager[steamId] = inventory.MusicKit;
         else MusicKitManager.Remove(steamId);
     }
 
