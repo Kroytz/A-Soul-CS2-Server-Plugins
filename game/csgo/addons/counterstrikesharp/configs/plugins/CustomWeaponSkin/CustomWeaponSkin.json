@@ -46,11 +46,6 @@
       "name": "炎龙",
       "path": "models/yanlong/yanlong.vmdl"
     },
-    "ak47_illum": {
-      "itemdef": 7,
-      "name": "AK-47 | 辉火",
-      "path": "models/weapons/exg/tokyocold/ak47_illum/ak47_illum.vmdl"
-    },
     "ak47_dndn": {
       "itemdef": 7,
       "name": "AK-47 | 多娜多娜",
@@ -60,36 +55,6 @@
       "itemdef": 7,
       "name": "AK-47 | 八一式元让",
       "path": "models/81yuanrang/81yuanrang.vmdl"
-    },
-    "ak103_layla": {
-      "itemdef": 7,
-      "name": "AK103 | 莱依拉",
-      "path": "models/exg/anonymous/ak103_layla/ak103_raw.vmdl"
-    },
-    "ak47_yoimiya": {
-      "itemdef": 7,
-      "name": "AK-47 | 宵宫",
-      "path": "models/exg/anonymous/ak47_yoimiya/ak47_yoimiya.vmdl"
-    },
-    "kastov545_bronya": {
-      "itemdef": 7,
-      "name": "AK-545 | 布洛妮娅",
-      "path": "models/exg/anonymous/kastov545_bronya/kastov545_bronya.vmdl"
-    },
-    "asval_furina": {
-      "itemdef": 7,
-      "name": "ASVAL | 芙宁娜",
-      "path": "models/exg/anonymous/asval_furina/asval_furina.vmdl"
-    },
-    "qbz95_angelina": {
-      "itemdef": 10,
-      "name": "QBZ95 | 安洁莉娜 (替换FAMAS)",
-      "path": "models/exg/anonymous/qbz95_angelina/qbz95_angelina.vmdl"
-    },
-    "bryson800_chelychece": {
-      "itemdef": 35,
-      "name": "Bryson 800 | 樱桃之幻 (替换Nova)",
-      "path": "models/exg/anonymous/bryson800_chelychece/bryson800.vmdl"
     },
     "novaprintl": {
       "itemdef": 35,
@@ -110,11 +75,6 @@
       "itemdef": 9,
       "name": "AWP | R-7",
       "path": "weapons/7ychu5/models/snip_awp/r7_x_sniper/r7_x_sniper.vmdl"
-    },
-    "mp5a3_eula": {
-      "itemdef": 23,
-      "name": "MP5A3 | 优菈",
-      "path": "models/exg/anonymous/mp5a3_eula/mp5a3_eula.vmdl"
     },
     "deagle_asoul": {
       "itemdef": 1,
@@ -141,20 +101,10 @@
       "name": "AUG | 长门",
       "path": "models/weapons/exg/tokyocold/aug_fox/aug_fox.vmdl"
     },
-    "aug_hanae": {
-      "itemdef": 8,
-      "name": "AUG | 朝颜花江",
-      "path": "models/weapons/exg/7ychu5/aug_hanae/aug_hanae.vmdl"
-    },
     "shushen": {
       "itemdef": 27,
       "name": "Mag-7 | 冰麟寒焱",
       "path": "models/weapons/exg/tokyocold/shushen/shushen.vmdl"
-    },
-    "mp9_tmp": {
-      "itemdef": 34,
-      "name": "TMP | 海洋之心",
-      "path": "models/weapons/exg/tokyocold/mp9_tmp/mp9_tmp.vmdl"
     },
     "bizon_lightning": {
       "itemdef": 26,
@@ -228,7 +178,7 @@
     },
     "xm1014_hoshino": {
       "itemdef": 25,
-      "name": "XM1014 | 小鸟游星野",
+      "name": "XM1014 | 星野",
       "path": "weapons/7ychu5/models/shot_xm1014/xm1014_hoshino/xm1014_hoshino.vmdl"
     },
     "famas_asuna": {
@@ -250,16 +200,6 @@
       "itemdef": 9,
       "name": "AWP | 音葵",
       "path": "weapons/7ychu5/models/snip_awp/sniper_otogi/sniper_otogi.vmdl"
-    },
-    "glock_kanna": {
-      "itemdef": 4,
-      "name": "Glock-18 | 尾刃叶渚",
-      "path": "models/weapons/exg/7ychu5/glock_kanna/glock_kanna.vmdl"
-    },
-    "sg556_serika": {
-      "itemdef": 39,
-      "name": "SG553 | 黑见芹香",
-      "path": "models/weapons/exg/7ychu5/sg556_serika/sg556_serika.vmdl"
     }
   },
   "MenuType": "chat",
