@@ -141,10 +141,20 @@
       "name": "AUG | 长门",
       "path": "models/weapons/exg/tokyocold/aug_fox/aug_fox.vmdl"
     },
+    "aug_hanae": {
+      "itemdef": 8,
+      "name": "AUG | 朝颜花江",
+      "path": "models/weapons/exg/7ychu5/aug_hanae/aug_hanae.vmdl"
+    },
     "shushen": {
       "itemdef": 27,
       "name": "Mag-7 | 冰麟寒焱",
       "path": "models/weapons/exg/tokyocold/shushen/shushen.vmdl"
+    },
+    "mp9_tmp": {
+      "itemdef": 34,
+      "name": "TMP | 海洋之心",
+      "path": "models/weapons/exg/tokyocold/mp9_tmp/mp9_tmp.vmdl"
     },
     "bizon_lightning": {
       "itemdef": 26,
@@ -240,6 +250,16 @@
       "itemdef": 9,
       "name": "AWP | 音葵",
       "path": "weapons/7ychu5/models/snip_awp/sniper_otogi/sniper_otogi.vmdl"
+    },
+    "glock_kanna": {
+      "itemdef": 4,
+      "name": "Glock-18 | 尾刃叶渚",
+      "path": "models/weapons/exg/7ychu5/glock_kanna/glock_kanna.vmdl"
+    },
+    "sg556_serika": {
+      "itemdef": 39,
+      "name": "SG553 | 黑见芹香",
+      "path": "models/weapons/exg/7ychu5/sg556_serika/sg556_serika.vmdl"
     }
   },
   "MenuType": "chat",
