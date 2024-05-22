@@ -16,6 +16,7 @@ using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
 using System.Numerics;
 using static CounterStrikeSharp.API.Core.Listeners;
 using System.Text.Json.Serialization;
+using Storage;
 
 namespace CustomWeaponSKin;
 
@@ -40,13 +41,12 @@ public class ModelConfig : BasePluginConfig
     [JsonPropertyName("MySQL_User")] public string MySQLUser { get; set; } = "";
     [JsonPropertyName("MySQL_Password")] public string MySQLPassword { get; set; } = "";
     [JsonPropertyName("MySQL_Database")] public string MySQLDatabase { get; set; } = "";
-    [JsonPropertyName("MySQL_Table")] public string MySQLTable { get; set; } = "playermodelchanger";
+    [JsonPropertyName("MySQL_Table")] public string MySQLTable { get; set; } = "customweaponskin";
 
-    [JsonPropertyName("DisablePrecache")] public bool DisablePrecache { get; set; }
 }
 
 [MinimumApiVersion(197)]
-public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
+public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 {
     public override string ModuleAuthor => "Kroytz";
     public override string ModuleDescription => "";
@@ -54,10 +54,41 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
     public override string ModuleVersion => "1.0.0";
 
     public required ModelConfig Config { get; set; }
+    public IStorage? storage;
 
     public string PL_PREFIX = $" [{ChatColors.Green}CWS{ChatColors.Default}] ";
 
     Dictionary<ulong, Dictionary<long, Model>> dictSteamToItemDefModel = new Dictionary<ulong, Dictionary<long, Model>>();
+
+    public override void Load(bool hotReload)
+    {
+        storage = null;
+        switch (Config.StorageType)
+        {
+            case "sqlite":
+                storage = new SqliteStorage(ModuleDirectory);
+                break;
+            case "mysql":
+                storage = new MySQLStorage(Config.MySQLIP, Config.MySQLPort, Config.MySQLUser, Config.MySQLPassword, Config.MySQLDatabase, Config.MySQLTable);
+                break;
+        };
+        if (storage == null)
+        {
+            throw new Exception("Failed to initialize storage. Please check your config");
+        }
+
+        RegisterListener<Listeners.OnServerPrecacheResources>((manifest) =>
+        {
+            foreach (var model in Config.Models.Values.ToList())
+            {
+                Console.WriteLine($"[PlayerModelChanger] Precaching {model.path}");
+                manifest.AddResource(model.path);
+            }
+        });
+
+        RegisterEventHandler<EventPlayerConnect>(OnPlayerConnect);
+        RegisterEventHandler<EventItemEquip>(OnItemEquip);
+    }
 
     [ConsoleCommand("css_cwc", "Clear skin")]
     [CommandHelper(minArgs: 0, usage: "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
@@ -77,6 +108,7 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
 
         var steam64 = steamid.SteamId64;
         dictSteamToItemDefModel[steam64].Clear();
+        storage!.ClearPlayerAllModelAsync(steam64);
         player.PrintToChat(PL_PREFIX + "已清除所有装备的皮肤.");
     }
 
@@ -112,7 +144,8 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
             foreach (var model in list)
             {
                 printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if (i % 3 == 0) {
+                if (i % 3 == 0)
+                {
                     player?.PrintToChat(printstr);
                     printstr = "";
                 }
@@ -139,6 +172,16 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
             }
             dictSteamToItemDefModel[steam64][mod.itemdef] = mod;
 
+            var saveKey = "";
+            foreach (var dv in Config.Models)
+            {
+                if (dv.Value.name == mod.name)
+                {
+                    saveKey = dv.Key;
+                }
+            }
+
+            storage!.SetPlayerModel(steam64, mod.itemdef, saveKey);
             player.PrintToChat(PL_PREFIX + $"已装配皮肤 {mod.name} ");
         }
     }
@@ -188,20 +231,51 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
         Config = config;
     }
 
-    public override void Load(bool hotReload)
+    public async void RefreshPlayerInventory(CCSPlayerController player)
     {
-        if (!Config.DisablePrecache)
+        var steam64 = player.SteamID;
+        var settings = await storage!.GetPlayerAllModelAsync(steam64);
+        Server.PrintToConsole($"RefreshPlayerInventory() -> Done model cache for {steam64}, size = {settings.Count}");
+        if (settings.Count == 0)
         {
-            RegisterListener<Listeners.OnServerPrecacheResources>((manifest) => {
-                foreach (var model in Config.Models.Values.ToList())
-                {
-                    Console.WriteLine($"[PlayerModelChanger] Precaching {model.path}");
-                    manifest.AddResource(model.path);
-                }
-            });
+            return;
         }
 
-        RegisterEventHandler<EventItemEquip>(OnItemEquip);
+        var modelList = Config.Models.Values.ToList();
+        if (modelList.Count == 0)
+        {
+            return;
+        }
+
+        if (!dictSteamToItemDefModel.ContainsKey(steam64))
+        {
+            dictSteamToItemDefModel[steam64] = new Dictionary<long, Model>();
+        }
+
+        var modelDict = Config.Models;
+        foreach (var key in settings)
+        {
+            foreach (var model in modelDict)
+            {
+                if (model.Key == key)
+                {
+                    Server.PrintToConsole($"RefreshPlayerInventory() -> Found model {key} for {steam64}");
+                    dictSteamToItemDefModel[steam64][model.Value.itemdef] = model.Value;
+                    break;
+                }
+            }
+        }
+    }
+
+    public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
+    {
+        var player = @event.Userid;
+        if (player != null && IsPlayerHumanAndValid(player))
+        {
+            RefreshPlayerInventory(player);
+        }
+
+        return HookResult.Continue;
     }
 
     public HookResult OnItemEquip(EventItemEquip @event, GameEventInfo info)
@@ -284,5 +358,15 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
         var viewModel = (CHandle<CBaseViewModel>)Activator.CreateInstance(typeof(CHandle<CBaseViewModel>), references[0])!;
         if (viewModel == null || viewModel.Value == null) return null;
         return viewModel.Value;
+    }
+
+    public bool IsPlayerValid(CCSPlayerController? player)
+    {
+        return player != null && player.IsValid && !player.IsHLTV;
+    }
+
+    public bool IsPlayerHumanAndValid(CCSPlayerController? player)
+    {
+        return IsPlayerValid(player) && !player!.IsBot;
     }
 }
