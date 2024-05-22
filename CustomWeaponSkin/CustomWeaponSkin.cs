@@ -106,14 +106,23 @@ public partial class CustomWeaponSKin : BasePlugin, IPluginConfig<ModelConfig>
         var list = Config.Models.Values.ToList();
         if (idx > list.Count || idx <= 0)
         {
-            player?.PrintToChat(PL_PREFIX + "非法模型索引. 可用模型如下: ");
+            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 清空皮肤 .cwc, 当前可用索引如下: ");
             var i = 1;
+            string printstr = "";
             foreach (var model in list)
             {
-                player?.PrintToChat($"{i} - {model.name}");
+                printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
+                if (i % 3 == 0) {
+                    player?.PrintToChat(printstr);
+                    printstr = "";
+                }
+                else
+                {
+                    printstr += $" ◆ ";
+                }
+
                 i++;
             }
-            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 清空皮肤 .cwc");
             return;
         }
 
