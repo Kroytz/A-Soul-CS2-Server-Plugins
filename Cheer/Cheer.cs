@@ -85,7 +85,7 @@ public partial class Cheer : BasePlugin
             var rnd = 1 + random.NextInt64() % 15;
             foreach (var p in plList)
             {
-                p.ExecuteClientCommand($"play moeub/cheer/{rnd}.vsnd");
+                p.ExecuteClientCommand($"play sounds/moeub/cheer/{rnd}.vsnd");
             }
             Server.PrintToChatAll($" {ChatColors.ForTeam(player.Team)}{player.PlayerName}{ChatColors.Default} cheered!!!");
         }
@@ -93,7 +93,8 @@ public partial class Cheer : BasePlugin
         {
             foreach (var p in plList)
             {
-                player.ExecuteClientCommand($"play asoul/jeer.vsnd");
+                p.ExecuteClientCommand($"play sounds/asoul/jeer.vsnd");
+                p.ExecuteClientCommand($"play sounds/asoul/jeer.vsnd");
             }
             Server.PrintToChatAll($" {ChatColors.ForTeam(player.Team)}{player.PlayerName}{ChatColors.Default} jeered!");
         }
