@@ -99,14 +99,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             return;
         }
 
-        var steamid = player.AuthorizedSteamID;
-        if (steamid == null)
-        {
-            player.PrintToChat(PL_PREFIX + "无法获取您的SteamID, 请重试.");
-            return;
-        }
-
-        var steam64 = steamid.SteamId64;
+        var steam64 = player.SteamID;
         dictSteamToItemDefModel[steam64].Clear();
         storage!.ClearPlayerAllModelAsync(steam64);
         player.PrintToChat(PL_PREFIX + "已清除所有装备的皮肤.");
@@ -118,13 +111,6 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
     {
         if (player is null)
         {
-            return;
-        }
-
-        var steamid = player.AuthorizedSteamID;
-        if (steamid == null)
-        {
-            player.PrintToChat(PL_PREFIX + "无法获取您的SteamID, 请重试.");
             return;
         }
 
@@ -165,7 +151,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
             Model mod = list[idx];
 
-            var steam64 = steamid.SteamId64;
+            var steam64 = player.SteamID;
             if (!dictSteamToItemDefModel.ContainsKey(steam64))
             {
                 dictSteamToItemDefModel[steam64] = new Dictionary<long, Model>();
@@ -290,11 +276,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         if (pawn == null || !pawn.IsValid)
             return HookResult.Continue;
 
-        var steamid = player.AuthorizedSteamID;
-        if (steamid == null)
-            return HookResult.Continue;
-
-        var steam64 = steamid.SteamId64;
+        var steam64 = player.SteamID;
         if (!dictSteamToItemDefModel.ContainsKey(steam64))
             return HookResult.Continue;
 
