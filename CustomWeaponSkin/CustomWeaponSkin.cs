@@ -81,7 +81,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         {
             foreach (var model in Config.Models.Values.ToList())
             {
-                Console.WriteLine($"[PlayerModelChanger] Precaching {model.path}");
+                Server.PrintToConsole($"CustomWeaponSkin :: Precaching {model.path}");
                 manifest.AddResource(model.path);
             }
         });
