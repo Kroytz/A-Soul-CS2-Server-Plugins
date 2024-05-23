@@ -19,8 +19,8 @@ namespace InventorySimulator;
 [MinimumApiVersion(227)]
 public partial class InventorySimulator : BasePlugin
 {
-    private string ASoulNoticeLastModDate = $"24.05.06";
-    private string ASoulNoticeLastModDesc = $"InvenSim 同步更新至 beta.24";
+    private string ASoulNoticeLastModDate = $"24.05.23";
+    private string ASoulNoticeLastModDesc = $"好消息! CWS支持永久保存数据了!";
 
     public override string ModuleAuthor => "Ian Lucas";
     public override string ModuleDescription => "Inventory Simulator (inventory.cstrike.app)";
