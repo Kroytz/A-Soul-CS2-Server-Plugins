@@ -1,6 +1,7 @@
 using Dapper;
 using MySqlConnector;
 using Storage;
+using System.Data;
 
 namespace Storage;
 public class MySQLStorage : IStorage
@@ -9,6 +10,7 @@ public class MySQLStorage : IStorage
     private MySqlConnection conn;
 
     private string table;
+
     public MySQLStorage(string ip, string port, string user, string password, string database, string table)
     {
         string connectStr = $"server={ip};port={port};user={user};password={password};database={database};Pooling=true;MinimumPoolSize=0;MaximumPoolsize=640;ConnectionIdleTimeout=30;AllowUserVariables=true";
@@ -21,6 +23,11 @@ public class MySQLStorage : IStorage
                 `modelname` TEXT
             );
         """);
+    }
+
+    public bool IsStorageInitialized()
+    {
+        return conn.State == ConnectionState.Open;
     }
 
     public dynamic? GetPlayerModelInternal(ulong SteamID, long itemDef)

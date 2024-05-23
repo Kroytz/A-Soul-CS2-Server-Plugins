@@ -58,6 +58,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
     public string PL_PREFIX = $" [{ChatColors.Green}CWS{ChatColors.Default}] ";
 
+    public bool[] isFetching = new bool[64];
     Dictionary<ulong, Dictionary<long, Model>> dictSteamToItemDefModel = new Dictionary<ulong, Dictionary<long, Model>>();
 
     public override void Load(bool hotReload)
@@ -86,7 +87,6 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             }
         });
 
-        RegisterEventHandler<EventPlayerConnect>(OnPlayerConnect);
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
     }
 
@@ -219,6 +219,20 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
     public async void RefreshPlayerInventory(CCSPlayerController player)
     {
+        var slot = player.Index - 1;
+        if (isFetching[slot])
+        {
+            return;
+        }
+
+        if (!storage!.IsStorageInitialized())
+        {
+            player?.PrintToChat(PL_PREFIX + "数据库尚未加载完成, 无法获取您的皮肤缓存. 请稍后尝试重连服务器.");
+            return;
+        }
+
+        player?.PrintToChat(PL_PREFIX + "正在获取你的已装配模型信息, 请稍候...");
+        isFetching[slot] = true;
         var steam64 = player.SteamID;
         var settings = await storage!.GetPlayerAllModelAsync(steam64);
         Server.PrintToConsole($"RefreshPlayerInventory() -> Done model cache for {steam64}, size = {settings.Count}");
@@ -238,6 +252,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             dictSteamToItemDefModel[steam64] = new Dictionary<long, Model>();
         }
 
+        var foundModelCount = 0;
         var modelDict = Config.Models;
         foreach (var key in settings)
         {
@@ -247,13 +262,18 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 {
                     Server.PrintToConsole($"RefreshPlayerInventory() -> Found model {key} for {steam64}");
                     dictSteamToItemDefModel[steam64][model.Value.itemdef] = model.Value;
+                    foundModelCount++;
                     break;
                 }
             }
         }
+
+        player?.PrintToChat(PL_PREFIX + $"数据加载完成! 已读取你历史装配的 {ChatColors.Blue}{foundModelCount}{ChatColors.Default} 个模型!");
+        isFetching[slot] = false;
     }
 
-    public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo _)
+    [GameEventHandler]
+    public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo _)
     {
         var player = @event.Userid;
         if (player != null && IsPlayerHumanAndValid(player))

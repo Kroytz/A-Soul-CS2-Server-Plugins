@@ -1,5 +1,6 @@
 using Microsoft.Data.Sqlite;
 using Dapper;
+using System.Data;
 namespace Storage;
 
 public class SqliteStorage : IStorage {
@@ -17,6 +18,11 @@ public class SqliteStorage : IStorage {
                 `modelname` TEXT
             )
         ");
+    }
+
+    public bool IsStorageInitialized()
+    {
+        return conn.State == ConnectionState.Open;
     }
 
     public dynamic? GetPlayerModelInternal(ulong SteamID, long itemDef)
