@@ -1,5 +1,5 @@
 # Custom Weapon Skin
-Random copy and paste plugin to implement custom weapon skin feature.
+Random copy and paste plugin to implement custom weapon skin feature and allow to save player's weapon selection.
 
 # Credits
 Some config related code from [PlayerModelChanger by samyycX](https://github.com/samyycX/CS2-PlayerModelChanger)  
