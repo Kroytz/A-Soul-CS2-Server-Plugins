@@ -227,17 +227,18 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
         if (!storage!.IsStorageInitialized())
         {
-            player?.PrintToChat(PL_PREFIX + "数据库尚未加载完成, 无法获取您的皮肤缓存. 请稍后尝试重连服务器.");
+            player?.PrintToChat(PL_PREFIX + "数据库尚未加载完成, 无法获取您的枪模缓存. 请稍后尝试重连服务器.");
             return;
         }
 
-        player?.PrintToChat(PL_PREFIX + "正在获取你的已装配模型信息, 请稍候...");
+        player?.PrintToChat(PL_PREFIX + "正在获取已装配枪模信息, 请稍候...");
         isFetching[slot] = true;
         var steam64 = player.SteamID;
         var settings = await storage!.GetPlayerAllModelAsync(steam64);
         Server.PrintToConsole($"RefreshPlayerInventory() -> Done model cache for {steam64}, size = {settings.Count}");
         if (settings.Count == 0)
         {
+            player?.PrintToChat(PL_PREFIX + $"数据加载完成! 历史您未装备过任何枪模! 您可输入 {ChatColors.Gold}.cws{ChatColors.Default} 查看并装备枪模.");
             return;
         }
 
@@ -268,7 +269,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             }
         }
 
-        player?.PrintToChat(PL_PREFIX + $"数据加载完成! 已读取你历史装配的 {ChatColors.Blue}{foundModelCount}{ChatColors.Default} 个模型!");
+        player?.PrintToChat(PL_PREFIX + $"数据加载完成! 已读取你历史装配的 {ChatColors.Blue}{foundModelCount}{ChatColors.Default} 个枪模!");
         isFetching[slot] = false;
     }
 
