@@ -17,6 +17,8 @@ using System.Numerics;
 using static CounterStrikeSharp.API.Core.Listeners;
 using System.Text.Json.Serialization;
 using Storage;
+using Microsoft.Extensions.Logging;
+using System.Xml.Linq;
 
 namespace CustomWeaponSKin;
 
@@ -88,6 +90,8 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         });
 
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
+
+        RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
     }
 
     [ConsoleCommand("css_cwc", "Clear skin")]
@@ -98,6 +102,38 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         {
             return;
         }
+
+        //int idx = 0;
+        //if (commandInfo.ArgCount > 1)
+        //{
+        //    var _idx = commandInfo.GetArg(1);
+        //    idx = Int32.Parse(_idx);
+        //}
+
+        //var list = Config.Models.Values.ToList();
+        //if (idx > list.Count || idx <= 0)
+        //{
+        //    player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
+        //    player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
+        //    var i = 1;
+        //    string printstr = "";
+        //    foreach (var model in list)
+        //    {
+        //        printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
+        //        if (i % 3 == 0 || i == list.Count)
+        //        {
+        //            player?.PrintToChat(printstr);
+        //            printstr = "";
+        //        }
+        //        else
+        //        {
+        //            printstr += $" ◆ ";
+        //        }
+
+        //        i++;
+        //    }
+        //    return;
+        //}
 
         var steam64 = player.SteamID;
         dictSteamToItemDefModel[steam64].Clear();
@@ -124,13 +160,14 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         var list = Config.Models.Values.ToList();
         if (idx > list.Count || idx <= 0)
         {
-            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 清空皮肤 .cwc, 当前可用索引如下: ");
+            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
+            player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
             var i = 1;
             string printstr = "";
             foreach (var model in list)
             {
                 printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if (i % 3 == 0)
+                if (i % 3 == 0 || i == list.Count)
                 {
                     player?.PrintToChat(printstr);
                     printstr = "";
@@ -233,12 +270,12 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
         player?.PrintToChat(PL_PREFIX + "正在获取已装配枪模信息, 请稍候...");
         isFetching[slot] = true;
-        var steam64 = player.SteamID;
+        var steam64 = player!.SteamID;
         var settings = await storage!.GetPlayerAllModelAsync(steam64);
         Server.PrintToConsole($"RefreshPlayerInventory() -> Done model cache for {steam64}, size = {settings.Count}");
         if (settings.Count == 0)
         {
-            player?.PrintToChat(PL_PREFIX + $"数据加载完成! 历史您未装备过任何枪模! 您可输入 {ChatColors.Gold}.cws{ChatColors.Default} 查看并装备枪模.");
+            player?.PrintToChat(PL_PREFIX + $"数据加载完成! 您历史未装备过任何枪模! 您可输入 {ChatColors.Gold}.cws{ChatColors.Default} 查看并装备枪模.");
             return;
         }
 
@@ -285,6 +322,37 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         return HookResult.Continue;
     }
 
+    public void OnEntityCreated(CEntityInstance entity)
+    {
+        var designerName = entity.DesignerName;
+
+        if (designerName.Contains("weapon"))
+        {
+            Server.NextFrame(() =>
+            {
+                var weapon = new CBasePlayerWeapon(entity.Handle);
+                if (!weapon.IsValid || weapon.OriginalOwnerXuidLow == 0) return;
+
+                var player = Utilities.GetPlayerFromSteamId((ulong)weapon.OriginalOwnerXuidLow);
+                if (player == null || !IsPlayerHumanAndValid(player)) return;
+
+                var steam64 = player.SteamID;
+                if (!dictSteamToItemDefModel.ContainsKey(steam64)) return;
+
+                CBaseViewModel? vm = GetPlayerViewModel(player);
+                if (vm == null || !vm.IsValid) return;
+
+                long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+                if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+                {
+                    Model mod = dictSteamToItemDefModel[steam64][itemdef];
+                    weapon.SetModel(mod.path);
+                    vm.SetModel(mod.path);
+                }
+            });
+        }
+    }
+
     public HookResult OnItemEquip(EventItemEquip @event, GameEventInfo info)
     {
         CCSPlayerController? player = @event.Userid;
@@ -321,12 +389,11 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             itemdef = 0;
         }
 
-        if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+        if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
         {
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
             vm.SetModel(mod.path);
-            weapon.SetModel(mod.path);
         }
         else
         {
