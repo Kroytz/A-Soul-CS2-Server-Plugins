@@ -13,7 +13,7 @@
     },
     "m4a1_sch": {
       "itemdef": 60,
-      "name": "M4A1-S | 沙叉花",
+      "name": "M4A1-S | 沙花叉",
       "path": "models/weapons/exg/tokyocold/m4a1_sch/m4a1_sch.vmdl"
     },
     "m4a1_xianhu": {
@@ -86,20 +86,20 @@
       "name": "MP5SD | 贝拉",
       "path": "models/weapons/exg/tokyocold/mp5_asoul/mp5_asoul.vmdl"
     },
+    "galil_akmphoenix": {
+      "itemdef": 13,
+      "name": "AKM | 凤凰 (Galil)",
+      "path": "models/weapons/exg/tokyocold/galil_akmphoenix/galil_akmphoenix.vmdl"
+    },
     "galil_scarxma": {
       "itemdef": 13,
-      "name": "ACR | 圣诞 (替换Galil)",
+      "name": "ACR | 圣诞 (Galil)",
       "path": "models/weapons/exg/tokyocold/galil_scarxma/galil_scarxma.vmdl"
     },
     "sg556_xxi": {
       "itemdef": 39,
       "name": "SG553 | XXI",
       "path": "models/weapons/exg/tokyocold/sg556_xxi/sg556_xxi.vmdl"
-    },
-    "aug_fox": {
-      "itemdef": 8,
-      "name": "AUG | 长门",
-      "path": "models/weapons/exg/tokyocold/aug_fox/aug_fox.vmdl"
     },
     "shushen": {
       "itemdef": 27,
@@ -116,6 +116,11 @@
       "name": "Zeus X27 | 黑龙炮",
       "path": "models/weapons/exg/tokyocold/taser_cannonex/taser_cannonex.vmdl"
     },
+    "sakaelite": {
+      "itemdef": 2,
+      "name": "双持 M1911 黄金 (Elite)",
+      "path": "weapons/models/ub/sakaelite/sakaelite.vmdl"
+    },
     "kunai": {
       "itemdef": 0,
       "name": "红苦无",
@@ -130,11 +135,6 @@
       "itemdef": 0,
       "name": "阿萨兰之爪",
       "path": "weapons/models/knife/knife_butterfly/loba.vmdl"
-    },
-    "oni2": {
-      "itemdef": 0,
-      "name": "鬼刀",
-      "path": "weapons/models/knife/knife_butterfly/oni2.vmdl"
     },
     "v_khlwdsrc": {
       "itemdef": 0,
@@ -159,7 +159,7 @@
     "m9_tonfa": {
       "itemdef": 0,
       "name": "M9 刺刀 | 水晶埴轮",
-      "path": "models/weapons/exg/tokyocold/m9_tonfa/m9_tonfa.vmdl"
+      "path": "models/weapons/m9_tonfa/m9_tonfa.vmdl"
     },
     "usp_kayoko": {
       "itemdef": 61,
@@ -168,7 +168,7 @@
     },
     "usp_p890_akimbo": {
       "itemdef": 61,
-      "name": "P890 | 天宫心 (替换USP-S)",
+      "name": "P890 | 天宫心 (USP-S)",
       "path": "models/weapons/exg/tokyocold/usp_p890_akimbo/usp_p890_akimbo.vmdl"
     },
     "deagle_mari": {
@@ -200,6 +200,76 @@
       "itemdef": 9,
       "name": "AWP | 音葵",
       "path": "weapons/7ychu5/models/snip_awp/sniper_otogi/sniper_otogi.vmdl"
+    },
+    "r99ld": {
+      "itemdef": 34,
+      "name": "R99 | 零点 (MP9)",
+      "path": "weapons/models/mp5sd/r99ld.vmdl"
+    },
+    "alice": {
+      "itemdef": 60,
+      "name": "SCAR | 爱丽丝 (M4A1-S)",
+      "path": "weapons/models/ub/alice/alice.vmdl"
+    },
+    "an94": {
+      "itemdef": 7,
+      "name": "AN94",
+      "path": "weapons/models/ub/an94/an94.vmdl"
+    },
+    "cp21": {
+      "itemdef": 7,
+      "name": "狂徒 | 冠军21 (AK-47)",
+      "path": "weapons/models/ub/cp21/cp.vmdl"
+    },
+    "cp23": {
+      "itemdef": 7,
+      "name": "狂徒 | 冠军23 (AK-47)",
+      "path": "weapons/models/ub/cp23/cp23.vmdl"
+    },
+    "sakaa4": {
+      "itemdef": 16,
+      "name": "M4A4 | 沙花叉",
+      "path": "weapons/models/ub/sakaa4/sakaa4.vmdl"
+    },
+    "prsak": {
+      "itemdef": 7,
+      "name": "AK-47 | 印花集",
+      "path": "weapons/models/ub/prsak/prsak.vmdl"
+    },
+    "psd9": {
+      "itemdef": 34,
+      "name": "PSD9 | 明日方舟 (MP9)",
+      "path": "weapons/models/ub/psd9/psd9.vmdl"
+    },
+    "spirit": {
+      "itemdef": 60,
+      "name": "幻影 | 千灵华绽 (M4A1-S)",
+      "path": "weapons/models/ub/spirit/spirit.vmdl"
+    },
+    "oni2": {
+      "itemdef": 0,
+      "name": "鬼刀",
+      "path": "weapons/models/knife/knife_butterfly/oni2.vmdl"
+    },
+    "aug_fox": {
+      "itemdef": 8,
+      "name": "AUG | 长门",
+      "path": "models/weapons/exg/tokyocold/aug_fox/aug_fox.vmdl"
+    },
+    "mp7_fuuka": {
+      "itemdef": 33,
+      "name": "MP7 | 枫香",
+      "path": "weapons/7ychu5/models/smg_mp7/mp7_fuuka/mp7_fuuka.vmdl"
+    },
+    "m4a1_chihiro": {
+      "itemdef": 16,
+      "name": "M4A4 | 千寻",
+      "path": "weapons/7ychu5/models/rif_m4a1/m4a1_chihiro/m4a4_chihiro.vmdl"
+    },
+    "glock_kanna": {
+      "itemdef": 4,
+      "name": "Glock-18 | 叶渚",
+      "path": "weapons/7ychu5/models/pist_glock/glock_kanna/glock_kanna.vmdl"
     }
   },
   "MenuType": "chat",
