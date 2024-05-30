@@ -53,7 +53,7 @@
     },
     "vargo52_pardofelis": {
       "itemdef": 13,
-      "name": "Vargo-52 | 帕朵菲莉丝 (Galil)",
+      "name": "Vargo-52 | 帕朵菲莉丝",
       "path": "models/exg/anonymous/vargo52_pardofelis/vargo52_pardofelis.vmdl"
     },
     "novaprintl": {
@@ -93,7 +93,7 @@
     },
     "galil_scarxma": {
       "itemdef": 13,
-      "name": "ACR | 圣诞 (Galil)",
+      "name": "ACR | 圣诞",
       "path": "models/weapons/exg/tokyocold/galil_scarxma/galil_scarxma.vmdl"
     },
     "sg556_xxi": {
@@ -118,7 +118,7 @@
     },
     "1911gold": {
       "itemdef": 2,
-      "name": "双持 M1911 黄金 (Elite)",
+      "name": "双持 M1911 黄金",
       "path": "weapons/models/ub/1911gold/1911.vmdl"
     },
     "kunai": {
@@ -168,7 +168,7 @@
     },
     "usp_p890_akimbo": {
       "itemdef": 61,
-      "name": "P890 | 天宫心 (USP-S)",
+      "name": "P890 | 天宫心",
       "path": "models/weapons/exg/tokyocold/usp_p890_akimbo/usp_p890_akimbo.vmdl"
     },
     "deagle_mari": {
@@ -203,12 +203,12 @@
     },
     "r99ld": {
       "itemdef": 34,
-      "name": "R99 | 零点 (MP9)",
+      "name": "R99 | 零点",
       "path": "weapons/models/mp5sd/r99ld.vmdl"
     },
     "alice": {
       "itemdef": 60,
-      "name": "SCAR | 爱丽丝 (M4A1-S)",
+      "name": "SCAR | 爱丽丝",
       "path": "weapons/models/ub/alice/alice.vmdl"
     },
     "an94": {
@@ -218,12 +218,12 @@
     },
     "cp21": {
       "itemdef": 7,
-      "name": "狂徒 | 冠军21 (AK-47)",
+      "name": "狂徒 | 冠军21",
       "path": "weapons/models/ub/cp21/cp.vmdl"
     },
     "cp23": {
       "itemdef": 7,
-      "name": "狂徒 | 冠军23 (AK-47)",
+      "name": "狂徒 | 冠军23",
       "path": "weapons/models/ub/cp23/cp23.vmdl"
     },
     "sakaa4": {
@@ -238,12 +238,12 @@
     },
     "psd9": {
       "itemdef": 34,
-      "name": "PSD9 | 明日方舟 (MP9)",
+      "name": "PSD9 | 明日方舟",
       "path": "weapons/models/ub/psd9/psd9.vmdl"
     },
     "spirit": {
       "itemdef": 60,
-      "name": "幻影 | 千灵华绽 (M4A1-S)",
+      "name": "幻影 | 千灵华绽",
       "path": "weapons/models/ub/spirit/spirit.vmdl"
     },
     "oni2": {
@@ -283,7 +283,7 @@
     },
     "ruin": {
       "itemdef": 60,
-      "name": "幻影 | 破败军械 (M4A1-S)",
+      "name": "幻影 | 破败军械",
       "path": "weapons/models/ub/ruin/ruin.vmdl"
     },
     "crypto": {
@@ -313,7 +313,7 @@
     },
     "kastov545_bronya": {
       "itemdef": 13,
-      "name": "卡斯托夫 545 | 布洛妮娅 (Galil)",
+      "name": "卡斯托夫 545 | 布洛妮娅",
       "path": "models/exg/anonymous/kastov545_bronya/kastov545_bronya.vmdl"
     },
     "mp5sd_yelan": {

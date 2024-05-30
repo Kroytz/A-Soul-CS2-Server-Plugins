@@ -132,7 +132,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             foreach (var model in list)
             {
                 printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if (i % 3 == 0 || i == list.Count || line <= 6)
+                if ((i % 3 == 0 || i == list.Count) && line <= 6)
                 {
                     player?.PrintToChat(printstr);
                     printstr = "";
@@ -143,6 +143,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                     if (line == 7)
                     {
                         player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
+                        line++;
                     }
                     else
                     {
@@ -226,7 +227,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             foreach (var model in list)
             {
                 printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if (i % 3 == 0 || i == list.Count || line <= 6)
+                if ((i % 3 == 0 || i == list.Count) && line <= 6)
                 {
                     player?.PrintToChat(printstr);
                     printstr = "";
@@ -237,6 +238,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                     if (line == 7)
                     {
                         player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
+                        line++;
                     }
                     else
                     {
@@ -483,7 +485,6 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         {
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
-            weapon.SetModel(mod.path);
             vm.SetModel(mod.path);
         }
         else
