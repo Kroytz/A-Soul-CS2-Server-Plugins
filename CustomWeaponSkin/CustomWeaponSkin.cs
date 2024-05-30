@@ -479,7 +479,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             itemdef = 0;
         }
 
-        if (itemdef == 0)
+        if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
         {
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
