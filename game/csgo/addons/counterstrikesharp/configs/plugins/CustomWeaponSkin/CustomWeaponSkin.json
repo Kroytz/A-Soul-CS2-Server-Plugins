@@ -41,20 +41,20 @@
       "name": "M249 | 雷霆九九九进化",
       "path": "models/jhbss/jhbss.vmdl"
     },
-    "yanlong": {
-      "itemdef": 0,
-      "name": "炎龙",
-      "path": "models/yanlong/yanlong.vmdl"
-    },
     "ak47_dndn": {
       "itemdef": 7,
       "name": "AK-47 | 多娜多娜",
       "path": "models/weapons/exg/tokyocold/dndnak/ak47_dndn.vmdl"
     },
-    "81yuanrang": {
-      "itemdef": 7,
-      "name": "AK-47 | 八一式元让",
-      "path": "models/81yuanrang/81yuanrang.vmdl"
+    "yanlong": {
+      "itemdef": 0,
+      "name": "炎龙",
+      "path": "models/yanlong/yanlong.vmdl"
+    },
+    "vargo52_pardofelis": {
+      "itemdef": 13,
+      "name": "Vargo-52 | 帕朵菲莉丝 (Galil)",
+      "path": "models/exg/anonymous/vargo52_pardofelis/vargo52_pardofelis.vmdl"
     },
     "novaprintl": {
       "itemdef": 35,
@@ -87,8 +87,8 @@
       "path": "models/weapons/exg/tokyocold/mp5_asoul/mp5_asoul.vmdl"
     },
     "galil_akmphoenix": {
-      "itemdef": 13,
-      "name": "AKM | 凤凰 (Galil)",
+      "itemdef": 7,
+      "name": "AKM | 凤凰",
       "path": "models/weapons/exg/tokyocold/galil_akmphoenix/galil_akmphoenix.vmdl"
     },
     "galil_scarxma": {
@@ -113,13 +113,13 @@
     },
     "taser_cannonex": {
       "itemdef": 31,
-      "name": "Zeus X27 | 黑龙炮",
+      "name": "Zeus | 黑龙炮",
       "path": "models/weapons/exg/tokyocold/taser_cannonex/taser_cannonex.vmdl"
     },
-    "sakaelite": {
+    "1911gold": {
       "itemdef": 2,
       "name": "双持 M1911 黄金 (Elite)",
-      "path": "weapons/models/ub/sakaelite/sakaelite.vmdl"
+      "path": "weapons/models/ub/1911gold/1911.vmdl"
     },
     "kunai": {
       "itemdef": 0,
@@ -270,6 +270,66 @@
       "itemdef": 4,
       "name": "Glock-18 | 叶渚",
       "path": "weapons/7ychu5/models/pist_glock/glock_kanna/glock_kanna.vmdl"
+    },
+    "m249_rina": {
+      "itemdef": 14,
+      "name": "M249 | 日奈",
+      "path": "models/weapons/exg/tokyocold/m249_rina/m249_rina.vmdl"
+    },
+    "mastiff": {
+      "itemdef": 25,
+      "name": "连喷獒犬",
+      "path": "weapons/models/ub/mastiff/mastiff.vmdl"
+    },
+    "ruin": {
+      "itemdef": 60,
+      "name": "幻影 | 破败军械 (M4A1-S)",
+      "path": "weapons/models/ub/ruin/ruin.vmdl"
+    },
+    "crypto": {
+      "itemdef": 0,
+      "name": "隐秘之刃",
+      "path": "weapons/models/knife/knife_butterfly/crypto.vmdl"
+    },
+    "hakui": {
+      "itemdef": 4,
+      "name": "Glock-18 | こより",
+      "path": "weapons/models/ub/hakui/hakui.vmdl"
+    },
+    "sakaelite": {
+      "itemdef": 2,
+      "name": "Elite | 沙花叉",
+      "path": "weapons/models/ub/sakaelite/sakaelite.vmdl"
+    },
+    "eagle_gold": {
+      "itemdef": 1,
+      "name": "荒漠金鹰",
+      "path": "models/weapons/exg/tokyocold/eagle_gold/eagle_gold.vmdl"
+    },
+    "v_sfsniper": {
+      "itemdef": 9,
+      "name": "雷神 | 印花集",
+      "path": "models/weapons/exg/tokyocold/sfsniper/v_sfsniper.vmdl"
+    },
+    "kastov545_bronya": {
+      "itemdef": 13,
+      "name": "卡斯托夫 545 | 布洛妮娅 (Galil)",
+      "path": "models/exg/anonymous/kastov545_bronya/kastov545_bronya.vmdl"
+    },
+    "mp5sd_yelan": {
+      "itemdef": 23,
+      "name": "MP5SD | 夜兰",
+      "path": "models/exg/anonymous/mp5sd_yelan/mp5sd_yelan.vmdl"
+    },
+    "bryson800_chelychece": {
+      "itemdef": 35,
+      "name": "布莱森 800 | 樱桃",
+      "path": "models/exg/anonymous/bryson800_chelychece/bryson800.vmdl"
+    },
+    "ak47_yoimiya": {
+      "itemdef": 7,
+      "name": "AK-47 | 宵宫",
+      "path": "models/exg/anonymous/ak47_yoimiya/ak47_yoimiya.vmdl"
     }
   },
   "MenuType": "chat",

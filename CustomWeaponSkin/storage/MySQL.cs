@@ -79,6 +79,12 @@ public class MySQLStorage : IStorage
         return result.ToList();
     }
 
+    public async void ClearPlayerModel(ulong SteamID, long itemDef)
+    {
+        var query = "DELETE FROM `cws_players` WHERE `steamid` = @SteamID AND `itemdef` = @itemDef;";
+        await conn.QueryAsync<string>(query, new { SteamID, itemDef });
+    }
+
     public async void ClearPlayerAllModelAsync(ulong SteamID)
     {
         var query = "DELETE FROM `cws_players` WHERE `steamid` = @SteamID;";

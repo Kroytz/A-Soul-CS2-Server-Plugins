@@ -19,6 +19,7 @@ using System.Text.Json.Serialization;
 using Storage;
 using Microsoft.Extensions.Logging;
 using System.Xml.Linq;
+using System.Reflection;
 
 namespace CustomWeaponSKin;
 
@@ -92,6 +93,15 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
 
         RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
+
+        // Late load
+        var players = Utilities.GetPlayers().Where(players => players.IsValid && players.Team >= CsTeam.Spectator && players.Connected == PlayerConnectedState.PlayerConnected).ToList();
+        foreach (var p in players)
+        {
+            RefreshPlayerInventory(p);
+        }
+
+        Server.PrintToChatAll(PL_PREFIX + "热重载完成!");
     }
 
     [ConsoleCommand("css_cwc", "Clear skin")]
@@ -103,42 +113,89 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             return;
         }
 
-        //int idx = 0;
-        //if (commandInfo.ArgCount > 1)
-        //{
-        //    var _idx = commandInfo.GetArg(1);
-        //    idx = Int32.Parse(_idx);
-        //}
+        int idx = 0;
+        if (commandInfo.ArgCount > 1)
+        {
+            var _idx = commandInfo.GetArg(1);
+            idx = Int32.Parse(_idx);
+        }
 
-        //var list = Config.Models.Values.ToList();
-        //if (idx > list.Count || idx <= 0)
-        //{
-        //    player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
-        //    player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
-        //    var i = 1;
-        //    string printstr = "";
-        //    foreach (var model in list)
-        //    {
-        //        printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-        //        if (i % 3 == 0 || i == list.Count)
-        //        {
-        //            player?.PrintToChat(printstr);
-        //            printstr = "";
-        //        }
-        //        else
-        //        {
-        //            printstr += $" ◆ ";
-        //        }
+        var list = Config.Models.Values.ToList();
+        if (idx > list.Count || idx < 0)
+        {
+            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
+            player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
+            var i = 1;
+            var line = 0;
+            string printstr = "";
+            var itemDefModelsMap = new Dictionary<long, List<int>>();
+            foreach (var model in list)
+            {
+                printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
+                if (i % 3 == 0 || i == list.Count || line <= 6)
+                {
+                    player?.PrintToChat(printstr);
+                    printstr = "";
+                    line++;
+                }
+                else
+                {
+                    if (line == 7)
+                    {
+                        player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
+                    }
+                    else
+                    {
+                        printstr += $" ◆ ";
+                    }
+                }
 
-        //        i++;
-        //    }
-        //    return;
-        //}
+                if (!itemDefModelsMap.ContainsKey(model.itemdef))
+                {
+                    itemDefModelsMap[model.itemdef] = new List<int>();
+                }
+                itemDefModelsMap[model.itemdef].Add(i);
+
+                i++;
+            }
+
+            player?.PrintToConsole(PL_PREFIX + "装备: css_cws <索引>, 取消: css_cwc <索引>");
+            player?.PrintToConsole(PL_PREFIX + "取消所有皮肤 css_cwc, 当前可用类型如下: ");
+            player?.PrintToConsole(PL_PREFIX + ">> 展示模板: [索引] 武器名称");
+            player?.PrintToConsole(PL_PREFIX + " ");
+            foreach (var key in itemDefModelsMap.Keys)
+            {
+                var models = itemDefModelsMap[key];
+                printstr = $"{PL_PREFIX} 分类 {key}: ";
+                foreach (var midx in models)
+                {
+                    var model = list[midx - 1];
+                    printstr += $" [{midx}]{model.name} ";
+                }
+                player?.PrintToConsole(printstr);
+            }
+
+            return;
+        }
 
         var steam64 = player.SteamID;
-        dictSteamToItemDefModel[steam64].Clear();
-        storage!.ClearPlayerAllModelAsync(steam64);
-        player.PrintToChat(PL_PREFIX + "已清除所有装备的皮肤.");
+        if (idx == 0)
+        {
+            dictSteamToItemDefModel[steam64].Clear();
+            storage!.ClearPlayerAllModelAsync(steam64);
+            player.PrintToChat(PL_PREFIX + "已清除所有装备的皮肤.");
+        }
+        else
+        {
+            idx -= 1;
+            Model mod = list[idx];
+            if (dictSteamToItemDefModel[steam64].ContainsKey(mod.itemdef))
+            {
+                dictSteamToItemDefModel[steam64].Remove(mod.itemdef);
+                storage!.ClearPlayerModel(steam64, mod.itemdef);
+                player.PrintToChat(PL_PREFIX + $"已取消装备 {mod.name} 同武器类型的皮肤.");
+            }
+        }
     }
 
     [ConsoleCommand("css_cws", "Set player custom weapon skin")]
@@ -163,22 +220,55 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
             player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
             var i = 1;
+            var line = 0;
             string printstr = "";
+            var itemDefModelsMap = new Dictionary<long, List<int>>();
             foreach (var model in list)
             {
                 printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if (i % 3 == 0 || i == list.Count)
+                if (i % 3 == 0 || i == list.Count || line <= 6)
                 {
                     player?.PrintToChat(printstr);
                     printstr = "";
+                    line++;
                 }
                 else
                 {
-                    printstr += $" ◆ ";
+                    if (line == 7)
+                    {
+                        player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
+                    }
+                    else
+                    {
+                        printstr += $" ◆ ";
+                    }
                 }
+
+                if (!itemDefModelsMap.ContainsKey(model.itemdef))
+                {
+                    itemDefModelsMap[model.itemdef] = new List<int>();
+                }
+                itemDefModelsMap[model.itemdef].Add(i);
 
                 i++;
             }
+
+            player?.PrintToConsole(PL_PREFIX + "装备: css_cws <索引>, 取消: css_cwc <索引>");
+            player?.PrintToConsole(PL_PREFIX + "取消所有皮肤 css_cwc, 当前可用类型如下: ");
+            player?.PrintToConsole(PL_PREFIX + ">> 展示模板: [索引] 武器名称");
+            player?.PrintToConsole(PL_PREFIX + " ");
+            foreach (var key in itemDefModelsMap.Keys)
+            {
+                var models = itemDefModelsMap[key];
+                printstr = $"{PL_PREFIX} 分类 {key}: ";
+                foreach (var midx in models)
+                {
+                    var model = list[midx - 1];
+                    printstr += $" [{midx}]{model.name} ";
+                }
+                player?.PrintToConsole(printstr);
+            }
+
             return;
         }
 
@@ -393,6 +483,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         {
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
+            weapon.SetModel(mod.path);
             vm.SetModel(mod.path);
         }
         else
