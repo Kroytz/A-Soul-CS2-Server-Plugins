@@ -498,6 +498,13 @@ namespace MatchZy
             }
         }
 
+        public void OnHPCommand(CCSPlayerController? player, CommandInfo? command)
+        {
+            if (!isPractice || !IsPlayerValid(player)) return;
+
+            ShowDamageInfoForTeammates(player);
+        }
+
         [ConsoleCommand("version", "Returns server version")]
         public void OnVersionCommand(CCSPlayerController? player, CommandInfo? command) {      
             if (command == null) return;

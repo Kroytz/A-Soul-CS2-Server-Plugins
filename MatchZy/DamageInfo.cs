@@ -38,6 +38,8 @@ namespace MatchZy
                     }
                 }
             }
+
+            usedHPFunction.Clear();
         }
 
 		public Dictionary<int, Dictionary<int, DamagePlayerInfo>> playerDamageInfo = new Dictionary<int, Dictionary<int, DamagePlayerInfo>>();
@@ -114,6 +116,92 @@ namespace MatchZy
                 Log($"[ShowDamageInfo FATAL] An error occurred: {e.Message}");
             }
 
+        }
+
+        public List<uint> usedHPFunction = new List<uint>();
+        private void ShowDamageInfoForTeammates(CCSPlayerController? player)
+        {
+            if (player == null) return;
+            if (usedHPFunction.Contains(player.Index))
+            {
+                player.PrintToChat($"{chatPrefix} 你本回合已经使用过报血功能了！");
+                return;
+            }
+
+            bool hasResult = false;
+            try
+            {
+                HashSet<(int, int)> processedPairs = new HashSet<(int, int)>();
+
+                foreach (var entry in playerDamageInfo)
+                {
+                    int attackerId = entry.Key;
+                    foreach (var (targetId, targetEntry) in entry.Value)
+                    {
+                        if (processedPairs.Contains((attackerId, targetId)) || processedPairs.Contains((targetId, attackerId)))
+                            continue;
+
+                        // Access and use the damage information as needed.
+                        int damageGiven = targetEntry.DamageHP;
+                        int hitsGiven = targetEntry.Hits;
+                        int damageTaken = 0;
+                        int hitsTaken = 0;
+
+                        if (playerDamageInfo.TryGetValue(targetId, out var targetInfo) && targetInfo.TryGetValue(attackerId, out var takenInfo))
+                        {
+                            damageTaken = takenInfo.DamageHP;
+                            hitsTaken = takenInfo.Hits;
+                        }
+
+                        if (!playerData.ContainsKey(attackerId) || !playerData.ContainsKey(targetId)) continue;
+
+                        var attackerController = playerData[attackerId];
+                        var targetController = playerData[targetId];
+
+                        if (attackerController != null && targetController != null)
+                        {
+                            if (attackerController != player) continue;
+                            if (!attackerController.IsValid || !targetController.IsValid) continue;
+                            if (attackerController.Connected != PlayerConnectedState.PlayerConnected) continue;
+                            if (targetController.Connected != PlayerConnectedState.PlayerConnected) continue;
+                            if (!attackerController.PlayerPawn.IsValid || !targetController.PlayerPawn.IsValid) continue;
+                            if (attackerController.PlayerPawn.Value == null || targetController.PlayerPawn.Value == null) continue;
+                            if (damageGiven == 0) continue;
+
+                            int attackerHP = attackerController.PlayerPawn.Value.Health < 0 ? 0 : attackerController.PlayerPawn.Value.Health;
+                            string attackerName = attackerController.PlayerName;
+
+                            int targetHP = targetController.PlayerPawn.Value.Health < 0 ? 0 : targetController.PlayerPawn.Value.Health;
+                            string targetName = targetController.PlayerName;
+
+                            if (targetHP <= 0) continue;
+
+                            hasResult = true;
+                            var teammates = Utilities.GetPlayers().Where(players => players.Team == attackerController.Team && players.Connected == PlayerConnectedState.PlayerConnected && players.IsValid).ToList();
+
+                            foreach (var teammate in teammates)
+                            {
+                                teammate.PrintToChat($"{ChatColors.Purple}{player.PlayerName}{ChatColors.Yellow}: 我对 {targetName} 造成了 [{damageGiven} HP / {hitsGiven} 次] 伤害");
+                            }
+                        }
+
+                        // Mark this pair as processed to avoid duplicates.
+                        processedPairs.Add((attackerId, targetId));
+                    }
+                }
+            }
+            catch (Exception e)
+            {
+                Log($"[ShowDamageInfoForTeammates FATAL] An error occurred: {e.Message}");
+            }
+
+            if (!hasResult)
+            {
+                player.PrintToChat($"{chatPrefix} 你本回合没有对任何敌人造成伤害！");
+                return;
+            }
+
+            usedHPFunction.Add(player.Index);
         }
     }
 
