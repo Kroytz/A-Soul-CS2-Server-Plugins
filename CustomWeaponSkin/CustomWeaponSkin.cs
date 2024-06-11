@@ -29,6 +29,8 @@ public class Model
     public int type { get; set; }
     public string name { get; set; }
     public required string path { get; set; }
+    public string world { get; set; }
+    public string category { get; set; }
 }
 
 public class ModelConfig : BasePluginConfig
@@ -88,6 +90,11 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 Server.PrintToConsole($"CustomWeaponSkin :: Precaching {model.path}");
                 manifest.AddResource(model.path);
             }
+
+            // Weapon sounds assets
+            manifest.AddResource("soundevents/exg_gun_v1.vsndevts");
+            manifest.AddResource("soundevents/custom_weapons_sounds.vsndevts");
+            manifest.AddResource("soundevents/ub_game_sounds_weapons2.vsndevts");
         });
 
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
@@ -102,6 +109,82 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         }
 
         Server.PrintToChatAll(PL_PREFIX + "热重载完成!");
+    }
+
+    private void DisplayHelpInConsole(CCSPlayerController? player)
+    {
+        var list = Config.Models.Values.ToList();
+        if (list.Count <= 0) return;
+
+        player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
+        player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc_all, 当前可用索引如下: ");
+        var i = 1;
+        string printstr = "";
+        var itemCatModelsMap = new Dictionary<string, List<int>>();
+        foreach (var model in list)
+        {
+            if (!itemCatModelsMap.ContainsKey(model.category))
+            {
+                itemCatModelsMap[model.category] = new List<int>();
+            }
+            itemCatModelsMap[model.category].Add(i);
+
+            i++;
+        }
+        player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
+
+        player?.PrintToConsole(" ");
+        player?.PrintToConsole(" ");
+        player?.PrintToConsole(" ");
+        player?.PrintToConsole("装备: css_cws <索引>, 取消: css_cwc <索引>");
+        player?.PrintToConsole("取消所有皮肤 css_cwc_all, 当前可用类型如下: ");
+        player?.PrintToConsole(">> 展示模板: [索引] 武器名称");
+        player?.PrintToConsole(" ");
+
+        foreach (var key in itemCatModelsMap.Keys)
+        {
+            var models = itemCatModelsMap[key];
+            printstr = $"{key}: ";
+            var numInBuffer = 0;
+            foreach (var midx in models)
+            {
+                var model = list[midx - 1];
+                printstr += $" [{midx}]{model.name} ";
+                numInBuffer++;
+                if (numInBuffer == 5)
+                {
+                    numInBuffer = 0;
+                    player?.PrintToConsole(printstr);
+                    printstr = "  ";
+
+                    for (var j = 0; j < key.Length; j++)
+                    {
+                        printstr += " ";
+                    }
+                }
+            }
+            if (numInBuffer > 0)
+                player?.PrintToConsole(printstr);
+        }
+
+        player?.PrintToConsole(" ");
+        player?.PrintToConsole(" ");
+        player?.PrintToConsole(" ");
+    }
+
+    [ConsoleCommand("css_cwc_all", "Clear skin")]
+    [CommandHelper(minArgs: 0, usage: "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    public void OnClearAllSkinCommand(CCSPlayerController? player, CommandInfo commandInfo)
+    {
+        if (player is null)
+        {
+            return;
+        }
+
+        var steam64 = player.SteamID;
+        dictSteamToItemDefModel[steam64].Clear();
+        storage!.ClearPlayerAllModelAsync(steam64);
+        player.PrintToChat(PL_PREFIX + "已清除所有装备的皮肤.");
     }
 
     [ConsoleCommand("css_cwc", "Clear skin")]
@@ -121,72 +204,14 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         }
 
         var list = Config.Models.Values.ToList();
-        if (idx > list.Count || idx < 0)
+        if (idx > list.Count || idx <= 0)
         {
-            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
-            player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
-            var i = 1;
-            var line = 0;
-            string printstr = "";
-            var itemDefModelsMap = new Dictionary<long, List<int>>();
-            foreach (var model in list)
-            {
-                printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if ((i % 3 == 0 || i == list.Count) && line <= 6)
-                {
-                    player?.PrintToChat(printstr);
-                    printstr = "";
-                    line++;
-                }
-                else
-                {
-                    if (line == 7)
-                    {
-                        player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
-                        line++;
-                    }
-                    else
-                    {
-                        printstr += $" ◆ ";
-                    }
-                }
-
-                if (!itemDefModelsMap.ContainsKey(model.itemdef))
-                {
-                    itemDefModelsMap[model.itemdef] = new List<int>();
-                }
-                itemDefModelsMap[model.itemdef].Add(i);
-
-                i++;
-            }
-
-            player?.PrintToConsole(PL_PREFIX + "装备: css_cws <索引>, 取消: css_cwc <索引>");
-            player?.PrintToConsole(PL_PREFIX + "取消所有皮肤 css_cwc, 当前可用类型如下: ");
-            player?.PrintToConsole(PL_PREFIX + ">> 展示模板: [索引] 武器名称");
-            player?.PrintToConsole(PL_PREFIX + " ");
-            foreach (var key in itemDefModelsMap.Keys)
-            {
-                var models = itemDefModelsMap[key];
-                printstr = $"{PL_PREFIX} 分类 {key}: ";
-                foreach (var midx in models)
-                {
-                    var model = list[midx - 1];
-                    printstr += $" [{midx}]{model.name} ";
-                }
-                player?.PrintToConsole(printstr);
-            }
-
+            DisplayHelpInConsole(player);
             return;
         }
 
         var steam64 = player.SteamID;
-        if (idx == 0)
-        {
-            dictSteamToItemDefModel[steam64].Clear();
-            storage!.ClearPlayerAllModelAsync(steam64);
-            player.PrintToChat(PL_PREFIX + "已清除所有装备的皮肤.");
-        }
-        else
+        if (idx > 0)
         {
             idx -= 1;
             Model mod = list[idx];
@@ -218,59 +243,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         var list = Config.Models.Values.ToList();
         if (idx > list.Count || idx <= 0)
         {
-            player?.PrintToChat(PL_PREFIX + "指令用法: .cws <索引>, 取消皮肤 .cwc <索引>");
-            player?.PrintToChat(PL_PREFIX + "取消所有皮肤 .cwc, 当前可用索引如下: ");
-            var i = 1;
-            var line = 0;
-            string printstr = "";
-            var itemDefModelsMap = new Dictionary<long, List<int>>();
-            foreach (var model in list)
-            {
-                printstr += $" {ChatColors.Yellow}{i}{ChatColors.Default} - {ChatColors.Yellow}{model.name}{ChatColors.Default} ";
-                if ((i % 3 == 0 || i == list.Count) && line <= 6)
-                {
-                    player?.PrintToChat(printstr);
-                    printstr = "";
-                    line++;
-                }
-                else
-                {
-                    if (line == 7)
-                    {
-                        player?.PrintToChat(PL_PREFIX + "由于皮肤过多不便展示, 所有分类皮肤请查看控制台输出.");
-                        line++;
-                    }
-                    else
-                    {
-                        printstr += $" ◆ ";
-                    }
-                }
-
-                if (!itemDefModelsMap.ContainsKey(model.itemdef))
-                {
-                    itemDefModelsMap[model.itemdef] = new List<int>();
-                }
-                itemDefModelsMap[model.itemdef].Add(i);
-
-                i++;
-            }
-
-            player?.PrintToConsole(PL_PREFIX + "装备: css_cws <索引>, 取消: css_cwc <索引>");
-            player?.PrintToConsole(PL_PREFIX + "取消所有皮肤 css_cwc, 当前可用类型如下: ");
-            player?.PrintToConsole(PL_PREFIX + ">> 展示模板: [索引] 武器名称");
-            player?.PrintToConsole(PL_PREFIX + " ");
-            foreach (var key in itemDefModelsMap.Keys)
-            {
-                var models = itemDefModelsMap[key];
-                printstr = $"{PL_PREFIX} 分类 {key}: ";
-                foreach (var midx in models)
-                {
-                    var model = list[midx - 1];
-                    printstr += $" [{midx}]{model.name} ";
-                }
-                player?.PrintToConsole(printstr);
-            }
-
+            DisplayHelpInConsole(player);
             return;
         }
 
@@ -438,8 +411,10 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
                 {
                     Model mod = dictSteamToItemDefModel[steam64][itemdef];
-                    weapon.SetModel(mod.path);
+                    var path = mod.path;
                     vm.SetModel(mod.path);
+                    if (mod.world.Length > 0) path = mod.world;
+                    weapon.SetModel(path);
                 }
             });
         }
@@ -481,24 +456,34 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             itemdef = 0;
         }
 
-        if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+        if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
         {
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
             vm.SetModel(mod.path);
-        }
-        else
-        {
-            var node = weapon.CBodyComponent?.SceneNode;
-            if (node == null)
+
+            var path = mod.path;
+            if (mod.world.Length > 0) path = mod.world;
+
+            // Don't apply world model on melee
+            if (itemdef != 0 || mod.world.Length > 0)
             {
-                return HookResult.Continue;
+                weapon.SetModel(path);
             }
 
-            var skeleton = GetSkeletonInstance(node);
-            var modelname = skeleton.ModelState.ModelName;
-            Server.PrintToConsole($"{player.Index} Item model name is {modelname}");
-            vm.SetModel(modelname);
+            //else
+            //{
+            //    var node = weapon.CBodyComponent?.SceneNode;
+            //    if (node == null)
+            //    {
+            //        return HookResult.Continue;
+            //    }
+
+            //    var skeleton = GetSkeletonInstance(node);
+            //    var modelname = skeleton.ModelState.ModelName;
+            //    Server.PrintToConsole($"{player.Index} Item model name is {modelname}");
+            //    vm.SetModel(modelname);
+            //}
         }
 
         return HookResult.Continue;

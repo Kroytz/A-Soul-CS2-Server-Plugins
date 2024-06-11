@@ -106,13 +106,19 @@
       "prefix": "{Purple}✦瓦度窝✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "高考加油"
+      "scoreboard": "估分加油"
     },
     "76561198145110742": {
       "prefix": "{Purple}✦米花糖✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "米神"
+    },
+    "76561198866642243": {
+      "prefix": "{Purple}✦工具猫✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "工具猫"
     },
     "#css/admin": {
       "prefix": "{RED}[狗管理] ",

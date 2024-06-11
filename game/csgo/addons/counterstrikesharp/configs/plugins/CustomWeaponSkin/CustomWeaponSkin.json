@@ -3,333 +3,535 @@
   "Models": {
     "m4a1_dujiaoshou": {
       "itemdef": 60,
-      "name": "M4A1-S | 独角兽",
-      "path": "models/weapons/exg/tokyocold/m4a1_dujiaoshou/m4a1_dujiaoshou.vmdl"
+      "name": "独角兽",
+      "path": "models/weapons/exg/tokyocold/m4a1_dujiaoshou/m4a1_dujiaoshou.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "m4a1_maoniang": {
       "itemdef": 60,
-      "name": "M4A1-S | 猫娘",
-      "path": "models/weapons/exg/tokyocold/m4a1_maoniang/m4a1_maoniang.vmdl"
+      "name": "猫娘",
+      "path": "models/weapons/exg/tokyocold/m4a1_maoniang/m4a1_maoniang.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "m4a1_sch": {
       "itemdef": 60,
-      "name": "M4A1-S | 沙花叉",
-      "path": "models/weapons/exg/tokyocold/m4a1_sch/m4a1_sch.vmdl"
+      "name": "沙花叉",
+      "path": "models/weapons/exg/tokyocold/m4a1_sch/m4a1_sch.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "m4a1_xianhu": {
       "itemdef": 60,
-      "name": "M4A1-S | 仙狐",
-      "path": "models/weapons/exg/tokyocold/m4a1_xianhu/m4a1_xianhu.vmdl"
+      "name": "仙狐",
+      "path": "models/weapons/exg/tokyocold/m4a1_xianhu/m4a1_xianhu.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "m4a1_cso2": {
       "itemdef": 16,
-      "name": "M4A4 | CSO2",
-      "path": "models/weapons/exg/tokyocold/m4a1_cso2/m4a1_cso2.vmdl"
+      "name": "CSO2",
+      "path": "models/weapons/exg/tokyocold/m4a1_cso2/m4a1_cso2.vmdl",
+      "world": "",
+      "category": "M4A4"
     },
     "p90_jxt": {
       "itemdef": 19,
-      "name": "P90 | 嘉然",
-      "path": "models/weapons/exg/tokyocold/p90_sbjxt/p90_sbjxt.vmdl"
+      "name": "嘉然",
+      "path": "models/weapons/exg/tokyocold/p90_sbjxt/p90_sbjxt.vmdl",
+      "world": "",
+      "category": "P90"
     },
     "p90_swheart": {
       "itemdef": 19,
-      "name": "P90 | 甜心",
-      "path": "models/weapons/exg/tokyocold/p90_sweetheart/p90_sweetheart.vmdl"
+      "name": "甜心",
+      "path": "models/weapons/exg/tokyocold/p90_sweetheart/p90_sweetheart.vmdl",
+      "world": "",
+      "category": "P90"
     },
     "jhbss": {
       "itemdef": 14,
-      "name": "M249 | 雷霆九九九进化",
-      "path": "models/jhbss/jhbss.vmdl"
+      "name": "雷霆九九九进化",
+      "path": "models/jhbss/jhbss.vmdl",
+      "world": "",
+      "category": "M249"
     },
     "ak47_dndn": {
       "itemdef": 7,
-      "name": "AK-47 | 多娜多娜",
-      "path": "models/weapons/exg/tokyocold/dndnak/ak47_dndn.vmdl"
-    },
-    "yanlong": {
-      "itemdef": 0,
-      "name": "炎龙",
-      "path": "models/yanlong/yanlong.vmdl"
+      "name": "多娜多娜",
+      "path": "models/weapons/exg/tokyocold/dndnak/ak47_dndn.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "vargo52_pardofelis": {
       "itemdef": 13,
       "name": "Vargo-52 | 帕朵菲莉丝",
-      "path": "models/exg/anonymous/vargo52_pardofelis/vargo52_pardofelis.vmdl"
+      "path": "models/exg/anonymous/vargo52_pardofelis/vargo52_pardofelis.vmdl",
+      "world": "",
+      "category": "Galil AR"
     },
     "novaprintl": {
       "itemdef": 35,
-      "name": "Nova | 印花集",
-      "path": "models/weapons/nova_printl/nova_printl.vmdl"
+      "name": "印花集",
+      "path": "models/weapons/exg/tokyocold/nova_printl/nova_printl.vmdl",
+      "world": "",
+      "category": "Nova"
     },
     "nova_mk2": {
       "itemdef": 35,
-      "name": "Nova | MK2",
-      "path": "models/weapons/exg/tokyocold/nova_mk2/nova_mk2.vmdl"
+      "name": "MK2",
+      "path": "models/weapons/exg/tokyocold/nova_mk2/nova_mk2.vmdl",
+      "world": "",
+      "category": "Nova"
     },
     "cyberrifle": {
       "itemdef": 7,
-      "name": "AK-47 | 赛博步枪",
-      "path": "weapons/7ychu5/models/rif_ak/cyber_ak_rifle/cyber_ak_rifle.vmdl"
+      "name": "赛博步枪",
+      "path": "weapons/7ychu5/models/rif_ak/cyber_ak_rifle/cyber_ak_rifle.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "awpr7": {
       "itemdef": 9,
-      "name": "AWP | R-7",
-      "path": "weapons/7ychu5/models/snip_awp/r7_x_sniper/r7_x_sniper.vmdl"
+      "name": "R-7",
+      "path": "weapons/7ychu5/models/snip_awp/r7_x_sniper/r7_x_sniper.vmdl",
+      "world": "",
+      "category": "AWP"
     },
     "deagle_asoul": {
       "itemdef": 1,
-      "name": "Deagle | A手",
-      "path": "models/weapons/exg/tokyocold/de_asoul/de_asoul.vmdl"
+      "name": "ASOUL",
+      "path": "models/weapons/exg/tokyocold/de_asoul/de_asoul.vmdl",
+      "world": "",
+      "category": "Deagle"
     },
     "mp5_asoul": {
       "itemdef": 23,
-      "name": "MP5SD | 贝拉",
-      "path": "models/weapons/exg/tokyocold/mp5_asoul/mp5_asoul.vmdl"
+      "name": "贝拉",
+      "path": "models/weapons/exg/tokyocold/mp5_asoul/mp5_asoul.vmdl",
+      "world": "",
+      "category": "MP5SD"
     },
     "galil_akmphoenix": {
       "itemdef": 7,
       "name": "AKM | 凤凰",
-      "path": "models/weapons/exg/tokyocold/galil_akmphoenix/galil_akmphoenix.vmdl"
+      "path": "models/weapons/exg/tokyocold/galil_akmphoenix/galil_akmphoenix.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "galil_scarxma": {
       "itemdef": 13,
       "name": "ACR | 圣诞",
-      "path": "models/weapons/exg/tokyocold/galil_scarxma/galil_scarxma.vmdl"
+      "path": "models/weapons/exg/tokyocold/galil_scarxma/galil_scarxma.vmdl",
+      "world": "",
+      "category": "Galil AR"
     },
     "sg556_xxi": {
       "itemdef": 39,
-      "name": "SG553 | XXI",
-      "path": "models/weapons/exg/tokyocold/sg556_xxi/sg556_xxi.vmdl"
+      "name": "XXI",
+      "path": "models/weapons/exg/tokyocold/sg556_xxi/sg556_xxi.vmdl",
+      "world": "",
+      "category": "SG553"
     },
     "shushen": {
       "itemdef": 27,
-      "name": "Mag-7 | 冰麟寒焱",
-      "path": "models/weapons/exg/tokyocold/shushen/shushen.vmdl"
+      "name": "冰麟寒焱",
+      "path": "models/weapons/exg/tokyocold/shushen/shushen.vmdl",
+      "world": "",
+      "category": "Mag-7"
     },
     "bizon_lightning": {
       "itemdef": 26,
-      "name": "PP-Bizon | 雷电",
-      "path": "models/weapons/exg/tokyocold/bizon_lightning/bizon_lightning.vmdl"
+      "name": "雷电",
+      "path": "models/weapons/exg/tokyocold/bizon_lightning/bizon_lightning.vmdl",
+      "world": "",
+      "category": "PP-Bizon"
     },
     "taser_cannonex": {
       "itemdef": 31,
-      "name": "Zeus | 黑龙炮",
-      "path": "models/weapons/exg/tokyocold/taser_cannonex/taser_cannonex.vmdl"
+      "name": "黑龙炮",
+      "path": "models/weapons/exg/tokyocold/taser_cannonex/taser_cannonex.vmdl",
+      "world": "",
+      "category": "Zeus X27"
     },
     "1911gold": {
       "itemdef": 2,
       "name": "双持 M1911 黄金",
-      "path": "weapons/models/ub/1911gold/1911.vmdl"
+      "path": "weapons/models/ub/1911gold/1911.vmdl",
+      "world": "",
+      "category": "Dual Beretta"
     },
     "kunai": {
       "itemdef": 0,
       "name": "红苦无",
-      "path": "weapons/models/knife/knife_default_ct/kunai.vmdl"
+      "path": "weapons/models/knife/knife_default_ct/kunai.vmdl",
+      "world": "",
+      "category": "Melee"
     },
     "cpbut": {
       "itemdef": 0,
       "name": "冠军蝴蝶刀",
-      "path": "weapons/models/knife/knife_butterfly/cpbut.vmdl"
+      "path": "weapons/models/knife/knife_butterfly/cpbut.vmdl",
+      "world": "",
+      "category": "Melee"
     },
     "loba": {
       "itemdef": 0,
       "name": "阿萨兰之爪",
-      "path": "weapons/models/knife/knife_butterfly/loba.vmdl"
+      "path": "weapons/models/knife/knife_butterfly/loba.vmdl",
+      "world": "",
+      "category": "Melee"
     },
-    "v_khlwdsrc": {
+    "v_crowbar": {
       "itemdef": 0,
-      "name": "狂花乱舞",
-      "path": "models/exg/csol/v_khlwdsrc.vmdl"
+      "name": "物理学圣剑",
+      "path": "models/weapons/exg/tokyocold/crowbar_pink/v_crowbar.vmdl",
+      "world": "",
+      "category": "Melee"
     },
-    "v_sgktdsrc": {
+    "cssknife2": {
       "itemdef": 0,
-      "name": "神鬼开天",
-      "path": "models/exg/csol/v_sgktdsrc.vmdl"
+      "name": "起源水刀",
+      "path": "weapons/models/ub/csswaterknife/cssknife2.vmdl",
+      "world": "",
+      "category": "Melee"
     },
-    "v_wljuncidisan": {
+    "v_lx4sickle": {
       "itemdef": 0,
-      "name": "灭灵军刺·锯刃",
-      "path": "models/exg/csol/v_wljuncidisan.vmdl"
+      "name": "LX-4 镰刀",
+      "path": "models/weapons/exg/tokyocold/lx4sickle/v_lx4sickle.vmdl",
+      "world": "",
+      "category": "Melee"
     },
     "mp5_mikamo": {
       "itemdef": 23,
-      "name": "MP5SD | 妮露",
-      "path": "models/weapons/exg/tokyocold/mp5_mikamo/mp5_mikamo.vmdl"
+      "name": "妮露",
+      "path": "models/weapons/exg/tokyocold/mp5_mikamo/mp5_mikamo.vmdl",
+      "world": "",
+      "category": "MP5SD"
     },
     "m9_tonfa": {
       "itemdef": 0,
-      "name": "M9 刺刀 | 水晶埴轮",
-      "path": "models/weapons/m9_tonfa/m9_tonfa.vmdl"
+      "name": "水晶埴轮",
+      "path": "models/weapons/m9_tonfa/m9_tonfa.vmdl",
+      "world": "",
+      "category": "Melee"
     },
     "usp_kayoko": {
       "itemdef": 61,
-      "name": "USP-S | 佳代子",
-      "path": "models/weapons/exg/tokyocold/usp_kayoko/usp_kayoko.vmdl"
+      "name": "恶魔咆哮",
+      "path": "models/weapons/exg/tokyocold/usp_kayoko/usp_kayoko.vmdl",
+      "world": "",
+      "category": "USP-S"
     },
     "usp_p890_akimbo": {
       "itemdef": 61,
-      "name": "P890 | 天宫心",
-      "path": "models/weapons/exg/tokyocold/usp_p890_akimbo/usp_p890_akimbo.vmdl"
+      "name": "天宫心",
+      "path": "models/weapons/exg/tokyocold/usp_p890_akimbo/usp_p890_akimbo.vmdl",
+      "world": "",
+      "category": "USP-S"
     },
     "deagle_mari": {
       "itemdef": 1,
-      "name": "Deagle | 玛丽",
-      "path": "weapons/models/pist_deagle/deagle_mari/deagle_mari.vmdl"
+      "name": "虔诚",
+      "path": "weapons/models/pist_deagle/deagle_mari/deagle_mari.vmdl",
+      "world": "",
+      "category": "Deagle"
     },
     "xm1014_hoshino": {
       "itemdef": 25,
-      "name": "XM1014 | 星野",
-      "path": "weapons/7ychu5/models/shot_xm1014/xm1014_hoshino/xm1014_hoshino.vmdl"
+      "name": "荷鲁斯之眼",
+      "path": "weapons/7ychu5/models/shot_xm1014/xm1014_hoshino/xm1014_hoshino.vmdl",
+      "world": "",
+      "category": "XM1014"
     },
     "famas_asuna": {
       "itemdef": 10,
-      "name": "FAMAS | 明日奈",
-      "path": "weapons/7ychu5/models/rif_famas/famas_asuna/famas_asuna.vmdl"
+      "name": "惊喜派对",
+      "path": "weapons/7ychu5/models/rif_famas/famas_asuna/famas_asuna.vmdl",
+      "world": "",
+      "category": "FAMAS"
     },
     "ump45_kurumi": {
       "itemdef": 24,
-      "name": "UMP45 | 胡桃",
-      "path": "weapons/7ychu5/models/smg_ump45/ump45_kurumi/ump45_kurumi.vmdl"
+      "name": "胡桃",
+      "path": "weapons/7ychu5/models/smg_ump45/ump45_kurumi/ump45_kurumi.vmdl",
+      "world": "",
+      "category": "UMP-45"
     },
     "deagle_hinata": {
       "itemdef": 1,
-      "name": "Deagle | 日向",
-      "path": "weapons/7ychu5/models/pist_deagle/deagle_hinata/deagle_hinata.vmdl"
+      "name": "祝福",
+      "path": "weapons/7ychu5/models/pist_deagle/deagle_hinata/deagle_hinata.vmdl",
+      "world": "",
+      "category": "Deagle"
     },
     "awp_otogi": {
       "itemdef": 9,
-      "name": "AWP | 音葵",
-      "path": "weapons/7ychu5/models/snip_awp/sniper_otogi/sniper_otogi.vmdl"
+      "name": "音葵",
+      "path": "weapons/7ychu5/models/snip_awp/sniper_otogi/sniper_otogi.vmdl",
+      "world": "",
+      "category": "AWP"
+    },
+    "ssg08_m39": {
+      "itemdef": 40,
+      "name": "RABBIT-39",
+      "path": "models/weapons/exg/tokyocold/ssg08_m39/ssg08_m39.vmdl",
+      "world": "",
+      "category": "SSG08"
+    },
+    "ak_kokona": {
+      "itemdef": 7,
+      "name": "淑女的气质",
+      "path": "models/weapons/exg/dj_7ychu5/ak_kokona/ak_kokona.vmdl",
+      "world": "",
+      "category": "AK-47"
+    },
+    "mp7_fuuka": {
+      "itemdef": 33,
+      "name": "Type-A",
+      "path": "weapons/7ychu5/models/smg_mp7/mp7_fuuka/mp7_fuuka.vmdl",
+      "world": "",
+      "category": "MP7"
+    },
+    "m4a1_chihiro": {
+      "itemdef": 16,
+      "name": "漏洞",
+      "path": "weapons/7ychu5/models/rif_m4a1/m4a1_chihiro/m4a4_chihiro.vmdl",
+      "world": "",
+      "category": "M4A4"
+    },
+    "glock_kanna": {
+      "itemdef": 4,
+      "name": "17式",
+      "path": "weapons/7ychu5/models/pist_glock/glock_kanna/glock_kanna.vmdl",
+      "world": "",
+      "category": "Glock-18"
+    },
+    "aug_hanae": {
+      "itemdef": 8,
+      "name": "快乐微笑",
+      "path": "weapons/7ychu5/models/rif_aug/aug_hanae/aug_hanae.vmdl",
+      "world": "",
+      "category": "AUG"
+    },
+    "g3sg1_midori": {
+      "itemdef": 11,
+      "name": "清新·灵感",
+      "path": "weapons/7ychu5/models/snip_g3sg1/g3sg1_midori/g3sg1_midori.vmdl",
+      "world": "",
+      "category": "G3SG1"
+    },
+    "elite_scifi_tl12": {
+      "itemdef": 2,
+      "name": "TL12",
+      "path": "models/weapons/exg/7ychu5/elite_scifi_tl12/elite_scifi_tl12.vmdl",
+      "world": "",
+      "category": "Dual Beretta"
+    },
+    "1887": {
+      "itemdef": 25,
+      "name": "M1887 | 花子",
+      "path": "weapons/models/ub/1887/1887.vmdl",
+      "world": "",
+      "category": "XM1014"
     },
     "r99ld": {
       "itemdef": 34,
       "name": "R99 | 零点",
-      "path": "weapons/models/mp5sd/r99ld.vmdl"
+      "path": "weapons/models/mp5sd/r99ld.vmdl",
+      "world": "",
+      "category": "MP9"
     },
     "alice": {
       "itemdef": 60,
       "name": "SCAR | 爱丽丝",
-      "path": "weapons/models/ub/alice/alice.vmdl"
+      "path": "weapons/models/ub/alice/alice.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "an94": {
       "itemdef": 7,
       "name": "AN94",
-      "path": "weapons/models/ub/an94/an94.vmdl"
+      "path": "weapons/models/ub/an94/an94.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "cp21": {
       "itemdef": 7,
       "name": "狂徒 | 冠军21",
-      "path": "weapons/models/ub/cp21/cp.vmdl"
+      "path": "weapons/models/ub/cp21/cp.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "cp23": {
       "itemdef": 7,
       "name": "狂徒 | 冠军23",
-      "path": "weapons/models/ub/cp23/cp23.vmdl"
+      "path": "weapons/models/ub/cp23/cp23.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "sakaa4": {
       "itemdef": 16,
-      "name": "M4A4 | 沙花叉",
-      "path": "weapons/models/ub/sakaa4/sakaa4.vmdl"
+      "name": "沙花叉",
+      "path": "weapons/models/ub/sakaa4/sakaa4.vmdl",
+      "world": "",
+      "category": "M4A4"
     },
     "prsak": {
       "itemdef": 7,
-      "name": "AK-47 | 印花集",
-      "path": "weapons/models/ub/prsak/prsak.vmdl"
+      "name": "印花集",
+      "path": "weapons/models/ub/prsak/prsak.vmdl",
+      "world": "",
+      "category": "AK-47"
     },
     "psd9": {
       "itemdef": 34,
       "name": "PSD9 | 明日方舟",
-      "path": "weapons/models/ub/psd9/psd9.vmdl"
+      "path": "weapons/models/ub/psd9/psd9.vmdl",
+      "world": "",
+      "category": "MP9"
     },
     "spirit": {
       "itemdef": 60,
       "name": "幻影 | 千灵华绽",
-      "path": "weapons/models/ub/spirit/spirit.vmdl"
+      "path": "weapons/models/ub/spirit/spirit.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "oni2": {
       "itemdef": 0,
       "name": "鬼刀",
-      "path": "weapons/models/knife/knife_butterfly/oni2.vmdl"
+      "path": "weapons/models/knife/knife_butterfly/oni2.vmdl",
+      "world": "",
+      "category": "Melee"
     },
     "aug_fox": {
       "itemdef": 8,
-      "name": "AUG | 长门",
-      "path": "models/weapons/exg/tokyocold/aug_fox/aug_fox.vmdl"
-    },
-    "mp7_fuuka": {
-      "itemdef": 33,
-      "name": "MP7 | 枫香",
-      "path": "weapons/7ychu5/models/smg_mp7/mp7_fuuka/mp7_fuuka.vmdl"
-    },
-    "m4a1_chihiro": {
-      "itemdef": 16,
-      "name": "M4A4 | 千寻",
-      "path": "weapons/7ychu5/models/rif_m4a1/m4a1_chihiro/m4a4_chihiro.vmdl"
-    },
-    "glock_kanna": {
-      "itemdef": 4,
-      "name": "Glock-18 | 叶渚",
-      "path": "weapons/7ychu5/models/pist_glock/glock_kanna/glock_kanna.vmdl"
+      "name": "长门",
+      "path": "models/weapons/exg/tokyocold/aug_fox/aug_fox.vmdl",
+      "world": "",
+      "category": "AUG"
     },
     "m249_rina": {
       "itemdef": 14,
-      "name": "M249 | 日奈",
-      "path": "models/weapons/exg/tokyocold/m249_rina/m249_rina.vmdl"
+      "name": "日奈",
+      "path": "models/weapons/exg/tokyocold/m249_rina/m249_rina.vmdl",
+      "world": "",
+      "category": "M249"
     },
     "mastiff": {
       "itemdef": 25,
       "name": "连喷獒犬",
-      "path": "weapons/models/ub/mastiff/mastiff.vmdl"
+      "path": "weapons/models/ub/mastiff/mastiff.vmdl",
+      "world": "",
+      "category": "XM1014"
     },
     "ruin": {
       "itemdef": 60,
       "name": "幻影 | 破败军械",
-      "path": "weapons/models/ub/ruin/ruin.vmdl"
+      "path": "weapons/models/ub/ruin/ruin.vmdl",
+      "world": "",
+      "category": "M4A1-S"
     },
     "crypto": {
       "itemdef": 0,
       "name": "隐秘之刃",
-      "path": "weapons/models/knife/knife_butterfly/crypto.vmdl"
+      "path": "weapons/models/knife/knife_butterfly/crypto.vmdl",
+      "world": "",
+      "category": "Melee"
     },
     "hakui": {
       "itemdef": 4,
-      "name": "Glock-18 | こより",
-      "path": "weapons/models/ub/hakui/hakui.vmdl"
+      "name": "こより",
+      "path": "weapons/models/ub/hakui/hakui.vmdl",
+      "world": "",
+      "category": "Glock-18"
     },
     "sakaelite": {
       "itemdef": 2,
-      "name": "Elite | 沙花叉",
-      "path": "weapons/models/ub/sakaelite/sakaelite.vmdl"
+      "name": "沙花叉",
+      "path": "weapons/models/ub/sakaelite/sakaelite.vmdl",
+      "world": "",
+      "category": "Dual Beretta"
     },
     "eagle_gold": {
       "itemdef": 1,
       "name": "荒漠金鹰",
-      "path": "models/weapons/exg/tokyocold/eagle_gold/eagle_gold.vmdl"
+      "path": "models/weapons/exg/tokyocold/eagle_gold/eagle_gold.vmdl",
+      "world": "",
+      "category": "Deagle"
     },
     "v_sfsniper": {
       "itemdef": 9,
       "name": "雷神 | 印花集",
-      "path": "models/weapons/exg/tokyocold/sfsniper/v_sfsniper.vmdl"
+      "path": "models/weapons/exg/tokyocold/sfsniper/v_sfsniper.vmdl",
+      "world": "",
+      "category": "AWP"
     },
     "kastov545_bronya": {
       "itemdef": 13,
-      "name": "卡斯托夫 545 | 布洛妮娅",
-      "path": "models/exg/anonymous/kastov545_bronya/kastov545_bronya.vmdl"
+      "name": "布洛妮娅",
+      "path": "models/exg/anonymous/kastov545_bronya/kastov545_bronya.vmdl",
+      "world": "",
+      "category": "Galil AR"
     },
     "mp5sd_yelan": {
       "itemdef": 23,
-      "name": "MP5SD | 夜兰",
-      "path": "models/exg/anonymous/mp5sd_yelan/mp5sd_yelan.vmdl"
+      "name": "夜兰",
+      "path": "models/exg/anonymous/mp5sd_yelan/mp5sd_yelan.vmdl",
+      "world": "",
+      "category": "MP5SD"
     },
     "bryson800_chelychece": {
       "itemdef": 35,
-      "name": "布莱森 800 | 樱桃",
-      "path": "models/exg/anonymous/bryson800_chelychece/bryson800.vmdl"
+      "name": "樱桃",
+      "path": "models/exg/anonymous/bryson800_chelychece/bryson800.vmdl",
+      "world": "",
+      "category": "Nova"
     },
     "ak47_yoimiya": {
       "itemdef": 7,
-      "name": "AK-47 | 宵宫",
-      "path": "models/exg/anonymous/ak47_yoimiya/ak47_yoimiya.vmdl"
+      "name": "宵宫",
+      "path": "models/exg/anonymous/ak47_yoimiya/ak47_yoimiya.vmdl",
+      "world": "",
+      "category": "AK-47"
+    },
+    "xm4_elysia": {
+      "itemdef": 16,
+      "name": "爱莉希雅",
+      "path": "models/exg/anonymous/xm4_elysia/xm4_elysia.vmdl",
+      "world": "",
+      "category": "M4A4"
+    },
+    "iso45": {
+      "itemdef": 23,
+      "name": "ISO45",
+      "path": "weapons/models/ub/iso45/iso45.vmdl",
+      "world": "",
+      "category": "MP5SD"
+    },
+    "bamp9": {
+      "itemdef": 34,
+      "name": "BAMP9",
+      "path": "weapons/models/ub/bamp9/bamp9.vmdl",
+      "world": "",
+      "category": "MP9"
+    },
+    "hk416": {
+      "itemdef": 16,
+      "name": "HK416",
+      "path": "weapons/models/ub/hk416/hk416.vmdl",
+      "world": "",
+      "category": "M4A4"
+    },
+    "v_yamato": {
+      "itemdef": 0,
+      "name": "阎魔刀",
+      "path": "models/weapons/exg/7ychu5/yamato/v_yamato.vmdl",
+      "world": "",
+      "category": "Melee"
     }
   },
   "MenuType": "chat",
