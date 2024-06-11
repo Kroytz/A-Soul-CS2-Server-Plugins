@@ -351,6 +351,13 @@
       "world": "",
       "category": "M4A1-S"
     },
+    "v_aug_azusa": {
+      "itemdef": 8,
+      "name": "白州梓",
+      "path": "models/weapons/exg/tokyocold/aug_azusa/v_aug_azusa.vmdl",
+      "world": "",
+      "category": "AUG"
+    },
     "an94": {
       "itemdef": 7,
       "name": "AN94",

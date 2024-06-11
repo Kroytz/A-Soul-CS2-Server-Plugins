@@ -500,7 +500,7 @@ namespace MatchZy
 
         public void OnHPCommand(CCSPlayerController? player, CommandInfo? command)
         {
-            if (!isPractice || !IsPlayerValid(player)) return;
+            if (isPractice || !IsPlayerValid(player)) return;
 
             ShowDamageInfoForTeammates(player);
         }

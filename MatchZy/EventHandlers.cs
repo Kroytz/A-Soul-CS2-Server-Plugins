@@ -251,6 +251,12 @@ public partial class MatchZy
                     info.DontBroadcast = true;
                 }
             }
+
+            var victim = @event.Userid;
+            if (victim != null)
+            {
+                victim.PrintToChat($"{chatPrefix} 你挂了, 但你可以输入 {ChatColors.LightBlue}.hp{ChatColors.Default} 给队友报血");
+            }
     
             return HookResult.Continue;
         }
