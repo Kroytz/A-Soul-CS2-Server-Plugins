@@ -498,6 +498,7 @@ namespace MatchZy
             }
         }
 
+        [ConsoleCommand("css_hhp", "")]
         public void OnHPCommand(CCSPlayerController? player, CommandInfo? command)
         {
             if (isPractice || !IsPlayerValid(player)) return;

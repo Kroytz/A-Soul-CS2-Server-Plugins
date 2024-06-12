@@ -174,7 +174,7 @@ namespace MatchZy
                 //{ ".rethrowmolotov", OnRethrowMolotovCommand },
                 //{ ".timer", OnTimerCommand },
                 //{ ".lastindex", OnLastIndexCommand }
-                { ".hhp", OnHPCommand }
+                //{ ".hp", OnHPCommand }
             };
 
             RegisterEventHandler<EventPlayerConnectFull>(EventPlayerConnectFullHandler);

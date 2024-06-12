@@ -1,5 +1,6 @@
 using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
+using CounterStrikeSharp.API.Modules.Entities;
 using CounterStrikeSharp.API.Modules.Utils;
 
 
@@ -179,9 +180,11 @@ namespace MatchZy
                             hasResult = true;
                             var teammates = Utilities.GetPlayers().Where(players => players.Team == attackerController.Team && players.Connected == PlayerConnectedState.PlayerConnected && players.IsValid).ToList();
 
+                            var teamcolor = ChatColors.ForTeam(attackerController.Team);
+                            var victimcolor = ChatColors.ForTeam(targetController.Team);
                             foreach (var teammate in teammates)
                             {
-                                teammate.PrintToChat($"{ChatColors.Purple}{player.PlayerName}{ChatColors.Yellow}: 我对 {targetName} 造成了 [{damageGiven} HP / {hitsGiven} 次] 伤害");
+                                teammate.PrintToChat($"{teamcolor}{player.PlayerName}{ChatColors.Yellow}: 我对 {victimcolor}{targetName}{ChatColors.Yellow} 造成了 {damageGiven} HP 伤害");
                             }
                         }
 
@@ -197,7 +200,7 @@ namespace MatchZy
 
             if (!hasResult)
             {
-                player.PrintToChat($"{chatPrefix} 你本回合没有对任何敌人造成伤害！");
+                player.PrintToChat($"{chatPrefix} 你本回合没有对任何敌人造成伤害, 或者他已经挂了");
                 return;
             }
 

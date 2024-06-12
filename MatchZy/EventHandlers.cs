@@ -255,7 +255,7 @@ public partial class MatchZy
             var victim = @event.Userid;
             if (victim != null)
             {
-                victim.PrintToChat($"{chatPrefix} 你挂了, 但你可以输入 {ChatColors.LightBlue}.hp{ChatColors.Default} 给队友报血");
+                victim.PrintToChat($"{chatPrefix} 很遗憾你挂了, 但你可以输入 {ChatColors.LightYellow}.hhp{ChatColors.Default} 快速给队友报血");
             }
     
             return HookResult.Continue;
