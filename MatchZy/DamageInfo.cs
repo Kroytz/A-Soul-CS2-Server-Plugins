@@ -181,10 +181,9 @@ namespace MatchZy
                             var teammates = Utilities.GetPlayers().Where(players => players.Team == attackerController.Team && players.Connected == PlayerConnectedState.PlayerConnected && players.IsValid).ToList();
 
                             var teamcolor = ChatColors.ForTeam(attackerController.Team);
-                            var victimcolor = ChatColors.ForTeam(targetController.Team);
                             foreach (var teammate in teammates)
                             {
-                                teammate.PrintToChat($"{teamcolor}{player.PlayerName}{ChatColors.Yellow}: 我对 {victimcolor}{targetName}{ChatColors.Yellow} 造成了 {damageGiven} HP 伤害");
+                                teammate.PrintToChat($" {teamcolor}{player.PlayerName}{ChatColors.Yellow}: 我对 {targetName} 造成了 {damageGiven} HP 伤害");
                             }
                         }
 
