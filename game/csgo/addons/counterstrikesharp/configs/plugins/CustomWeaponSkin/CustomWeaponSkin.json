@@ -148,13 +148,6 @@
       "world": "",
       "category": "PP-Bizon"
     },
-    "taser_cannonex": {
-      "itemdef": 31,
-      "name": "黑龙炮",
-      "path": "models/weapons/exg/tokyocold/taser_cannonex/taser_cannonex.vmdl",
-      "world": "",
-      "category": "Zeus X27"
-    },
     "1911gold": {
       "itemdef": 2,
       "name": "双持 M1911 黄金",
@@ -214,7 +207,7 @@
     "m9_tonfa": {
       "itemdef": 0,
       "name": "水晶埴轮",
-      "path": "models/weapons/m9_tonfa/m9_tonfa.vmdl",
+      "path": "models/weapons/exg/tokyocold/m9_tonfa/m9_tonfa.vmdl",
       "world": "",
       "category": "Melee"
     },

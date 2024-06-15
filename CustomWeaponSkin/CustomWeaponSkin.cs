@@ -413,7 +413,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                     Model mod = dictSteamToItemDefModel[steam64][itemdef];
                     var path = mod.path;
                     vm.SetModel(mod.path);
-                    if (mod.world.Length > 0) path = mod.world;
+                    // if (mod.world.Length > 0) path = mod.world;
                     weapon.SetModel(path);
                 }
             });
@@ -456,34 +456,24 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             itemdef = 0;
         }
 
-        if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+        if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
         {
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
             vm.SetModel(mod.path);
-
-            var path = mod.path;
-            if (mod.world.Length > 0) path = mod.world;
-
-            // Don't apply world model on melee
-            if (itemdef != 0 || mod.world.Length > 0)
+        }
+        else
+        {
+            var node = weapon.CBodyComponent?.SceneNode;
+            if (node == null)
             {
-                weapon.SetModel(path);
+                return HookResult.Continue;
             }
 
-            //else
-            //{
-            //    var node = weapon.CBodyComponent?.SceneNode;
-            //    if (node == null)
-            //    {
-            //        return HookResult.Continue;
-            //    }
-
-            //    var skeleton = GetSkeletonInstance(node);
-            //    var modelname = skeleton.ModelState.ModelName;
-            //    Server.PrintToConsole($"{player.Index} Item model name is {modelname}");
-            //    vm.SetModel(modelname);
-            //}
+            var skeleton = GetSkeletonInstance(node);
+            var modelname = skeleton.ModelState.ModelName;
+            Server.PrintToConsole($"{player.Index} Item model name is {modelname}");
+            vm.SetModel(modelname);
         }
 
         return HookResult.Continue;
