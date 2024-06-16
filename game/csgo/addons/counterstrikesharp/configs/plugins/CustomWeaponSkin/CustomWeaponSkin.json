@@ -204,13 +204,6 @@
       "world": "",
       "category": "MP5SD"
     },
-    "m9_tonfa": {
-      "itemdef": 0,
-      "name": "水晶埴轮",
-      "path": "models/weapons/exg/tokyocold/m9_tonfa/m9_tonfa.vmdl",
-      "world": "",
-      "category": "Melee"
-    },
     "usp_kayoko": {
       "itemdef": 61,
       "name": "恶魔咆哮",
@@ -486,7 +479,7 @@
     },
     "bryson800_chelychece": {
       "itemdef": 35,
-      "name": "樱桃",
+      "name": "布莱森800 | 樱桃",
       "path": "models/exg/anonymous/bryson800_chelychece/bryson800.vmdl",
       "world": "",
       "category": "Nova"
@@ -498,23 +491,16 @@
       "world": "",
       "category": "AK-47"
     },
-    "xm4_elysia": {
-      "itemdef": 16,
-      "name": "爱莉希雅",
-      "path": "models/exg/anonymous/xm4_elysia/xm4_elysia.vmdl",
-      "world": "",
-      "category": "M4A4"
-    },
     "iso45": {
       "itemdef": 23,
-      "name": "ISO45",
+      "name": "ISO45 | 柚鸟夏",
       "path": "weapons/models/ub/iso45/iso45.vmdl",
       "world": "",
-      "category": "MP5SD"
+      "category": "MP5SD (改动作)"
     },
     "bamp9": {
       "itemdef": 34,
-      "name": "BAMP9",
+      "name": "宫子",
       "path": "weapons/models/ub/bamp9/bamp9.vmdl",
       "world": "",
       "category": "MP9"
@@ -532,6 +518,48 @@
       "path": "models/weapons/exg/7ychu5/yamato/v_yamato.vmdl",
       "world": "",
       "category": "Melee"
+    },
+    "bap90": {
+      "itemdef": 19,
+      "name": "未花",
+      "path": "weapons/models/ub/bap90/bap90.vmdl",
+      "world": "",
+      "category": "P90 (改动作)"
+    },
+    "linnai": {
+      "itemdef": 7,
+      "name": "玲纱",
+      "path": "weapons/models/ub/linnai/linnai.vmdl",
+      "world": "",
+      "category": "AK-47 (改动作)"
+    },
+    "santa249": {
+      "itemdef": 14,
+      "name": "NEKOPARA",
+      "path": "weapons/models/ub/santa249/santa249.vmdl",
+      "world": "",
+      "category": "M249"
+    },
+    "mika": {
+      "itemdef": 61,
+      "name": "未花",
+      "path": "weapons/models/ub/bausp/mika.vmdl",
+      "world": "",
+      "category": "USP-S (改动作)"
+    },
+    "nagisa": {
+      "itemdef": 61,
+      "name": "桐藤渚",
+      "path": "weapons/models/ub/bausp/nagisa.vmdl",
+      "world": "",
+      "category": "USP-S (改动作)"
+    },
+    "seia": {
+      "itemdef": 61,
+      "name": "圣娅",
+      "path": "weapons/models/ub/bausp/seia.vmdl",
+      "world": "",
+      "category": "USP-S (改动作)"
     }
   },
   "MenuType": "chat",
