@@ -137,5 +137,17 @@
     "flags": [
       "@css/root"
     ]
+  },
+  "gongjumao": {
+    "identity": "76561198866642243",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "user9": {
+    "identity": "76561199026298427",
+    "flags": [
+      "@css/root"
+    ]
   }
 }

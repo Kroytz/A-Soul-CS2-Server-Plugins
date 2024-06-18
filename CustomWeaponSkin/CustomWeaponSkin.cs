@@ -413,7 +413,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                     Model mod = dictSteamToItemDefModel[steam64][itemdef];
                     var path = mod.path;
                     vm.SetModel(mod.path);
-                    // if (mod.world.Length > 0) path = mod.world;
+                    if (mod.world.Length > 0) path = mod.world;
                     weapon.SetModel(path);
                 }
             });
@@ -473,7 +473,22 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             var skeleton = GetSkeletonInstance(node);
             var modelname = skeleton.ModelState.ModelName;
             Server.PrintToConsole($"{player.Index} Item model name is {modelname}");
-            vm.SetModel(modelname);
+
+            var modelList = Config.Models.Values.ToList();
+            if (modelList.Count == 0)
+            {
+                return HookResult.Continue;
+            }
+
+            foreach (var key in modelList)
+            {
+                if (key.path == modelname || key.world == modelname)
+                {
+                    Server.PrintToConsole($"{player.Index} Found model path {key.path} world {key.world}");
+                    vm.SetModel(key.path);
+                    break;
+                }
+            }
         }
 
         return HookResult.Continue;

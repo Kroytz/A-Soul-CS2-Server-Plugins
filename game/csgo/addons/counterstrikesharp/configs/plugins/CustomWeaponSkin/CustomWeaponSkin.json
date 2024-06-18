@@ -270,7 +270,7 @@
     "ak_kokona": {
       "itemdef": 7,
       "name": "淑女的气质",
-      "path": "models/weapons/exg/dj_7ychu5/ak_kokona/ak_kokona.vmdl",
+      "path": "weapons/7ychu5/models/rif_ak/ak_kokona/ak_kokona.vmdl",
       "world": "",
       "category": "AK-47"
     },
@@ -308,13 +308,6 @@
       "path": "weapons/7ychu5/models/snip_g3sg1/g3sg1_midori/g3sg1_midori.vmdl",
       "world": "",
       "category": "G3SG1"
-    },
-    "elite_scifi_tl12": {
-      "itemdef": 2,
-      "name": "TL12",
-      "path": "models/weapons/exg/7ychu5/elite_scifi_tl12/elite_scifi_tl12.vmdl",
-      "world": "",
-      "category": "Dual Beretta"
     },
     "1887": {
       "itemdef": 25,
@@ -560,6 +553,13 @@
       "path": "weapons/models/ub/bausp/seia.vmdl",
       "world": "",
       "category": "USP-S (改动作)"
+    },
+    "leishen": {
+      "itemdef": 16,
+      "name": "CF 雷神",
+      "path": "weapons/models/ub/leishen/leishen.vmdl",
+      "world": "",
+      "category": "M4A4 (改动作)"
     }
   },
   "MenuType": "chat",
