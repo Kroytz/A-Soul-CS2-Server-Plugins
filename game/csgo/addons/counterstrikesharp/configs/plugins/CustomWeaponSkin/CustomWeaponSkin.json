@@ -560,6 +560,34 @@
       "path": "weapons/models/ub/leishen/leishen.vmdl",
       "world": "",
       "category": "M4A4 (改动作)"
+    },
+    "asoulscar": {
+      "itemdef": 38,
+      "name": "M14 | A-SOUL",
+      "path": "weapons/models/ub/asoulscar/asoulscar.vmdl",
+      "world": "",
+      "category": "SCAR-20 (改动作)"
+    },
+    "blueco": {
+      "itemdef": 16,
+      "name": "BlueCo",
+      "path": "weapons/models/ub/blueco/blueco.vmdl",
+      "world": "",
+      "category": "M4A4 (改动作)"
+    },
+    "pinkco": {
+      "itemdef": 23,
+      "name": "奇美拉 | PinkCo",
+      "path": "weapons/models/ub/pinkco/pinkco.vmdl",
+      "world": "",
+      "category": "MP5SD (改动作)"
+    },
+    "bulaner": {
+      "itemdef": 60,
+      "name": "布兰儿",
+      "path": "weapons/models/ub/bulaner/bulaner.vmdl",
+      "world": "",
+      "category": "M4A1-S (改动作)"
     }
   },
   "MenuType": "chat",
