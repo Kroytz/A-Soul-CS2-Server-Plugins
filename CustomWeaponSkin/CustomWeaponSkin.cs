@@ -413,6 +413,11 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 if (vm == null || !vm.IsValid) return;
 
                 long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+                var node = weapon.CBodyComponent?.SceneNode;
+                if (node == null) return;
+                var skeleton = GetSkeletonInstance(node);
+                var modelname = skeleton.ModelState.ModelName;
+                if (modelname.Contains("knife")) itemdef = 0;
                 if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
                 {
                     Model mod = dictSteamToItemDefModel[steam64][itemdef];
