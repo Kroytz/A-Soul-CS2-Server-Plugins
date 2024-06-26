@@ -516,14 +516,14 @@
       "itemdef": 0,
       "name": "阎魔刀",
       "path": "models/weapons/exg/7ychu5/yamato/v_yamato.vmdl",
-      "world": "",
+      "world": "models/weapons/exg/7ychu5/yamato/w_yamato.vmdl",
       "category": "Melee"
     },
     "v_buster_swords": {
       "itemdef": 0,
       "name": "破坏剑",
       "path": "models/weapons/exg/7ychu5/buster_swords/v_buster_swords.vmdl",
-      "world": "",
+      "world": "models/weapons/exg/7ychu5/buster_swords/w_buster_swords.vmdl",
       "category": "Melee"
     },
     "sparklebomb": {

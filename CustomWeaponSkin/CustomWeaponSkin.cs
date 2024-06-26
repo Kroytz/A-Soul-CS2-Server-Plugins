@@ -89,6 +89,10 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             {
                 Server.PrintToConsole($"CustomWeaponSkin :: Precaching {model.path}");
                 manifest.AddResource(model.path);
+                if (model.world.Length > 0)
+                {
+                    manifest.AddResource(model.world);
+                }
             }
 
             // Weapon sounds assets
@@ -491,6 +495,10 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             Model mod = dictSteamToItemDefModel[steam64][itemdef];
             //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
             vm.SetModel(mod.path);
+            if (mod.world.Length > 0)
+            {
+                weapon.SetModel(mod.world);
+            }
         }
         else
         {
