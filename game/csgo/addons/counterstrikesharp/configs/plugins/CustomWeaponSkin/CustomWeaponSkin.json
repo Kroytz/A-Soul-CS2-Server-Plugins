@@ -442,6 +442,13 @@
       "world": "",
       "category": "Dual Beretta"
     },
+    "elite_scifi_tl12": {
+      "itemdef": 2,
+      "name": "TL12",
+      "path": "models/weapons/exg/7ychu5/elite_scifi_tl12/elite_scifi_tl12.vmdl",
+      "world": "",
+      "category": "Dual Beretta"
+    },
     "eagle_gold": {
       "itemdef": 1,
       "name": "荒漠金鹰",
@@ -512,6 +519,20 @@
       "world": "",
       "category": "Melee"
     },
+    "v_buster_swords": {
+      "itemdef": 0,
+      "name": "破坏剑",
+      "path": "models/weapons/exg/7ychu5/buster_swords/v_buster_swords.vmdl",
+      "world": "",
+      "category": "Melee"
+    },
+    "sparklebomb": {
+      "itemdef": 44,
+      "name": "花火",
+      "path": "weapons/models/ub/sparklebomb/sparklebomb.vmdl",
+      "world": "",
+      "category": "高爆手雷"
+    },
     "bap90": {
       "itemdef": 19,
       "name": "未花",
@@ -579,6 +600,13 @@
       "itemdef": 23,
       "name": "奇美拉 | PinkCo",
       "path": "weapons/models/ub/pinkco/pinkco.vmdl",
+      "world": "",
+      "category": "MP5SD (改动作)"
+    },
+    "apc9k": {
+      "itemdef": 23,
+      "name": "APC9K",
+      "path": "weapons/models/ub/apc9k/apc9k.vmdl",
       "world": "",
       "category": "MP5SD (改动作)"
     },

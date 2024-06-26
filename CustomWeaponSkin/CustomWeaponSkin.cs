@@ -95,6 +95,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             manifest.AddResource("soundevents/exg_gun_v1.vsndevts");
             manifest.AddResource("soundevents/custom_weapons_sounds.vsndevts");
             manifest.AddResource("soundevents/ub_game_sounds_weapons2.vsndevts");
+            manifest.AddResource("soundevents/7ychu5/weapon_buster_sword.vsndevts"); // SBSBSBSBSB
         });
 
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
@@ -412,9 +413,38 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 {
                     Model mod = dictSteamToItemDefModel[steam64][itemdef];
                     var path = mod.path;
-                    vm.SetModel(mod.path);
                     if (mod.world.Length > 0) path = mod.world;
                     weapon.SetModel(path);
+
+                    CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+                    if (pawn == null || !pawn.IsValid) return;
+                    CBasePlayerWeapon? activeweapon = pawn.WeaponServices?.ActiveWeapon.Value;
+                    if (activeweapon == null || !activeweapon.IsValid) return;
+                    if (weapon == activeweapon)
+                    {
+                        // Only apply vm if switching to active weapon
+                        vm.SetModel(mod.path);
+                    }
+                }
+            });
+        }
+        else if (designerName.Contains("hegrenade_projectile"))
+        {
+            Server.NextFrame(() =>
+            {
+                var projectile = new CBaseCSGrenadeProjectile(entity.Handle);
+                var owner = projectile.Thrower.Value;
+                if (owner == null) return;
+                var ownerController = owner.OriginalController.Value;
+                if (ownerController == null || !IsPlayerHumanAndValid(ownerController)) return;
+                var steam64 = ownerController.SteamID;
+                if (!dictSteamToItemDefModel.ContainsKey(steam64)) return;
+                long itemdef = 44;
+                if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+                {
+                    Model mod = dictSteamToItemDefModel[steam64][itemdef];
+                    var path = mod.path;
+                    projectile.SetModel(path);
                 }
             });
         }
