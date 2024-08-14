@@ -71,10 +71,10 @@
       "world": "",
       "category": "Galil AR"
     },
-    "novaprintl": {
+    "spas": {
       "itemdef": 35,
-      "name": "印花集",
-      "path": "models/weapons/exg/tokyocold/nova_printl/nova_printl.vmdl",
+      "name": "SPAS-12 | 波奇酱",
+      "path": "weapons/models/ub/spas/spas.vmdl",
       "world": "",
       "category": "Nova"
     },
@@ -160,42 +160,42 @@
       "name": "红苦无",
       "path": "weapons/models/knife/knife_default_ct/kunai.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "cpbut": {
       "itemdef": 0,
       "name": "冠军蝴蝶刀",
       "path": "weapons/models/knife/knife_butterfly/cpbut.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "loba": {
       "itemdef": 0,
       "name": "阿萨兰之爪",
       "path": "weapons/models/knife/knife_butterfly/loba.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "v_crowbar": {
       "itemdef": 0,
       "name": "物理学圣剑",
       "path": "models/weapons/exg/tokyocold/crowbar_pink/v_crowbar.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "cssknife2": {
       "itemdef": 0,
       "name": "起源水刀",
       "path": "weapons/models/ub/csswaterknife/cssknife2.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "v_lx4sickle": {
       "itemdef": 0,
       "name": "LX-4 镰刀",
       "path": "models/weapons/exg/tokyocold/lx4sickle/v_lx4sickle.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "mp5_mikamo": {
       "itemdef": 23,
@@ -316,13 +316,6 @@
       "world": "",
       "category": "XM1014"
     },
-    "r99ld": {
-      "itemdef": 34,
-      "name": "R99 | 零点",
-      "path": "weapons/models/mp5sd/r99ld.vmdl",
-      "world": "",
-      "category": "MP9"
-    },
     "alice": {
       "itemdef": 60,
       "name": "SCAR | 爱丽丝",
@@ -391,7 +384,7 @@
       "name": "鬼刀",
       "path": "weapons/models/knife/knife_butterfly/oni2.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "aug_fox": {
       "itemdef": 8,
@@ -426,7 +419,7 @@
       "name": "隐秘之刃",
       "path": "weapons/models/knife/knife_butterfly/crypto.vmdl",
       "world": "",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "hakui": {
       "itemdef": 4,
@@ -491,6 +484,41 @@
       "world": "",
       "category": "AK-47"
     },
+    "wdlx": {
+      "itemdef": 28,
+      "name": "无敌领袖",
+      "path": "weapons/models/ub/wdlx/wdlx.vmdl",
+      "world": "",
+      "category": "Negev"
+    },
+    "whzh": {
+      "itemdef": 28,
+      "name": "舞会之花",
+      "path": "weapons/models/ub/whzh/whzh.vmdl",
+      "world": "",
+      "category": "Negev"
+    },
+    "sparklebomb": {
+      "itemdef": 44,
+      "name": "花火",
+      "path": "weapons/models/ub/sparklebomb/sparklebomb.vmdl",
+      "world": "",
+      "category": "高爆手雷"
+    },
+    "capoo": {
+      "itemdef": 44,
+      "name": "猫猫虫",
+      "path": "weapons/models/ub/capoo/capoo.vmdl",
+      "world": "",
+      "category": "高爆手雷"
+    },
+    "keli": {
+      "itemdef": 44,
+      "name": "蹦蹦炸弹",
+      "path": "weapons/models/ub/keli/keli.vmdl",
+      "world": "",
+      "category": "高爆手雷"
+    },
     "iso45": {
       "itemdef": 23,
       "name": "ISO45 | 柚鸟夏",
@@ -517,21 +545,21 @@
       "name": "阎魔刀",
       "path": "models/weapons/exg/7ychu5/yamato/v_yamato.vmdl",
       "world": "models/weapons/exg/7ychu5/yamato/w_yamato.vmdl",
-      "category": "Melee"
+      "category": "近战武器"
     },
     "v_buster_swords": {
       "itemdef": 0,
       "name": "破坏剑",
       "path": "models/weapons/exg/7ychu5/buster_swords/v_buster_swords.vmdl",
       "world": "models/weapons/exg/7ychu5/buster_swords/w_buster_swords.vmdl",
-      "category": "Melee"
+      "category": "近战武器"
     },
-    "sparklebomb": {
-      "itemdef": 44,
-      "name": "花火",
-      "path": "weapons/models/ub/sparklebomb/sparklebomb.vmdl",
+    "r99ld": {
+      "itemdef": 34,
+      "name": "R99 | 零点",
+      "path": "weapons/models/ub/r99ld/r99ld.vmdl",
       "world": "",
-      "category": "高爆手雷"
+      "category": "MP9 (改动作)"
     },
     "bap90": {
       "itemdef": 19,
@@ -540,11 +568,18 @@
       "world": "",
       "category": "P90 (改动作)"
     },
+    "fmg9": {
+      "itemdef": 19,
+      "name": "FMG9",
+      "path": "weapons/models/ub/fmg9/fmg9.vmdl",
+      "world": "",
+      "category": "P90 (改动作)"
+    },
     "linnai": {
       "itemdef": 7,
       "name": "玲纱",
       "path": "weapons/models/ub/linnai/linnai.vmdl",
-      "world": "",
+      "world": "weapons/models/ub/linnai/w_linnai.vmdl",
       "category": "AK-47 (改动作)"
     },
     "santa249": {
@@ -610,12 +645,194 @@
       "world": "",
       "category": "MP5SD (改动作)"
     },
+    "bluesport": {
+      "itemdef": 23,
+      "name": "蓝色运动",
+      "path": "weapons/models/ub/bluesport/bluesport.vmdl",
+      "world": "",
+      "category": "MP5SD (改动作)"
+    },
     "bulaner": {
       "itemdef": 60,
       "name": "布兰儿",
       "path": "weapons/models/ub/bulaner/bulaner.vmdl",
       "world": "",
       "category": "M4A1-S (改动作)"
+    },
+    "amiaomiao": {
+      "itemdef": 60,
+      "name": "天宫心",
+      "path": "weapons/models/ub/amiaomiao/amiaomiao.vmdl",
+      "world": "",
+      "category": "M4A1-S"
+    },
+    "zgn": {
+      "itemdef": 60,
+      "name": "知更鸟",
+      "path": "weapons/models/ub/zgn/zgn.vmdl",
+      "world": "",
+      "category": "M4A1-S (改动作)"
+    },
+    "baca": {
+      "itemdef": 0,
+      "name": "彼岸此岸",
+      "path": "weapons/models/ub/baca/baca.vmdl",
+      "world": "weapons/models/ub/baca/w_baca.vmdl",
+      "category": "近战武器"
+    },
+    "mp40": {
+      "itemdef": 33,
+      "name": "MP40",
+      "path": "weapons/models/ub/mp40/mp40.vmdl",
+      "world": "",
+      "category": "MP7 (改动作)"
+    },
+    "vec": {
+      "itemdef": 33,
+      "name": "短剑",
+      "path": "weapons/models/ub/vec/vec.vmdl",
+      "world": "",
+      "category": "MP7 (改动作)"
+    },
+    "m1": {
+      "itemdef": 11,
+      "name": "M1 加兰德",
+      "path": "weapons/models/ub/m1/m1.vmdl",
+      "world": "",
+      "category": "G3SG1"
+    },
+    "pp2042": {
+      "itemdef": 26,
+      "name": "战地 2042",
+      "path": "weapons/models/ub/pp2042/pp2042.vmdl",
+      "world": "",
+      "category": "PP-Bizon"
+    },
+    "qbz95": {
+      "itemdef": 10,
+      "name": "QBZ95",
+      "path": "weapons/models/ub/qbz95/qbz95.vmdl",
+      "world": "",
+      "category": "FAMAS"
+    },
+    "rivals": {
+      "itemdef": 16,
+      "name": "R301 | 月狼",
+      "path": "weapons/models/ub/rivals/rivals.vmdl",
+      "world": "",
+      "category": "M4A4 (改动作)"
+    },
+    "bluesurge": {
+      "itemdef": 16,
+      "name": "R301 | 蓝色浪潮",
+      "path": "weapons/models/ub/bluesurge/bluesurge.vmdl",
+      "world": "",
+      "category": "M4A4 (改动作)"
+    },
+    "tmp_water": {
+      "itemdef": 34,
+      "name": "水TMP",
+      "path": "weapons/models/ub/tmp/tmp_water.vmdl",
+      "world": "",
+      "category": "MP9"
+    },
+    "mikump9": {
+      "itemdef": 34,
+      "name": "初音未来",
+      "path": "weapons/models/ub/mikump9/mikump9.vmdl",
+      "world": "",
+      "category": "MP9"
+    },
+    "rbg": {
+      "itemdef": 34,
+      "name": "浮幽樱",
+      "path": "weapons/models/ub/rbg/rbg.vmdl",
+      "world": "",
+      "category": "MP9"
+    },
+    "blockar": {
+      "itemdef": 60,
+      "name": "积木龙皇",
+      "path": "weapons/models/ub/blockar/blockar.vmdl",
+      "world": "",
+      "category": "M4A1-S"
+    },
+    "soulripper": {
+      "itemdef": 25,
+      "name": "灵魂开膛手",
+      "path": "weapons/models/ub/soulripper/soulripper.vmdl",
+      "world": "",
+      "category": "XM1014 (改动作)"
+    },
+    "eva8": {
+      "itemdef": 25,
+      "name": "EVA-8",
+      "path": "weapons/models/ub/eva8/eva8.vmdl",
+      "world": "",
+      "category": "XM1014 (改动作)"
+    },
+    "sin": {
+      "itemdef": 16,
+      "name": "罪恶薪俸 (红)",
+      "path": "weapons/models/ub/sin/sin.vmdl",
+      "world": "",
+      "category": "M4A4 (改动作)"
+    },
+    "sin2": {
+      "itemdef": 16,
+      "name": "罪恶薪俸 (金)",
+      "path": "weapons/models/ub/sin/sin2.vmdl",
+      "world": "",
+      "category": "M4A4 (改动作)"
+    },
+    "rbscar": {
+      "itemdef": 38,
+      "name": "兔兔战士",
+      "path": "weapons/models/ub/rbscar/rbscar.vmdl",
+      "world": "weapons/models/ub/rbscar/w_rbscar.vmdl",
+      "category": "SCAR-20 (改动作)"
+    },
+    "rbusp": {
+      "itemdef": 61,
+      "name": "兔兔战士",
+      "path": "weapons/models/ub/rbusp/rbusp.vmdl",
+      "world": "",
+      "category": "USP-S"
+    },
+    "inkmix": {
+      "itemdef": 24,
+      "name": "VOLT | 墨水混合",
+      "path": "weapons/models/ub/inkmix/inkmix.vmdl",
+      "world": "",
+      "category": "UMP-45"
+    },
+    "volt": {
+      "itemdef": 24,
+      "name": "VOLT",
+      "path": "weapons/models/ub/volt/volt.vmdl",
+      "world": "",
+      "category": "UMP-45"
+    },
+    "dyxl": {
+      "itemdef": 60,
+      "name": "地狱修罗",
+      "path": "weapons/models/ub/dyxl/dyxl.vmdl",
+      "world": "",
+      "category": "M4A1-S"
+    },
+    "mp5cod": {
+      "itemdef": 23,
+      "name": "MP5COD",
+      "path": "weapons/models/ub/mp5cod/mp5cod.vmdl",
+      "world": "",
+      "category": "MP5SD (改动作)"
+    },
+    "yzll": {
+      "itemdef": 9,
+      "name": "原子力量",
+      "path": "weapons/models/ub/yzll/yzll.vmdl",
+      "world": "",
+      "category": "AWP"
     }
   },
   "MenuType": "chat",

@@ -239,7 +239,7 @@ public class CashPay : BasePlugin
 
     [ConsoleCommand("css_pay_force", "force sb. Pay Cash to sb.")]
     [RequiresPermissions("@css/admin")]
-    [CommandHelper(minArgs: 3, usage: "[userid1],[userid2],[cashnum]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
+    [CommandHelper(minArgs: 2, usage: "[userid1],[userid2],[cashnum]", whoCanExecute: CommandUsage.CLIENT_AND_SERVER)]
     public void OnPayForce(CCSPlayerController? player, CommandInfo commandInfo)
     {
         (List<CCSPlayerController> givers, string givername) = FindTarget(player, commandInfo, 1, false, false, MultipleFlags.NORMAL);
@@ -267,16 +267,6 @@ public class CashPay : BasePlugin
                 || victim.PlayerPawn.Value == null
                 || !victim.PlayerPawn.Value.IsValid
                 || victim.PlayerPawn.Value.Health <= 0) return;
-
-                if (cashnum <= 0)
-                {
-                    giver.ExecuteClientCommand($"play sounds/ui/armsrace_level_down.vsnd");
-                    giver.PrintToCenter("Get More Money First");
-                    return;
-                }
-
-                if (cashnum >= giver.InGameMoneyServices.Account)
-                    cashnum = giver.InGameMoneyServices.Account;
 
                 Pay(giver, victim, cashnum);
             }

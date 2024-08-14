@@ -10,10 +10,4 @@
     <PackageReference Include="CounterStrikeSharp.API" Version="1.0.198" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Reference Include="CounterStrikeSharp.API">
-       <HintPath>YOUR PATH HERE/CounterStrikeSharp.API.dll</HintPath>
-    </Reference>
-  </ItemGroup>
-
 </Project>
