@@ -407,6 +407,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 if (player == null || !IsPlayerHumanAndValid(player)) return;
 
                 var steam64 = player.SteamID;
+                Server.PrintToConsole($"OnEntityCreated: Weapon {weapon.DesignerName} owner {player.Index}({steam64})");
                 if (!dictSteamToItemDefModel.ContainsKey(steam64)) return;
 
                 CBaseViewModel? vm = GetPlayerViewModel(player);
@@ -424,6 +425,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                     var path = mod.path;
                     if (mod.world.Length > 0) path = mod.world;
                     weapon.SetModel(path);
+                    Server.PrintToConsole($"OnEntityCreated: Found {weapon.DesignerName} model path {mod.path} world {mod.world}, owner {player.Index}({steam64})");
 
                     CCSPlayerPawn? pawn = player.PlayerPawn.Value;
                     if (pawn == null || !pawn.IsValid) return;
@@ -515,7 +517,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
             var skeleton = GetSkeletonInstance(node);
             var modelname = skeleton.ModelState.ModelName;
-            Server.PrintToConsole($"{player.Index} Item model name is {modelname}");
+            Server.PrintToConsole($"{player.Index} Item {weapon.DesignerName} model name {modelname}");
 
             var modelList = Config.Models.Values.ToList();
             if (modelList.Count == 0)
@@ -523,14 +525,22 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 return HookResult.Continue;
             }
 
+            bool bFound = false;
             foreach (var key in modelList)
             {
                 if (key.path == modelname || key.world == modelname)
                 {
-                    Server.PrintToConsole($"{player.Index} Found model path {key.path} world {key.world}");
+                    Server.PrintToConsole($"{player.Index} Found {weapon.DesignerName} model path {key.path} world {key.world}");
                     vm.SetModel(key.path);
+                    bFound = true;
                     break;
                 }
+            }
+
+            if (!bFound)
+            {
+                Server.PrintToConsole($"{player.Index} Not found {weapon.DesignerName} model path {modelname}, trying get from OriginalOwnerXuidLow...");
+                OnEntityCreated(weapon);
             }
         }
 

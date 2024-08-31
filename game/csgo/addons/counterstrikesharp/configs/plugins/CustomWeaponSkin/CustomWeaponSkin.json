@@ -159,7 +159,14 @@
       "itemdef": 0,
       "name": "红苦无",
       "path": "weapons/models/knife/knife_default_ct/kunai.vmdl",
-      "world": "",
+      "world": "weapons/models/knife/knife_default_ct/w_kunai.vmdl",
+      "category": "近战武器"
+    },
+    "kunai2": {
+      "itemdef": 0,
+      "name": "蓝苦无",
+      "path": "weapons/models/knife/knife_default_ct/kunai2.vmdl",
+      "world": "weapons/models/knife/knife_default_ct/w_kunai2.vmdl",
       "category": "近战武器"
     },
     "cpbut": {
@@ -519,11 +526,18 @@
       "world": "",
       "category": "高爆手雷"
     },
+    "rbg": {
+      "itemdef": 44,
+      "name": "兔兔战士",
+      "path": "weapons/models/ub/rbg/rbg.vmdl",
+      "world": "",
+      "category": "高爆手雷"
+    },
     "iso45": {
       "itemdef": 23,
       "name": "ISO45 | 柚鸟夏",
       "path": "weapons/models/ub/iso45/iso45.vmdl",
-      "world": "",
+      "world": "weapons/models/ub/iso45/w_iso45.vmdl",
       "category": "MP5SD (改动作)"
     },
     "bamp9": {
@@ -743,13 +757,6 @@
       "world": "",
       "category": "MP9"
     },
-    "rbg": {
-      "itemdef": 34,
-      "name": "浮幽樱",
-      "path": "weapons/models/ub/rbg/rbg.vmdl",
-      "world": "",
-      "category": "MP9"
-    },
     "blockar": {
       "itemdef": 60,
       "name": "积木龙皇",
@@ -833,6 +840,13 @@
       "path": "weapons/models/ub/yzll/yzll.vmdl",
       "world": "",
       "category": "AWP"
+    },
+    "ygo_mp9": {
+      "itemdef": 34,
+      "name": "浮幽樱",
+      "path": "weapons/models/ub/ygo_mp9/ygo_mp9.vmdl",
+      "world": "",
+      "category": "MP9"
     }
   },
   "MenuType": "chat",

@@ -106,7 +106,7 @@
       "prefix": "{Purple}✦瓦度窝✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "估分加油"
+      "scoreboard": "大一新生"
     },
     "76561198145110742": {
       "prefix": "{Purple}✦米花糖✦ ",
@@ -119,6 +119,24 @@
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "工具猫"
+    },
+    "76561199026298427": {
+      "prefix": "{Purple}✦WUser✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "WUser"
+    },
+    "76561198045250349": {
+      "prefix": "{Purple}✦雨斯菲尔德✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "AQUAの母"
+    },
+    "76561198975782904": {
+      "prefix": "{Purple}✦诺蒂维娅✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "诺蒂维娅"
     },
     "#css/admin": {
       "prefix": "{RED}[狗管理] ",
