@@ -45,6 +45,8 @@ namespace ConnectInfo
             Log("Connect Info loaded");
         }
 
+        Dictionary<ulong, string> dictSteamToAddress = new Dictionary<ulong, string>();
+
         [GameEventHandler]
         public HookResult OnPlayerConnectFull(EventPlayerConnectFull @event, GameEventInfo info)
         {
@@ -53,51 +55,41 @@ namespace ConnectInfo
             if (player is null || !player.IsValid || player.IsBot || player.IsHLTV || player.SteamID.ToString().Length != 17)
                 return HookResult.Continue;
 
+            var address = dictSteamToAddress[player.SteamID];
+            var geoInfo = GetGeoInfo(address);
             var playerName = player.PlayerName;
 
             String consoleLogMessage;
             String serverChatMessage;
 
-            consoleLogMessage =
-                ReplaceMessageTags(Config.ConsoleConnectMessageWithoutGeo, playerName, String.Empty);
-            serverChatMessage =
-                ReplaceMessageTags(Config.ConnectMessageWithoutGeo, playerName, String.Empty);
-
+            if (!string.IsNullOrEmpty(geoInfo))
+            {
+                consoleLogMessage = ReplaceMessageTags(Config.ConsoleConnectMessageWithGeo, playerName, geoInfo);
+                serverChatMessage = ReplaceMessageTags(Config.ConnectMessageWithGeo, playerName, geoInfo);
+            }
+            else
+            {
+                consoleLogMessage =
+                    ReplaceMessageTags(Config.ConsoleConnectMessageWithoutGeo, playerName, String.Empty);
+                serverChatMessage =
+                    ReplaceMessageTags(Config.ConnectMessageWithoutGeo, playerName, String.Empty);
+            }
             Log(consoleLogMessage);
             Server.NextFrame(() => Server.PrintToChatAll(serverChatMessage));
             return HookResult.Continue;
         }
 
-        //[GameEventHandler]
-        //public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo info)
-        //{
-        //    CCSPlayerController? player = @event.Userid;
+        [GameEventHandler]
+        public HookResult OnPlayerConnect(EventPlayerConnect @event, GameEventInfo info)
+        {
+            CCSPlayerController? player = @event.Userid;
 
-        //    if (player is null || !player.IsValid || player.IsBot || player.IsHLTV || player.SteamID.ToString().Length != 17)
-        //        return HookResult.Continue;
+            if (player is null || !player.IsValid || player.IsBot || player.IsHLTV || player.SteamID.ToString().Length != 17)
+                return HookResult.Continue;
 
-        //    var geoInfo = GetGeoInfo(@event.Address.Split(':')[0]);
-        //    var playerName = player.PlayerName;
-
-        //    String consoleLogMessage;
-        //    String serverChatMessage;
-
-        //    if (!string.IsNullOrEmpty(geoInfo))
-        //    {
-        //        consoleLogMessage = ReplaceMessageTags(Config.ConsoleConnectMessageWithGeo, playerName, geoInfo);
-        //        serverChatMessage = ReplaceMessageTags(Config.ConnectMessageWithGeo, playerName, geoInfo);
-        //    }
-        //    else
-        //    {
-        //        consoleLogMessage = 
-        //            ReplaceMessageTags(Config.ConsoleConnectMessageWithoutGeo, playerName, String.Empty);
-        //        serverChatMessage =
-        //            ReplaceMessageTags(Config.ConnectMessageWithoutGeo, playerName, String.Empty);
-        //    }
-        //    Log(consoleLogMessage);
-        //    Server.NextFrame(() => Server.PrintToChatAll(serverChatMessage));
-        //    return HookResult.Continue;
-        //}
+            dictSteamToAddress.Add(player.SteamID, @event.Address);
+            return HookResult.Continue;
+        }
 
         [GameEventHandler]
         public HookResult OnPlayerDisconnect(EventPlayerDisconnect @event, GameEventInfo info)
