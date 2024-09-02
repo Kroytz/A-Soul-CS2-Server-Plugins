@@ -31,6 +31,7 @@ public class Model
     public required string path { get; set; }
     public string world { get; set; }
     public string category { get; set; }
+    public string soundevent { get; set; }
 }
 
 public class ModelConfig : BasePluginConfig
@@ -93,13 +94,17 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 {
                     manifest.AddResource(model.world);
                 }
+
+                if (model.soundevent.Length > 0)
+                {
+                    manifest.AddResource(model.soundevent);
+                }
             }
 
             // Weapon sounds assets
             manifest.AddResource("soundevents/exg_gun_v1.vsndevts");
             manifest.AddResource("soundevents/custom_weapons_sounds.vsndevts");
             manifest.AddResource("soundevents/ub_game_sounds_weapons2.vsndevts");
-            manifest.AddResource("soundevents/7ychu5/weapon_buster_sword.vsndevts"); // SBSBSBSBSB
         });
 
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
