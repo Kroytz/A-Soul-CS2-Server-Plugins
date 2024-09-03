@@ -635,7 +635,7 @@
     },
     "hk416": {
       "itemdef": 16,
-      "name": "HK416",
+      "name": "少前 HK416",
       "path": "weapons/models/ub/hk416/hk416.vmdl",
       "world": "",
       "category": "M4A4",
@@ -662,7 +662,7 @@
       "name": "R99 | 零点",
       "path": "weapons/models/ub/r99ld/r99ld.vmdl",
       "world": "",
-      "category": "MP9 (改动作)",
+      "category": "MP9",
       "soundevent": ""
     },
     "bap90": {
@@ -670,7 +670,7 @@
       "name": "未花",
       "path": "weapons/models/ub/bap90/bap90.vmdl",
       "world": "",
-      "category": "P90 (改动作)",
+      "category": "P90",
       "soundevent": ""
     },
     "fmg9": {
@@ -678,7 +678,7 @@
       "name": "FMG9",
       "path": "weapons/models/ub/fmg9/fmg9.vmdl",
       "world": "",
-      "category": "P90 (改动作)",
+      "category": "P90",
       "soundevent": ""
     },
     "linnai": {
@@ -774,7 +774,7 @@
       "name": "布兰儿",
       "path": "weapons/models/ub/bulaner/bulaner.vmdl",
       "world": "",
-      "category": "M4A1-S (改动作)",
+      "category": "M4A1-S",
       "soundevent": ""
     },
     "amiaomiao": {
@@ -979,11 +979,11 @@
     },
     "v_mwacr": {
       "itemdef": 13,
-      "name": "ACR",
+      "name": "ACRCN | 丰见小鸟",
       "path": "models/weapons/exg/tokyocold/acr/v_mwacr.vmdl",
       "world": "models/weapons/exg/tokyocold/acr/w_mwacr.vmdl",
       "category": "Galil AR",
-      "soundevent": "soundevents/djweapon/acr.vsndevts"
+      "soundevent": "soundevents/djweapon/acrcn.vsndevts"
     },
     "m82a1_bornbeast": {
       "itemdef": 9,
@@ -1003,7 +1003,7 @@
     },
     "tmp_sd": {
       "itemdef": 34,
-      "name": "FJX 荷鲁斯",
+      "name": "HORUS | 宫子",
       "path": "models/weapons/exg/tokyocold/tmp_sd/v_tmpsd.vmdl",
       "world": "models/weapons/exg/tokyocold/tmp_sd/w_tmpsd.vmdl",
       "category": "MP9",
@@ -1040,6 +1040,14 @@
       "world": "models/weapons/exg/tokyocold/sfsmg/w_sfsmg.vmdl",
       "category": "MP7",
       "soundevent": ""
+    },
+    "v_hk416": {
+      "itemdef": 60,
+      "name": "HK416 | 仙狐小姐",
+      "path": "models/weapons/exg/tokyocold/hk416/v_hk416.vmdl",
+      "world": "models/weapons/exg/tokyocold/hk416/w_hk416.vmdl",
+      "category": "M4A1-S (改动作)",
+      "soundevent": "soundevents/djweapon/hk416.vsndevts"
     }
   },
   "MenuType": "chat",
