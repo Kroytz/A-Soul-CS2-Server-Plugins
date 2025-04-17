@@ -19,31 +19,31 @@
       "scoreboard": "大朗"
     },
     "76561197967281863": {
-      "prefix": "{Purple}✦男娘爱好者✦ ",
+      "prefix": "{Purple}✦穿越火线✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "纳西妲"
     },
     "76561198379293428": {
-      "prefix": "{Purple}✦狗管理✦ ",
+      "prefix": "{Purple}✦321K上海人✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "鱼卵"
     },
     "76561199019716291": {
-      "prefix": "{Purple}✦狗管理✦ ",
+      "prefix": "{Purple}✦若杨✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "若杨"
     },
     "76561198112190438": {
-      "prefix": "{Purple}✦狗管理✦ ",
+      "prefix": "{Purple}✦Aqua✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "A-QUA"
     },
     "76561198357957183": {
-      "prefix": "{Purple}✦狗管理✦ ",
+      "prefix": "{Purple}✦福瑞佬✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "CYC"
@@ -52,7 +52,7 @@
       "prefix": "{Purple}✦市长✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "未成年"
+      "scoreboard": "已成年"
     },
     "76561198297330289": {
       "prefix": "{Purple}✦meaqua✦ ",
@@ -106,7 +106,7 @@
       "prefix": "{Purple}✦瓦度窝✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "大一新生"
+      "scoreboard": "我妈WXY"
     },
     "76561198145110742": {
       "prefix": "{Purple}✦米花糖✦ ",
@@ -137,6 +137,18 @@
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "诺蒂维娅"
+    },
+    "76561198874832913": {
+      "prefix": "{Purple}✦Miyako✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "Miyako"
+    },
+    "76561198161405036": {
+      "prefix": "{Purple}✦广吸妹✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "广吸妹"
     },
     "#css/admin": {
       "prefix": "{RED}[狗管理] ",

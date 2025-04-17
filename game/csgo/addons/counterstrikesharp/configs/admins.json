@@ -144,10 +144,45 @@
       "@css/root"
     ]
   },
-  "user9": {
+  "wuser": {
     "identity": "76561199026298427",
     "flags": [
       "@css/root"
+    ]
+  },
+  "miyako": {
+    "identity": "76561198874832913",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "ca_rie": {
+    "identity": "76561199028196271",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "ningqi": {
+    "identity": "76561198161405036",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "rainsfield": {
+    "identity": "76561198045250349",
+    "flags": [
+      "@css/root"
+    ]
+  },
+  "QQ752087667": {
+    "identity": "76561199384233228",
+    "flags": [
+      "@css/config",
+      "@custom/prac",
+      "@css/map",
+      "@css/changemap",
+      "@css/rcon",
+      "@css/admin"
     ]
   }
 }
