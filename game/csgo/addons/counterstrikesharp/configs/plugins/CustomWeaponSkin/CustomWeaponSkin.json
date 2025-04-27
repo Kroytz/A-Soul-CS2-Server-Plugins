@@ -1,20 +1,52 @@
 {
   "Models": {
-    "kastov545": {
-      "itemdef": 7,
-      "name": "日奈",
-      "path": "models/weapons/exg/tokyocold/kastov545/v_kastov545.vmdl",
-      "world": "models/weapons/exg/tokyocold/kastov545/w_kastov545.vmdl",
-      "category": "AK-47",
-      "soundevent": "soundevents/djweapon/kastov545.vsndevts"
+    "mikumac": {
+      "itemdef": 17,
+      "name": "初音未来",
+      "path": "weapons/models/ub/mikumac/mikumac.vmdl",
+      "world": "weapons/models/ub/mikumac/w_mikumac.vmdl",
+      "category": "Mac-10",
+      "soundevent": ""
     },
-    "kastov762": {
+    "live_twin": {
+      "itemdef": 46,
+      "name": "双子",
+      "path": "weapons/models/ub/live_twin/live_twin.vmdl",
+      "world": "",
+      "category": "燃烧瓶",
+      "soundevent": ""
+    },
+    "zaomengpp29": {
       "itemdef": 7,
-      "name": "普拉那",
-      "path": "models/weapons/exg/tokyocold/kastov762/v_kastov762.vmdl",
-      "world": "models/weapons/exg/tokyocold/kastov762/w_kastov762.vmdl",
+      "name": "早梦",
+      "path": "weapons/models/zaomengpp29/v_pp29_zaomeng.vmdl",
+      "world": "weapons/models/zaomengpp29/w_pp29_zaomeng.vmdl",
+      "category": "PP-Bizon",
+      "soundevent": ""
+    },
+    "zaomengak": {
+      "itemdef": 7,
+      "name": "早梦",
+      "path": "weapons/models/zaomengak/weapon_zaomengak.vmdl",
+      "world": "weapons/models/zaomengak/w_weapon_zaomengak.vmdl",
       "category": "AK-47",
-      "soundevent": "soundevents/djweapon/kastov762.vsndevts"
+      "soundevent": ""
+    },
+    "muse191": {
+      "itemdef": 7,
+      "name": "暮色191",
+      "path": "weapons/models/ub/muse191/muse191.vmdl",
+      "world": "weapons/models/ub/muse191/w_muse191.vmdl",
+      "category": "AK-47",
+      "soundevent": ""
+    },
+    "baihu2": {
+      "itemdef": 7,
+      "name": "白虎",
+      "path": "weapons/models/ub/baihu2/baihu2.vmdl",
+      "world": "",
+      "category": "AK-47",
+      "soundevent": ""
     },
     "tianqi": {
       "itemdef": 7,
@@ -31,22 +63,6 @@
       "world": "",
       "category": "AK-47",
       "soundevent": ""
-    },
-    "akcy": {
-      "itemdef": 7,
-      "name": "樱初音",
-      "path": "models/weapons/exg/tokyocold/akcy/akcy.vmdl",
-      "world": "models/weapons/exg/tokyocold/akcy/w_akcy.vmdl",
-      "category": "AK-47",
-      "soundevent": "soundevents/djweapon/akcy.vsndevts"
-    },
-    "ak47_cod": {
-      "itemdef": 7,
-      "name": "玲纱",
-      "path": "models/weapons/exg/tokyocold/ak47_cod/v_ak47_cod.vmdl",
-      "world": "models/weapons/exg/tokyocold/ak47_cod/w_ak47_cod.vmdl",
-      "category": "AK-47",
-      "soundevent": "soundevents/djweapon/codak.vsndevts"
     },
     "an94_spaceship": {
       "itemdef": 13,
@@ -88,11 +104,19 @@
       "category": "PP-Bizon",
       "soundevent": ""
     },
-    "ap_kb": {
+    "ninelive_kukri": {
       "itemdef": 0,
-      "name": "猛禽之爪 | 咖波",
-      "path": "models/weapons/exg/tokyocold/ap_kb/ap_kb.vmdl",
-      "world": "models/weapons/exg/tokyocold/ap_kb/w_ap_kb.vmdl",
+      "name": "紫金夜影",
+      "path": "weapons/models/ub/ninelive_kukri/ninelivekukri.vmdl",
+      "world": "",
+      "category": "近战武器",
+      "soundevent": ""
+    },
+    "re4knife_zaomeng": {
+      "itemdef": 0,
+      "name": "早梦",
+      "path": "weapons/models/2en0w/re4knife_zaomeng/re4knife_zaomeng.vmdl",
+      "world": "weapons/models/2en0w/re4knife_zaomeng/w_re4knife_zaomeng.vmdl",
       "category": "近战武器",
       "soundevent": ""
     },
@@ -131,8 +155,8 @@
     "cssknife2": {
       "itemdef": 0,
       "name": "起源水刀",
-      "path": "weapons/models/ub/csswaterknife/cssknife2.vmdl",
-      "world": "",
+      "path": "models/weapons/exg/tokyocold/csknife/csknife_water.vmdl",
+      "world": "models/weapons/exg/tokyocold/csknife/w_csknife_water.vmdl",
       "category": "近战武器",
       "soundevent": ""
     },
@@ -195,8 +219,8 @@
     "tkfm4": {
       "itemdef": 16,
       "name": "Doro",
-      "path": "weapons/models/ub/dorom4/dorom4.vmdl",
-      "world": "weapons/models/ub/dorom4/w_dorom4.vmdl",
+      "path": "weapons/models/ub/tkfm4/dorom4.vmdl",
+      "world": "weapons/models/ub/tkfm4/w_dorom4.vmdl",
       "category": "M4A4",
       "soundevent": ""
     },
@@ -240,6 +264,14 @@
       "category": "Galil AR",
       "soundevent": "soundevents/djweapon/acr_zsj.vsndevts"
     },
+    "asval": {
+      "itemdef": 13,
+      "name": "ASVAL",
+      "path": "models/weapons/exg/tokyocold/asval/v_asval.vmdl",
+      "world": "models/weapons/exg/tokyocold/asval/w_asval.vmdl",
+      "category": "Galil AR",
+      "soundevent": "soundevents/djweapon/asval.vsndevts"
+    },
     "m82a1_bornbeast": {
       "itemdef": 9,
       "name": "巴雷特-毁灭",
@@ -255,14 +287,6 @@
       "world": "models/weapons/exg/tokyocold/tmp_sd/w_tmpsd.vmdl",
       "category": "MP9",
       "soundevent": "soundevents/djweapon/tmp.vsndevts"
-    },
-    "v_hk416": {
-      "itemdef": 60,
-      "name": "HK416 | 仙狐小姐",
-      "path": "models/weapons/exg/tokyocold/hk416/v_hk416.vmdl",
-      "world": "models/weapons/exg/tokyocold/hk416/w_hk416.vmdl",
-      "category": "M4A1-S",
-      "soundevent": "soundevents/djweapon/hk416.vsndevts"
     },
     "bap90": {
       "itemdef": 19,
@@ -320,6 +344,22 @@
       "category": "Dual Beretta",
       "soundevent": ""
     },
+    "remington_ren": {
+      "itemdef": 60,
+      "name": "Ren",
+      "path": "weapons/models/remington_ren/v_remington_ren.vmdl",
+      "world": "weapons/models/remington_ren/w_remington_ren.vmdl",
+      "category": "M4A1-S",
+      "soundevent": "soundevents/djweapon/m4a1_sywh.vsndevts"
+    },
+    "mcw": {
+      "itemdef": 16,
+      "name": "知更鸟",
+      "path": "models/weapons/exg/tokyocold/mcw/v_mcw.vmdl",
+      "world": "models/weapons/exg/tokyocold/mcw/w_mcw.vmdl",
+      "category": "M4A4",
+      "soundevent": "soundevents/djweapon/mcw.vsndevts"
+    },
     "m4a1_sywh": {
       "itemdef": 60,
       "name": "聖園 ミカ",
@@ -330,7 +370,7 @@
     },
     "scar_mw2019": {
       "itemdef": 16,
-      "name": "Doro",
+      "name": "HYAKKIYAKO",
       "path": "models/weapons/exg/tokyocold/scar_mw2019/v_scar_mw2019.vmdl",
       "world": "models/weapons/exg/tokyocold/scar_mw2019/w_scar_mw2019.vmdl",
       "category": "M4A4",
@@ -338,7 +378,7 @@
     },
     "taq56": {
       "itemdef": 16,
-      "name": "Doro",
+      "name": "IBUKI",
       "path": "models/weapons/exg/tokyocold/taq56/v_taq56.vmdl",
       "world": "models/weapons/exg/tokyocold/taq56/w_taq56.vmdl",
       "category": "M4A4",

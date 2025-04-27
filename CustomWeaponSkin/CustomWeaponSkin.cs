@@ -108,6 +108,7 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         });
 
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
+        RegisterEventHandler<EventWeaponFire>(OnWeaponFire);
 
         RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
 
@@ -548,6 +549,32 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 OnEntityCreated(weapon);
             }
         }
+
+        return HookResult.Continue;
+    }
+
+    public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo info)
+    {
+        CCSPlayerController? player = @event.Userid;
+        if (player == null)
+            return HookResult.Continue;
+
+        CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+        if (pawn == null || !pawn.IsValid)
+            return HookResult.Continue;
+
+        var steam64 = player.SteamID;
+        if (!dictSteamToItemDefModel.ContainsKey(steam64))
+            return HookResult.Continue;
+
+        CCSWeaponBase? weapon = (CCSWeaponBase?)(pawn.WeaponServices?.ActiveWeapon.Value);
+        if (weapon == null || !weapon.IsValid)
+            return HookResult.Continue;
+
+        if (weapon.InReload)
+        {
+            weapon.InReload = false;
+        } 
 
         return HookResult.Continue;
     }
