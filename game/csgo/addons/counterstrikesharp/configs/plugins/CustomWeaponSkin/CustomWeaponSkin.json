@@ -104,6 +104,22 @@
       "category": "PP-Bizon",
       "soundevent": ""
     },
+    "v1_tf2_spy_knife": {
+      "itemdef": 0,
+      "name": "曼恩公司首席Spy七月初五的钻石蝴蝶刀",
+      "path": "weapons/7ychu5/tf2_spy_knife/v1_tf2_spy_knife.vmdl",
+      "world": "weapons/7ychu5/tf2_spy_knife/w_tf2_spy_knife.vmdl",
+      "category": "近战武器",
+      "soundevent": ""
+    },
+    "v2_tf2_spy_knife": {
+      "itemdef": 0,
+      "name": "曼恩公司首席Spy七月初五的黑铁蝴蝶刀",
+      "path": "weapons/7ychu5/tf2_spy_knife/v2_tf2_spy_knife.vmdl",
+      "world": "weapons/7ychu5/tf2_spy_knife/w_tf2_spy_knife.vmdl",
+      "category": "近战武器",
+      "soundevent": ""
+    },
     "ninelive_kukri": {
       "itemdef": 0,
       "name": "紫金夜影",
@@ -344,14 +360,6 @@
       "category": "Dual Beretta",
       "soundevent": ""
     },
-    "remington_ren": {
-      "itemdef": 60,
-      "name": "Ren",
-      "path": "weapons/models/remington_ren/v_remington_ren.vmdl",
-      "world": "weapons/models/remington_ren/w_remington_ren.vmdl",
-      "category": "M4A1-S",
-      "soundevent": "soundevents/djweapon/m4a1_sywh.vsndevts"
-    },
     "mcw": {
       "itemdef": 16,
       "name": "知更鸟",
@@ -391,6 +399,27 @@
       "world": "models/weapons/exg/tokyocold/xm8/w_xm8.vmdl",
       "category": "AUG",
       "soundevent": "soundevents/djweapon/xm8.vsndevts"
+    },
+    "kelivec": {
+      "itemdef": 33,
+      "name": "Vector | 琪花魔女可莉",
+      "path": "weapons/models/ub/kelivec/kelivec.vmdl",
+      "world": "weapons/models/ub/kelivec/w_kelivec.vmdl",
+      "category": "MP7"
+    },
+    "midori": {
+      "itemdef": 28,
+      "name": "卡斯托夫LSW | 才羽绿",
+      "path": "weapons/models/ub/midori/midori.vmdl",
+      "world": "weapons/models/ub/midori/w_midori.vmdl",
+      "category": "Negev"
+    },
+    "fss_a": {
+      "itemdef": 34,
+      "name": "FSS 飓风 | 霓虹之蝶",
+      "path": "weapons/models/ub/fss_a/fss_a.vmdl",
+      "world": "weapons/models/ub/fss_a/w_fss_a.vmdl",
+      "category": "MP9"
     }
   },
   "MenuType": "chat",
