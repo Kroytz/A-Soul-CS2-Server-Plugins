@@ -25,10 +25,10 @@
       "scoreboard": "纳西妲"
     },
     "76561198379293428": {
-      "prefix": "{Purple}✦321K上海人✦ ",
+      "prefix": "{Purple}✦鱼卵✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "鱼卵"
+      "scoreboard": "321K上海人"
     },
     "76561199019716291": {
       "prefix": "{Purple}✦若杨✦ ",
@@ -43,10 +43,10 @@
       "scoreboard": "A-QUA"
     },
     "76561198357957183": {
-      "prefix": "{Purple}✦福瑞佬✦ ",
+      "prefix": "{Purple}✦CYC✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "CYC"
+      "scoreboard": "福瑞佬"
     },
     "76561199191528198": {
       "prefix": "{Purple}✦市长✦ ",
@@ -149,6 +149,12 @@
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "广吸妹"
+    },
+    "76561197972373728": {
+      "prefix": "{Purple}✦王日银✦ ",
+      "nick_color": "{DEFAULT}",
+      "message_color": "",
+      "scoreboard": "RHDCS2"
     },
     "#css/admin": {
       "prefix": "{RED}[狗管理] ",
