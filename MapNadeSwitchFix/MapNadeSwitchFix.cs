@@ -1,6 +1,7 @@
 ﻿
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Entities.Constants;
+using CounterStrikeSharp.API.Modules.Utils;
 
 public partial class MapNadeSwitchFix : BasePlugin
 {
@@ -13,7 +14,15 @@ public partial class MapNadeSwitchFix : BasePlugin
     {
         RegisterListener<Listeners.OnEntityCreated>((entity) =>
         {
-            var grenade = (CBaseCSGrenade)entity;
+            // Shit CS# WHY I HAVE TO CAST CLASS LIKE THIS
+            var hGrenade = (CHandle<CBaseCSGrenade>)Activator.CreateInstance(typeof(CHandle<CBaseCSGrenade>), entity.EntityHandle.Raw)!;
+            if (!hGrenade.IsValid)
+                return;
+
+            var grenade = hGrenade.Get();
+            if (grenade == null || !grenade.IsValid)
+                return;
+
             var designerName = entity.DesignerName;
             if (designerName == "weapon_hegrenade")
             {
