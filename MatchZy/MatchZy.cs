@@ -312,15 +312,18 @@ namespace MatchZy
 
             RegisterEventHandler<EventPlayerHurt>((@event, info) =>
 			{
-				CCSPlayerController attacker = @event.Attacker;
-                CCSPlayerController victim = @event.Userid;
+				CCSPlayerController? attacker = @event.Attacker;
+                CCSPlayerController? victim = @event.Userid;
+
+                if (attacker == null || victim == null || !victim.IsValid || !attacker.IsValid)
+                    return HookResult.Continue;
 
                 if (isPractice)
                 {
                     if (victim.IsBot) {
                         int damage = @event.DmgHealth;
                         int postDamageHealth = @event.Health;
-                        @event.Attacker.PrintToChat($"{chatPrefix} {damage} damage to BOT {victim.PlayerName}({postDamageHealth} health)");
+                        attacker.PrintToChat($"{chatPrefix} {damage} damage to BOT {victim.PlayerName}({postDamageHealth} health)");
                     }
                     return HookResult.Continue;
                 }
@@ -328,11 +331,13 @@ namespace MatchZy
 				if (!attacker.IsValid || attacker.IsBot && !(@event.DmgHealth > 0 || @event.DmgArmor > 0))
 					return HookResult.Continue;
                 if (matchStarted) {
-                    if (@event.Userid.TeamNum != attacker.TeamNum)
+                    if (victim.TeamNum != attacker.TeamNum)
                     {
-                        int targetId = (int)@event.Userid.UserId!;
+                        int? targetId = victim.UserId;
+                        if (targetId == null || targetId < 0)
+                            return HookResult.Continue;
 
-                        UpdatePlayerDamageInfo(@event, targetId);
+                        UpdatePlayerDamageInfo(@event, targetId.Value);
                     }
                 }
 
