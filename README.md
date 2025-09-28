@@ -6,6 +6,7 @@ A plugins collection used in [A-Soul](https://steamcommunity.com/groups/A_sou_l)
 [CounterStrikeSharp](https://github.com/roflmuffin/CounterStrikeSharp)  
 
 ### Shared
+[CS2-Tags](https://github.com/daffyyyy/CS2-Tags)  
 [CS2-BypassTeamLimit](https://github.com/Mesharsky/CS2-BypassTeamLimit)  
 [CS2-Admin](https://github.com/schwarper/cs2-admin)  
 [Inventory Simulator](https://github.com/ianlucas/cs2-inventory-simulator-plugin)  
