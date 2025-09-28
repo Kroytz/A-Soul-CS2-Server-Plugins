@@ -1,425 +1,60 @@
 {
   "Models": {
-    "mikumac": {
-      "itemdef": 17,
-      "name": "初音未来",
-      "path": "weapons/models/ub/mikumac/mikumac.vmdl",
-      "world": "weapons/models/ub/mikumac/w_mikumac.vmdl",
-      "category": "Mac-10",
-      "soundevent": ""
-    },
-    "live_twin": {
-      "itemdef": 46,
-      "name": "双子",
-      "path": "weapons/models/ub/live_twin/live_twin.vmdl",
-      "world": "",
-      "category": "燃烧瓶",
-      "soundevent": ""
-    },
-    "zaomengpp29": {
-      "itemdef": 7,
-      "name": "早梦",
-      "path": "weapons/models/zaomengpp29/v_pp29_zaomeng.vmdl",
-      "world": "weapons/models/zaomengpp29/w_pp29_zaomeng.vmdl",
-      "category": "PP-Bizon",
-      "soundevent": ""
-    },
-    "zaomengak": {
-      "itemdef": 7,
-      "name": "早梦",
-      "path": "weapons/models/zaomengak/weapon_zaomengak.vmdl",
-      "world": "weapons/models/zaomengak/w_weapon_zaomengak.vmdl",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "muse191": {
-      "itemdef": 7,
-      "name": "暮色191",
-      "path": "weapons/models/ub/muse191/muse191.vmdl",
-      "world": "weapons/models/ub/muse191/w_muse191.vmdl",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "baihu2": {
-      "itemdef": 7,
-      "name": "白虎",
-      "path": "weapons/models/ub/baihu2/baihu2.vmdl",
-      "world": "",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "tianqi": {
-      "itemdef": 7,
-      "name": "天启",
-      "path": "weapons/models/ub/tianqi/tianqi.vmdl",
-      "world": "weapons/models/ub/tianqi/w_tianqi.vmdl",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "mmss": {
-      "itemdef": 7,
-      "name": "喵喵",
-      "path": "weapons/models/ub/mmss/mmss.vmdl",
-      "world": "",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "an94_spaceship": {
-      "itemdef": 13,
-      "name": "AN94 | 超新星",
-      "path": "models/weapons/exg/tokyocold/an94_spaceship/v_an94_spaceship.vmdl",
-      "world": "models/weapons/exg/tokyocold/an94_spaceship/w_an94_spaceship.vmdl",
-      "category": "Galil AR",
-      "soundevent": "soundevents/djweapon/an94_spaceship.vsndevts"
-    },
-    "ex12_xy": {
-      "itemdef": 25,
-      "name": "小鳥遊 ホシノ",
-      "path": "models/weapons/exg/tokyocold/ex12_xy/ex12_xy.vmdl",
-      "world": "models/weapons/exg/tokyocold/ex12_xy/w_ex12_xy.vmdl",
-      "category": "XM1014",
-      "soundevent": "soundevents/djweapon/ex12.vsndevts"
-    },
-    "spas": {
-      "itemdef": 35,
-      "name": "SPAS-12 | 波奇酱",
-      "path": "weapons/models/ub/spas/spas.vmdl",
-      "world": "",
-      "category": "Nova",
-      "soundevent": ""
-    },
-    "lockwood680": {
-      "itemdef": 35,
-      "name": "露娜",
-      "path": "models/weapons/exg/tokyocold/lockwood680/v_lockwood680.vmdl",
-      "world": "models/weapons/exg/tokyocold/lockwood680/w_lockwood680.vmdl",
-      "category": "Nova",
-      "soundevent": "soundevents/djweapon/lockwood680.vsndevts"
-    },
-    "bizon_lightning": {
-      "itemdef": 26,
-      "name": "雷电",
-      "path": "models/weapons/exg/tokyocold/bizon_lightning/bizon_lightning.vmdl",
-      "world": "",
-      "category": "PP-Bizon",
-      "soundevent": ""
-    },
-    "v1_tf2_spy_knife": {
-      "itemdef": 0,
-      "name": "曼恩公司首席Spy七月初五的钻石蝴蝶刀",
-      "path": "weapons/7ychu5/tf2_spy_knife/v1_tf2_spy_knife.vmdl",
-      "world": "weapons/7ychu5/tf2_spy_knife/w_tf2_spy_knife.vmdl",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "v2_tf2_spy_knife": {
-      "itemdef": 0,
-      "name": "曼恩公司首席Spy七月初五的黑铁蝴蝶刀",
-      "path": "weapons/7ychu5/tf2_spy_knife/v2_tf2_spy_knife.vmdl",
-      "world": "weapons/7ychu5/tf2_spy_knife/w_tf2_spy_knife.vmdl",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "ninelive_kukri": {
-      "itemdef": 0,
-      "name": "紫金夜影",
-      "path": "weapons/models/ub/ninelive_kukri/ninelivekukri.vmdl",
-      "world": "",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "re4knife_zaomeng": {
-      "itemdef": 0,
-      "name": "早梦",
-      "path": "weapons/models/2en0w/re4knife_zaomeng/re4knife_zaomeng.vmdl",
-      "world": "weapons/models/2en0w/re4knife_zaomeng/w_re4knife_zaomeng.vmdl",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "kunai": {
-      "itemdef": 0,
-      "name": "红苦无",
-      "path": "weapons/models/knife/knife_default_ct/kunai.vmdl",
-      "world": "weapons/models/knife/knife_default_ct/w_kunai.vmdl",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "kunai2": {
-      "itemdef": 0,
-      "name": "蓝苦无",
-      "path": "weapons/models/knife/knife_default_ct/kunai2.vmdl",
-      "world": "weapons/models/knife/knife_default_ct/w_kunai2.vmdl",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "cpbut": {
-      "itemdef": 0,
-      "name": "冠军蝴蝶刀",
-      "path": "weapons/models/knife/knife_butterfly/cpbut.vmdl",
-      "world": "",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "loba": {
-      "itemdef": 0,
-      "name": "阿萨兰之爪",
-      "path": "weapons/models/knife/knife_butterfly/loba.vmdl",
-      "world": "",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "cssknife2": {
-      "itemdef": 0,
-      "name": "起源水刀",
-      "path": "models/weapons/exg/tokyocold/csknife/csknife_water.vmdl",
-      "world": "models/weapons/exg/tokyocold/csknife/w_csknife_water.vmdl",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "cp21": {
-      "itemdef": 7,
-      "name": "狂徒 | 冠军21",
-      "path": "weapons/models/ub/cp21/cp.vmdl",
-      "world": "",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "cp23": {
-      "itemdef": 7,
-      "name": "狂徒 | 冠军23",
-      "path": "weapons/models/ub/cp23/cp23.vmdl",
-      "world": "",
-      "category": "AK-47",
-      "soundevent": ""
-    },
-    "oni2": {
-      "itemdef": 0,
-      "name": "鬼刀",
-      "path": "weapons/models/knife/knife_butterfly/oni2.vmdl",
-      "world": "",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "crypto": {
-      "itemdef": 0,
-      "name": "隐秘之刃",
-      "path": "weapons/models/knife/knife_butterfly/crypto.vmdl",
-      "world": "",
-      "category": "近战武器",
-      "soundevent": ""
-    },
-    "iso45": {
-      "itemdef": 23,
-      "name": "ISO45 | 柚鸟夏",
-      "path": "models/weapons/exg/tokyocold/iso45/v_iso45.vmdl",
-      "world": "models/weapons/exg/tokyocold/iso45/w_iso45.vmdl",
-      "category": "MP5SD",
-      "soundevent": "soundevents/djweapon/iso45.vsndevts"
-    },
-    "fmg9baka": {
-      "itemdef": 19,
-      "name": "FMG9",
-      "path": "weapons/models/ub/fmg9baka/fmg9baka.vmdl",
-      "world": "weapons/models/ub/fmg9baka/w_fmg9baka.vmdl",
-      "category": "P90",
-      "soundevent": ""
-    },
-    "asoulscar": {
-      "itemdef": 38,
-      "name": "M14 | A-SOUL",
-      "path": "weapons/models/ub/asoulscar/asoulscar.vmdl",
-      "world": "weapons/models/ub/asoulscar/w_asoulscar.vmdl",
-      "category": "SCAR-20",
-      "soundevent": ""
-    },
-    "tkfm4": {
+    "bf2042_m5a3_obsidian": {
       "itemdef": 16,
-      "name": "Doro",
-      "path": "weapons/models/ub/tkfm4/dorom4.vmdl",
-      "world": "weapons/models/ub/tkfm4/w_dorom4.vmdl",
+      "name": "bf2042_m5a3_obsidian",
+      "path": "weapon_bf2042_m5a3_obsidian",
       "category": "M4A4",
       "soundevent": ""
     },
-    "iso_hemlock": {
+    "codbo3_m4a1tech_dummy": {
       "itemdef": 16,
-      "name": "花火",
-      "path": "models/weapons/exg/tokyocold/iso_hemlock/v_iso_hemlock.vmdl",
-      "world": "models/weapons/exg/tokyocold/iso_hemlock/w_iso_hemlock.vmdl",
+      "name": "codbo3_m4a1tech_dummy",
+      "path": "weapon_codbo3_m4a1tech_dummy",
       "category": "M4A4",
-      "soundevent": "soundevents/djweapon/iso_hemlock.vsndevts"
-    },
-    "bluesport": {
-      "itemdef": 23,
-      "name": "蓝色运动",
-      "path": "weapons/models/ub/bluesport/bluesport.vmdl",
-      "world": "weapons/models/ub/bluesport/w_bluesport.vmdl",
-      "category": "MP5SD",
       "soundevent": ""
     },
-    "blockar": {
-      "itemdef": 60,
-      "name": "积木龙皇",
-      "path": "weapons/models/ub/blockar/blockar.vmdl",
-      "world": "",
-      "category": "M4A1-S",
+    "csol2_galilsniper_tesla": {
+      "itemdef": 13,
+      "name": "csol2_galilsniper_tesla",
+      "path": "weapon_csol2_galilsniper_tesla",
+      "category": "Galil AR",
       "soundevent": ""
     },
-    "v_mwacr": {
-      "itemdef": 13,
-      "name": "ACRCN | 丰见小鸟",
-      "path": "models/weapons/exg/tokyocold/acr/v_mwacr.vmdl",
-      "world": "models/weapons/exg/tokyocold/acr/w_mwacr.vmdl",
-      "category": "Galil AR",
-      "soundevent": "soundevents/djweapon/acrcn.vsndevts"
+    "diamond_sword_enchated": {
+      "itemdef": 0,
+      "name": "diamond_sword_enchated",
+      "path": "weapon_diamond_sword_enchated",
+      "category": "近战武器",
+      "soundevent": ""
     },
-    "acr_zsj": {
-      "itemdef": 13,
-      "name": "ACR | 紫水晶",
-      "path": "models/weapons/exg/tokyocold/acr_zsj/acr_zsj.vmdl",
-      "world": "models/weapons/exg/tokyocold/acr_zsj/w_acr_zsj.vmdl",
-      "category": "Galil AR",
-      "soundevent": "soundevents/djweapon/acr_zsj.vsndevts"
+    "golden_sword": {
+      "itemdef": 0,
+      "name": "golden_sword",
+      "path": "weapon_golden_sword",
+      "category": "近战武器",
+      "soundevent": ""
     },
-    "asval": {
-      "itemdef": 13,
-      "name": "ASVAL",
-      "path": "models/weapons/exg/tokyocold/asval/v_asval.vmdl",
-      "world": "models/weapons/exg/tokyocold/asval/w_asval.vmdl",
-      "category": "Galil AR",
-      "soundevent": "soundevents/djweapon/asval.vsndevts"
+    "iron_sword": {
+      "itemdef": 0,
+      "name": "iron_sword",
+      "path": "weapon_iron_sword",
+      "category": "近战武器",
+      "soundevent": ""
     },
-    "m82a1_bornbeast": {
+    "as50": {
       "itemdef": 9,
-      "name": "巴雷特-毁灭",
-      "path": "models/weapons/exg/tokyocold/m82a1_bornbeast/v_m82a1_bornbeast.vmdl",
-      "world": "models/weapons/exg/tokyocold/m82a1_bornbeast/w_m82a1_bornbeast.vmdl",
+      "name": "as50",
+      "path": "weapon_as50",
       "category": "AWP",
-      "soundevent": "soundevents/djweapon/dj_cf_weapons.vsndevts"
-    },
-    "tmp_sd": {
-      "itemdef": 34,
-      "name": "HORUS | 宫子",
-      "path": "models/weapons/exg/tokyocold/tmp_sd/v_tmpsd.vmdl",
-      "world": "models/weapons/exg/tokyocold/tmp_sd/w_tmpsd.vmdl",
-      "category": "MP9",
-      "soundevent": "soundevents/djweapon/tmp.vsndevts"
-    },
-    "bap90": {
-      "itemdef": 19,
-      "name": "未花",
-      "path": "weapons/models/ub/bap90/bap90.vmdl",
-      "world": "weapons/models/ub/bap90/w_bap90.vmdl",
-      "category": "P90",
       "soundevent": ""
     },
-    "ninelive": {
-      "itemdef": 61,
-      "name": "紫金夜影",
-      "path": "weapons/models/ub/ninelive/ninelive.vmdl",
-      "world": "",
-      "category": "USP-S",
+    "cso_destroyer": {
+      "itemdef": 9,
+      "name": "cso_destroyer",
+      "path": "weapon_cso_destroyer",
+      "category": "AWP",
       "soundevent": ""
-    },
-    "subaru": {
-      "itemdef": 4,
-      "name": "安和",
-      "path": "weapons/models/ub/subaru/subaru.vmdl",
-      "world": "weapons/models/ub/subaru/w_subaru.vmdl",
-      "category": "Glock-18",
-      "soundevent": ""
-    },
-    "mika": {
-      "itemdef": 61,
-      "name": "未花",
-      "path": "weapons/models/ub/bausp/mika.vmdl",
-      "world": "weapons/models/ub/bausp/w_mika.vmdl",
-      "category": "USP-S",
-      "soundevent": ""
-    },
-    "nagisa": {
-      "itemdef": 61,
-      "name": "桐藤渚",
-      "path": "weapons/models/ub/bausp/nagisa.vmdl",
-      "world": "weapons/models/ub/bausp/w_nagisa.vmdl",
-      "category": "USP-S",
-      "soundevent": ""
-    },
-    "seia": {
-      "itemdef": 61,
-      "name": "圣娅",
-      "path": "weapons/models/ub/bausp/seia.vmdl",
-      "world": "weapons/models/ub/bausp/w_seia.vmdl",
-      "category": "USP-S",
-      "soundevent": ""
-    },
-    "dualinfi": {
-      "itemdef": 2,
-      "name": "金红双蝎",
-      "path": "weapons/models/ub/dualinfi/dualinfi.vmdl",
-      "world": "weapons/models/ub/dualinfi/w_dualinfi.vmdl",
-      "category": "Dual Beretta",
-      "soundevent": ""
-    },
-    "mcw": {
-      "itemdef": 16,
-      "name": "知更鸟",
-      "path": "models/weapons/exg/tokyocold/mcw/v_mcw.vmdl",
-      "world": "models/weapons/exg/tokyocold/mcw/w_mcw.vmdl",
-      "category": "M4A4",
-      "soundevent": "soundevents/djweapon/mcw.vsndevts"
-    },
-    "m4a1_sywh": {
-      "itemdef": 60,
-      "name": "聖園 ミカ",
-      "path": "models/weapons/exg/tokyocold/m4a1_sywh/v_m4a1_sywh.vmdl",
-      "world": "models/weapons/exg/tokyocold/m4a1_sywh/w_m4a1_sywh.vmdl",
-      "category": "M4A1-S",
-      "soundevent": "soundevents/djweapon/m4a1_sywh.vsndevts"
-    },
-    "scar_mw2019": {
-      "itemdef": 16,
-      "name": "HYAKKIYAKO",
-      "path": "models/weapons/exg/tokyocold/scar_mw2019/v_scar_mw2019.vmdl",
-      "world": "models/weapons/exg/tokyocold/scar_mw2019/w_scar_mw2019.vmdl",
-      "category": "M4A4",
-      "soundevent": "soundevents/djweapon/scar_mw.vsndevts"
-    },
-    "taq56": {
-      "itemdef": 16,
-      "name": "IBUKI",
-      "path": "models/weapons/exg/tokyocold/taq56/v_taq56.vmdl",
-      "world": "models/weapons/exg/tokyocold/taq56/w_taq56.vmdl",
-      "category": "M4A4",
-      "soundevent": "soundevents/djweapon/taq56.vsndevts"
-    },
-    "xm8": {
-      "itemdef": 8,
-      "name": "XM8",
-      "path": "models/weapons/exg/tokyocold/xm8/v_xm8.vmdl",
-      "world": "models/weapons/exg/tokyocold/xm8/w_xm8.vmdl",
-      "category": "AUG",
-      "soundevent": "soundevents/djweapon/xm8.vsndevts"
-    },
-    "kelivec": {
-      "itemdef": 33,
-      "name": "Vector | 琪花魔女可莉",
-      "path": "weapons/models/ub/kelivec/kelivec.vmdl",
-      "world": "weapons/models/ub/kelivec/w_kelivec.vmdl",
-      "category": "MP7"
-    },
-    "midori": {
-      "itemdef": 28,
-      "name": "卡斯托夫LSW | 才羽绿",
-      "path": "weapons/models/ub/midori/midori.vmdl",
-      "world": "weapons/models/ub/midori/w_midori.vmdl",
-      "category": "Negev"
-    },
-    "fss_a": {
-      "itemdef": 34,
-      "name": "FSS 飓风 | 霓虹之蝶",
-      "path": "weapons/models/ub/fss_a/fss_a.vmdl",
-      "world": "weapons/models/ub/fss_a/w_fss_a.vmdl",
-      "category": "MP9"
     }
   },
   "MenuType": "chat",
