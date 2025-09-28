@@ -3,57 +3,129 @@
     "bf2042_m5a3_obsidian": {
       "itemdef": 16,
       "name": "bf2042_m5a3_obsidian",
-      "path": "weapon_bf2042_m5a3_obsidian",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/bf2042_m5a3_obsidian/bf2042_m5a3_obsidian.vmdl",
+      "world": "phase2/weapons/7ychu5/_hoshics/slot1/bf2042_m5a3_obsidian/wmodel.vmdl",
       "category": "M4A4",
       "soundevent": ""
     },
     "codbo3_m4a1tech_dummy": {
       "itemdef": 16,
       "name": "codbo3_m4a1tech_dummy",
-      "path": "weapon_codbo3_m4a1tech_dummy",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/codbo3_m4a1tech_dummy/codbo3_m4a1tech_dummy.vmdl",
+      "world": "",
       "category": "M4A4",
+      "soundevent": ""
+    },
+    "m4a4_zaomeng": {
+      "itemdef": 16,
+      "name": "m4a4_zaomeng",
+      "path": "phase2/weapons/models/2en0w/m4a4_zaomeng/m4a4_zaomeng_ag2.vmdl",
+      "world": "",
+      "category": "M4A4",
+      "soundevent": ""
+    },
+    "m4a1s_mariblend": {
+      "itemdef": 60,
+      "name": "m4a1s_mariblend",
+      "path": "phase2/weapons/models/2en0w/m4a1s_mariblend/m4a1s_mariblend_ag2.vmdl",
+      "world": "",
+      "category": "M4A1-S",
       "soundevent": ""
     },
     "csol2_galilsniper_tesla": {
       "itemdef": 13,
       "name": "csol2_galilsniper_tesla",
-      "path": "weapon_csol2_galilsniper_tesla",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/csol2_galilsniper_tesla/csol2_galilsniper_tesla.vmdl",
+      "world": "phase2/weapons/7ychu5/_hoshics/slot1/csol2_galilsniper_tesla/wmodel.vmdl",
       "category": "Galil AR",
       "soundevent": ""
     },
     "diamond_sword_enchated": {
       "itemdef": 0,
       "name": "diamond_sword_enchated",
-      "path": "weapon_diamond_sword_enchated",
+      "path": "weapons/models/ub/minecraft_swords/diamond_sword_enchated_ag2.vmdl",
+      "world": "",
       "category": "近战武器",
       "soundevent": ""
     },
     "golden_sword": {
       "itemdef": 0,
       "name": "golden_sword",
-      "path": "weapon_golden_sword",
+      "path": "weapons/models/ub/minecraft_swords/golden_sword_ag2.vmdl",
+      "world": "",
       "category": "近战武器",
       "soundevent": ""
     },
     "iron_sword": {
       "itemdef": 0,
       "name": "iron_sword",
-      "path": "weapon_iron_sword",
+      "path": "weapons/models/ub/minecraft_swords/iron_sword_ag2.vmdl",
+      "world": "",
       "category": "近战武器",
       "soundevent": ""
     },
     "as50": {
       "itemdef": 9,
       "name": "as50",
-      "path": "weapon_as50",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/as50_dummy/as50.vmdl",
+      "world": "",
       "category": "AWP",
       "soundevent": ""
     },
     "cso_destroyer": {
       "itemdef": 9,
       "name": "cso_destroyer",
-      "path": "weapon_cso_destroyer",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/cso_destroyer/cso_destroyer.vmdl",
+      "world": "",
       "category": "AWP",
+      "soundevent": ""
+    },
+    "ak47_zaomeng": {
+      "itemdef": 7,
+      "name": "ak47_zaomeng",
+      "path": "phase2/weapons/models/2en0w/ak47_zaomeng/ak47_zaomeng_ag2.vmdl",
+      "world": "",
+      "category": "AK-47",
+      "soundevent": ""
+    },
+    "love_through_sky": {
+      "itemdef": 40,
+      "name": "love_through_sky",
+      "path": "phase2/weapons/aquaz/_hoshics/slot1/love_through_sky/love_through_sky_ag2.vmdl",
+      "world": "",
+      "category": "SSG08",
+      "soundevent": ""
+    },
+    "ice_lover": {
+      "itemdef": 2,
+      "name": "ice_lover",
+      "path": "phase2/weapons/aquaz/_hoshics/slot2/ice_lover/ice_lover_ag2.vmdl",
+      "world": "",
+      "category": "Dual Beretta",
+      "soundevent": ""
+    },
+    "crow3": {
+      "itemdef": 26,
+      "name": "crow3",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/cso_crow3/cso_crow3.vmdl",
+      "world": "",
+      "category": "PP-Bizon",
+      "soundevent": ""
+    },
+    "csol2_pkmfire": {
+      "itemdef": 14,
+      "name": "csol2_pkmfire",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot1/csol2_pkmfire/csol2_pkmfire.vmdl",
+      "world": "phase2/weapons/7ychu5/_hoshics/slot1/csol2_pkmfire/wmodel.vmdl",
+      "category": "M249",
+      "soundevent": ""
+    },
+    "deagle_gold_gacha": {
+      "itemdef": 1,
+      "name": "deagle_gold_gacha",
+      "path": "phase2/weapons/7ychu5/_hoshics/slot2/deagle_gold_gacha/deagle_gold_gacha.vmdl",
+      "world": "",
+      "category": "Deagle",
       "soundevent": ""
     }
   },

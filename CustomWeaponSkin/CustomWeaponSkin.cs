@@ -1,25 +1,26 @@
 ﻿
-using CounterStrikeSharp.API.Core.Attributes.Registration;
-using CounterStrikeSharp.API.Core.Attributes;
-using CounterStrikeSharp.API.Core;
-using CounterStrikeSharp.API.Modules.Cvars.Validators;
-using CounterStrikeSharp.API.Modules.Cvars;
-using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
-using CounterStrikeSharp.API.Modules.Memory;
 using CounterStrikeSharp.API;
-using System.Runtime.InteropServices;
+using CounterStrikeSharp.API.Core;
+using CounterStrikeSharp.API.Core.Attributes;
+using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Commands;
-using CounterStrikeSharp.API.Modules.Utils;
-using CounterStrikeSharp.API.Modules.Timers;
+using CounterStrikeSharp.API.Modules.Cvars;
+using CounterStrikeSharp.API.Modules.Cvars.Validators;
 using CounterStrikeSharp.API.Modules.Entities;
-using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
-using System.Numerics;
-using static CounterStrikeSharp.API.Core.Listeners;
-using System.Text.Json.Serialization;
-using Storage;
+using CounterStrikeSharp.API.Modules.Memory;
+using CounterStrikeSharp.API.Modules.Memory.DynamicFunctions;
+using CounterStrikeSharp.API.Modules.Timers;
+using CounterStrikeSharp.API.Modules.Utils;
 using Microsoft.Extensions.Logging;
-using System.Xml.Linq;
+using Storage;
+using System.Numerics;
 using System.Reflection;
+using System.Runtime.InteropServices;
+using System.Text.Json.Serialization;
+using System.Xml.Linq;
+using static CounterStrikeSharp.API.Core.Listeners;
+using static Dapper.SqlMapper;
+using Timer = CounterStrikeSharp.API.Modules.Timers.Timer;
 
 namespace CustomWeaponSKin;
 
@@ -67,6 +68,8 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
     public bool[] isFetching = new bool[64];
     Dictionary<ulong, Dictionary<long, Model>> dictSteamToItemDefModel = new Dictionary<ulong, Dictionary<long, Model>>();
 
+    public static readonly MemoryFunctionVoid<nint, string> ChangeSubclassFunc = new(GameData.GetSignature("CBaseEntity_ChangeSubclass"));
+
     public override void Load(bool hotReload)
     {
         storage = null;
@@ -78,7 +81,8 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             case "mysql":
                 storage = new MySQLStorage(Config.MySQLIP, Config.MySQLPort, Config.MySQLUser, Config.MySQLPassword, Config.MySQLDatabase, Config.MySQLTable);
                 break;
-        };
+        }
+        ;
         if (storage == null)
         {
             throw new Exception("Failed to initialize storage. Please check your config");
@@ -89,7 +93,11 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             foreach (var model in Config.Models.Values.ToList())
             {
                 Server.PrintToConsole($"CustomWeaponSkin :: Precaching {model.path}");
-                manifest.AddResource(model.path);
+                if (model.path.Length > 0)
+                {
+                    manifest.AddResource(model.path);
+                }
+
                 if (model.world.Length > 0)
                 {
                     manifest.AddResource(model.world);
@@ -107,6 +115,8 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             manifest.AddResource("soundevents/ub_game_sounds_weapons2.vsndevts");
         });
 
+        VirtualFunctions.GiveNamedItemFunc.Hook(OnGiveNamedItemPost, HookMode.Post);
+
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
         RegisterEventHandler<EventWeaponFire>(OnWeaponFire);
 
@@ -120,6 +130,65 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         }
 
         Server.PrintToChatAll(PL_PREFIX + "热重载完成!");
+    }
+
+    public override void Unload(bool hotReload)
+    {
+        VirtualFunctions.GiveNamedItemFunc.Unhook(OnGiveNamedItemPost, HookMode.Post);
+    }
+
+    public CCSPlayerController? GetPlayerFromItemServices(CCSPlayer_ItemServices itemServices)
+    {
+        var pawn = itemServices.Pawn.Value;
+        if (pawn == null || !pawn.IsValid || !pawn.Controller.IsValid || pawn.Controller.Value == null) return null;
+        var player = new CCSPlayerController(pawn.Controller.Value.Handle);
+        if (!IsPlayerHumanAndValid(player)) return null;
+        return player;
+    }
+
+    public HookResult OnGiveNamedItemPost(DynamicHook hook)
+    {
+        var designerName = hook.GetParam<string>(1);
+        if (!designerName.Contains("weapon"))
+            return HookResult.Continue;
+
+        var itemServices = hook.GetParam<CCSPlayer_ItemServices>(0);
+        var weapon = hook.GetReturn<CBasePlayerWeapon>();
+        var player = GetPlayerFromItemServices(itemServices);
+
+        if (player != null)
+        {
+            if (designerName.Contains("weapon"))
+            {
+                var steam64 = player.SteamID;
+                long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+                Server.PrintToConsole($"OnEntityCreated: Weapon {weapon.DesignerName}({itemdef}) owner {player.Index}({steam64})");
+                if (!dictSteamToItemDefModel.ContainsKey(steam64)) return HookResult.Continue;
+
+                var node = weapon.CBodyComponent?.SceneNode;
+                if (node == null) return HookResult.Continue;
+                var skeleton = GetSkeletonInstance(node);
+                var modelname = skeleton.ModelState.ModelName;
+                if (modelname.Contains("knife")) itemdef = 0;
+                if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+                {
+                    Model mod = dictSteamToItemDefModel[steam64][itemdef];
+                    if (mod.path.Length > 0)
+                    {
+                        //weapon.AcceptInput("ChangeSubclass", value: "weapon_" + mod.name);
+                        ChangeSubclassFunc.Invoke(weapon.Handle, mod.name);
+                        Server.PrintToConsole($"OnGiveNamedItemPost: ChangeSubclass {mod.name}");
+                    }
+                    //if (mod.world.Length > 0)
+                    //{
+                    //    weapon.SetModel(mod.world);
+                    //    Server.PrintToConsole($"OnGiveNamedItemPost: Set WorldModel {mod.world}");
+                    //}
+                }
+            }
+        }
+
+        return HookResult.Continue;
     }
 
     private void DisplayHelpInConsole(CCSPlayerController? player)
@@ -181,6 +250,27 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         player?.PrintToConsole(" ");
         player?.PrintToConsole(" ");
         player?.PrintToConsole(" ");
+    }
+
+    [ConsoleCommand("css_subclass", "")]
+    [CommandHelper(minArgs: 0, usage: "", whoCanExecute: CommandUsage.CLIENT_ONLY)]
+    public void OnSubclassCommand(CCSPlayerController? player, CommandInfo commandInfo)
+    {
+        if (player is null)
+        {
+            return;
+        }
+
+        CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+        if (pawn == null || !pawn.IsValid)
+            return;
+
+        CBasePlayerWeapon? weapon = pawn.WeaponServices?.ActiveWeapon.Value;
+        if (weapon == null || !weapon.IsValid)
+            return;
+
+        ChangeSubclassFunc.Invoke(weapon.Handle, commandInfo.ArgString);
+        player.PrintToChat(PL_PREFIX + $"已切换武器子类为 {commandInfo.ArgString}");
     }
 
     [ConsoleCommand("css_cwc_all", "Clear skin")]
@@ -402,37 +492,44 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
     {
         var designerName = entity.DesignerName;
 
-        if (designerName.Contains("weapon"))
-        {
-            Server.NextFrame(() =>
-            {
-                var weapon = new CBasePlayerWeapon(entity.Handle);
-                if (!weapon.IsValid || weapon.OriginalOwnerXuidLow == 0) return;
+        //if (designerName.Contains("weapon"))
+        //{
+        //    //Server.NextFrame(() =>
+        //    //{
+        //        var weapon = new CBasePlayerWeapon(entity.Handle);
+        //        if (!weapon.IsValid || weapon.OriginalOwnerXuidLow == 0) return;
 
-                var player = Utilities.GetPlayerFromSteamId((ulong)weapon.OriginalOwnerXuidLow);
-                if (player == null || !IsPlayerHumanAndValid(player)) return;
+        //        var player = Utilities.GetPlayerFromSteamId((ulong)weapon.OriginalOwnerXuidLow);
+        //        if (player == null || !IsPlayerHumanAndValid(player)) return;
 
-                var steam64 = player.SteamID;
-                Server.PrintToConsole($"OnEntityCreated: Weapon {weapon.DesignerName} owner {player.Index}({steam64})");
-                if (!dictSteamToItemDefModel.ContainsKey(steam64)) return;
+        //        var steam64 = player.SteamID;
+        //        long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+        //        Server.PrintToConsole($"OnEntityCreated: Weapon {weapon.DesignerName}({itemdef}) owner {player.Index}({steam64})");
+        //        if (!dictSteamToItemDefModel.ContainsKey(steam64)) return;
 
-                long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
-                var node = weapon.CBodyComponent?.SceneNode;
-                if (node == null) return;
-                var skeleton = GetSkeletonInstance(node);
-                var modelname = skeleton.ModelState.ModelName;
-                if (modelname.Contains("knife")) itemdef = 0;
-                if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
-                {
-                    Model mod = dictSteamToItemDefModel[steam64][itemdef];
-                    if (mod.path.Length > 0)
-                    {
-                        weapon.AcceptInput("ChangeSubclass", value: mod.path);
-                    }
-                }
-            });
-        }
-        else if (designerName.Contains("hegrenade_projectile"))
+        //        var node = weapon.CBodyComponent?.SceneNode;
+        //        if (node == null) return;
+        //        var skeleton = GetSkeletonInstance(node);
+        //        var modelname = skeleton.ModelState.ModelName;
+        //        if (modelname.Contains("knife")) itemdef = 0;
+        //        if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+        //        {
+        //            Model mod = dictSteamToItemDefModel[steam64][itemdef];
+        //            if (mod.path.Length > 0)
+        //            {
+        //                weapon.AcceptInput("ChangeSubclass", value: "weapon_" + mod.name);
+        //                Server.PrintToConsole($"OnEntityCreated: ChangeSubclass {"weapon_" + mod.name}");
+        //            }
+        //            if (mod.world.Length > 0)
+        //            {
+        //                weapon.SetModel(mod.world);
+        //                Server.PrintToConsole($"OnEntityCreated: Set WorldModel {mod.world}");
+        //            }
+        //        }
+        //    //});
+        //}
+        //else 
+        if (designerName.Contains("hegrenade_projectile"))
         {
             Server.NextFrame(() =>
             {
@@ -456,50 +553,46 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
     public HookResult OnItemEquip(EventItemEquip @event, GameEventInfo info)
     {
-        //CCSPlayerController? player = @event.Userid;
-        ////Server.PrintToConsole($"OnItemEquip triggered, player {player.Index}");
-        //if (player == null || player.IsBot)
-        //    return HookResult.Continue;
+        CCSPlayerController? player = @event.Userid;
+        //Server.PrintToConsole($"OnItemEquip triggered, player {player.Index}");
+        if (player == null || player.IsBot)
+            return HookResult.Continue;
 
-        ////Server.PrintToConsole($"{player.Index} pawn Check");
-        //CCSPlayerPawn? pawn = player.PlayerPawn.Value;
-        //if (pawn == null || !pawn.IsValid)
-        //    return HookResult.Continue;
+        //Server.PrintToConsole($"{player.Index} pawn Check");
+        CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+        if (pawn == null || !pawn.IsValid)
+            return HookResult.Continue;
 
-        //var steam64 = player.SteamID;
-        //if (!dictSteamToItemDefModel.ContainsKey(steam64))
-        //    return HookResult.Continue;
+        var steam64 = player.SteamID;
+        if (!dictSteamToItemDefModel.ContainsKey(steam64))
+            return HookResult.Continue;
 
-        ////Server.PrintToConsole($"{player.Index} ActiveWeapon Check");
-        //CBasePlayerWeapon? weapon = pawn.WeaponServices?.ActiveWeapon.Value;
-        //if (weapon == null || !weapon.IsValid)
-        //    return HookResult.Continue;
+        //Server.PrintToConsole($"{player.Index} ActiveWeapon Check");
+        CBasePlayerWeapon? weapon = pawn.WeaponServices?.ActiveWeapon.Value;
+        if (weapon == null || !weapon.IsValid)
+            return HookResult.Continue;
 
-        ////Server.PrintToConsole($"{player.Index} GetVm0");
-        //CBaseViewModel? vm = GetPlayerViewModel(player);
-        //if (vm == null || !vm.IsValid)
-        //    return HookResult.Continue;
-
-        //string name = @event.Item;
-        //long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
-        //CSWeaponType type = (CSWeaponType)@event.Weptype;
+        string name = @event.Item;
+        long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+        CSWeaponType type = (CSWeaponType)@event.Weptype;
         //Server.PrintToConsole($"{player.Index} DefIdx = {itemdef}, Name = {name}, type = {type}");
 
-        //if (name == "knife")
-        //{
-        //    itemdef = 0;
-        //}
+        if (name == "knife")
+        {
+            itemdef = 0;
+        }
 
-        //if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
-        //{
-        //    Model mod = dictSteamToItemDefModel[steam64][itemdef];
-        //    //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
-        //    vm.SetModel(mod.path);
-        //    if (mod.world.Length > 0)
-        //    {
-        //        weapon.SetModel(mod.world);
-        //    }
-        //}
+        if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+        {
+            Model mod = dictSteamToItemDefModel[steam64][itemdef];
+            ChangeSubclassFunc.Invoke(weapon.Handle, mod.name);
+            //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
+            //vm.SetModel(mod.path);
+            //if (mod.world.Length > 0)
+            //{
+            //    weapon.SetModel(mod.world);
+            //}
+        }
         //else
         //{
         //    var node = weapon.CBodyComponent?.SceneNode;
@@ -542,26 +635,26 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
     public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo info)
     {
-        CCSPlayerController? player = @event.Userid;
-        if (player == null)
-            return HookResult.Continue;
+        //CCSPlayerController? player = @event.Userid;
+        //if (player == null)
+        //    return HookResult.Continue;
 
-        CCSPlayerPawn? pawn = player.PlayerPawn.Value;
-        if (pawn == null || !pawn.IsValid)
-            return HookResult.Continue;
+        //CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+        //if (pawn == null || !pawn.IsValid)
+        //    return HookResult.Continue;
 
-        var steam64 = player.SteamID;
-        if (!dictSteamToItemDefModel.ContainsKey(steam64))
-            return HookResult.Continue;
+        //var steam64 = player.SteamID;
+        //if (!dictSteamToItemDefModel.ContainsKey(steam64))
+        //    return HookResult.Continue;
 
-        CCSWeaponBase? weapon = (CCSWeaponBase?)(pawn.WeaponServices?.ActiveWeapon.Value);
-        if (weapon == null || !weapon.IsValid)
-            return HookResult.Continue;
+        //CCSWeaponBase? weapon = (CCSWeaponBase?)(pawn.WeaponServices?.ActiveWeapon.Value);
+        //if (weapon == null || !weapon.IsValid)
+        //    return HookResult.Continue;
 
-        if (weapon.InReload)
-        {
-            weapon.InReload = false;
-        } 
+        //if (weapon.InReload)
+        //{
+        //    weapon.InReload = false;
+        //} 
 
         return HookResult.Continue;
     }
