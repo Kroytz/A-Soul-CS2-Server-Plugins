@@ -416,9 +416,6 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 Server.PrintToConsole($"OnEntityCreated: Weapon {weapon.DesignerName} owner {player.Index}({steam64})");
                 if (!dictSteamToItemDefModel.ContainsKey(steam64)) return;
 
-                CBaseViewModel? vm = GetPlayerViewModel(player);
-                if (vm == null || !vm.IsValid) return;
-
                 long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
                 var node = weapon.CBodyComponent?.SceneNode;
                 if (node == null) return;
@@ -428,19 +425,9 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
                 if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
                 {
                     Model mod = dictSteamToItemDefModel[steam64][itemdef];
-                    var path = mod.path;
-                    if (mod.world.Length > 0) path = mod.world;
-                    weapon.SetModel(path);
-                    Server.PrintToConsole($"OnEntityCreated: Found {weapon.DesignerName} model path {mod.path} world {mod.world}, owner {player.Index}({steam64})");
-
-                    CCSPlayerPawn? pawn = player.PlayerPawn.Value;
-                    if (pawn == null || !pawn.IsValid) return;
-                    CBasePlayerWeapon? activeweapon = pawn.WeaponServices?.ActiveWeapon.Value;
-                    if (activeweapon == null || !activeweapon.IsValid) return;
-                    if (weapon == activeweapon)
+                    if (mod.path.Length > 0)
                     {
-                        // Only apply vm if switching to active weapon
-                        vm.SetModel(mod.path);
+                        weapon.AcceptInput("ChangeSubclass", value: mod.path);
                     }
                 }
             });
@@ -469,86 +456,86 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
 
     public HookResult OnItemEquip(EventItemEquip @event, GameEventInfo info)
     {
-        CCSPlayerController? player = @event.Userid;
-        //Server.PrintToConsole($"OnItemEquip triggered, player {player.Index}");
-        if (player == null || player.IsBot)
-            return HookResult.Continue;
+        //CCSPlayerController? player = @event.Userid;
+        ////Server.PrintToConsole($"OnItemEquip triggered, player {player.Index}");
+        //if (player == null || player.IsBot)
+        //    return HookResult.Continue;
 
-        //Server.PrintToConsole($"{player.Index} pawn Check");
-        CCSPlayerPawn? pawn = player.PlayerPawn.Value;
-        if (pawn == null || !pawn.IsValid)
-            return HookResult.Continue;
+        ////Server.PrintToConsole($"{player.Index} pawn Check");
+        //CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+        //if (pawn == null || !pawn.IsValid)
+        //    return HookResult.Continue;
 
-        var steam64 = player.SteamID;
-        if (!dictSteamToItemDefModel.ContainsKey(steam64))
-            return HookResult.Continue;
+        //var steam64 = player.SteamID;
+        //if (!dictSteamToItemDefModel.ContainsKey(steam64))
+        //    return HookResult.Continue;
 
-        //Server.PrintToConsole($"{player.Index} ActiveWeapon Check");
-        CBasePlayerWeapon? weapon = pawn.WeaponServices?.ActiveWeapon.Value;
-        if (weapon == null || !weapon.IsValid)
-            return HookResult.Continue;
+        ////Server.PrintToConsole($"{player.Index} ActiveWeapon Check");
+        //CBasePlayerWeapon? weapon = pawn.WeaponServices?.ActiveWeapon.Value;
+        //if (weapon == null || !weapon.IsValid)
+        //    return HookResult.Continue;
 
-        //Server.PrintToConsole($"{player.Index} GetVm0");
-        CBaseViewModel? vm = GetPlayerViewModel(player);
-        if (vm == null || !vm.IsValid)
-            return HookResult.Continue;
+        ////Server.PrintToConsole($"{player.Index} GetVm0");
+        //CBaseViewModel? vm = GetPlayerViewModel(player);
+        //if (vm == null || !vm.IsValid)
+        //    return HookResult.Continue;
 
-        string name = @event.Item;
-        long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
-        CSWeaponType type = (CSWeaponType)@event.Weptype;
-        Server.PrintToConsole($"{player.Index} DefIdx = {itemdef}, Name = {name}, type = {type}");
+        //string name = @event.Item;
+        //long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+        //CSWeaponType type = (CSWeaponType)@event.Weptype;
+        //Server.PrintToConsole($"{player.Index} DefIdx = {itemdef}, Name = {name}, type = {type}");
 
-        if (name == "knife")
-        {
-            itemdef = 0;
-        }
+        //if (name == "knife")
+        //{
+        //    itemdef = 0;
+        //}
 
-        if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
-        {
-            Model mod = dictSteamToItemDefModel[steam64][itemdef];
-            //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
-            vm.SetModel(mod.path);
-            if (mod.world.Length > 0)
-            {
-                weapon.SetModel(mod.world);
-            }
-        }
-        else
-        {
-            var node = weapon.CBodyComponent?.SceneNode;
-            if (node == null)
-            {
-                return HookResult.Continue;
-            }
+        //if (itemdef == 0 && dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+        //{
+        //    Model mod = dictSteamToItemDefModel[steam64][itemdef];
+        //    //Server.PrintToConsole($"{player.Index} Found model for {itemdef} - {mod.name}");
+        //    vm.SetModel(mod.path);
+        //    if (mod.world.Length > 0)
+        //    {
+        //        weapon.SetModel(mod.world);
+        //    }
+        //}
+        //else
+        //{
+        //    var node = weapon.CBodyComponent?.SceneNode;
+        //    if (node == null)
+        //    {
+        //        return HookResult.Continue;
+        //    }
 
-            var skeleton = GetSkeletonInstance(node);
-            var modelname = skeleton.ModelState.ModelName;
-            Server.PrintToConsole($"{player.Index} Item {weapon.DesignerName} model name {modelname}");
+        //    var skeleton = GetSkeletonInstance(node);
+        //    var modelname = skeleton.ModelState.ModelName;
+        //    Server.PrintToConsole($"{player.Index} Item {weapon.DesignerName} model name {modelname}");
 
-            var modelList = Config.Models.Values.ToList();
-            if (modelList.Count == 0)
-            {
-                return HookResult.Continue;
-            }
+        //    var modelList = Config.Models.Values.ToList();
+        //    if (modelList.Count == 0)
+        //    {
+        //        return HookResult.Continue;
+        //    }
 
-            bool bFound = false;
-            foreach (var key in modelList)
-            {
-                if (key.path == modelname || key.world == modelname)
-                {
-                    Server.PrintToConsole($"{player.Index} Found {weapon.DesignerName} model path {key.path} world {key.world}");
-                    vm.SetModel(key.path);
-                    bFound = true;
-                    break;
-                }
-            }
+        //    bool bFound = false;
+        //    foreach (var key in modelList)
+        //    {
+        //        if (key.path == modelname || key.world == modelname)
+        //        {
+        //            Server.PrintToConsole($"{player.Index} Found {weapon.DesignerName} model path {key.path} world {key.world}");
+        //            vm.SetModel(key.path);
+        //            bFound = true;
+        //            break;
+        //        }
+        //    }
 
-            if (!bFound)
-            {
-                Server.PrintToConsole($"{player.Index} Not found {weapon.DesignerName} model path {modelname}, trying get from OriginalOwnerXuidLow...");
-                OnEntityCreated(weapon);
-            }
-        }
+        //    if (!bFound)
+        //    {
+        //        Server.PrintToConsole($"{player.Index} Not found {weapon.DesignerName} model path {modelname}, trying get from OriginalOwnerXuidLow...");
+        //        OnEntityCreated(weapon);
+        //    }
+        //}
 
         return HookResult.Continue;
     }
@@ -583,18 +570,6 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
     {
         Func<nint, nint> GetSkeletonInstance = VirtualFunction.Create<nint, nint>(node.Handle, 8);
         return new CSkeletonInstance(GetSkeletonInstance(node.Handle));
-    }
-
-    // This is a hack by KillStr3aK.
-    public unsafe CBaseViewModel? GetPlayerViewModel(CCSPlayerController player)
-    {
-        if (player.PlayerPawn.Value == null || player.PlayerPawn.Value.ViewModelServices == null) return null;
-        CCSPlayer_ViewModelServices viewModelServices = new(player.PlayerPawn.Value.ViewModelServices!.Handle);
-        nint ptr = viewModelServices.Handle + Schema.GetSchemaOffset("CCSPlayer_ViewModelServices", "m_hViewModel");
-        var references = MemoryMarshal.CreateSpan(ref ptr, 3);
-        var viewModel = (CHandle<CBaseViewModel>)Activator.CreateInstance(typeof(CHandle<CBaseViewModel>), references[0])!;
-        if (viewModel == null || viewModel.Value == null) return null;
-        return viewModel.Value;
     }
 
     public bool IsPlayerValid(CCSPlayerController? player)
