@@ -21,6 +21,8 @@ namespace MatchZy
 
         public bool resetCvarsOnSeriesEnd = true;
 
+        public string loadedConfigFile = "";
+
         public Team matchzyTeam1 = new() {
             teamName = "COUNTER-TERRORISTS"
         };
@@ -36,7 +38,7 @@ namespace MatchZy
             HandleTeamNameChangeCommand(player, command.ArgString, 1);
         }
 
-        [ConsoleCommand("css_team2", "Sets team name for team1")]
+        [ConsoleCommand("css_team2", "Sets team name for team2")]
         public void OnTeam2Command(CCSPlayerController? player, CommandInfo command) {
             HandleTeamNameChangeCommand(player, command.ArgString, 2);
         }
@@ -49,7 +51,8 @@ namespace MatchZy
                 if (player != null) return;
                 if (isMatchSetup)
                 {
-                    command.ReplyToCommand($"[LoadMatch] A match is already setup with id: {liveMatchId}, cannot load a new match!");
+                    // command.ReplyToCommand($"[LoadMatch] A match is already setup with id: {liveMatchId}, cannot load a new match!");
+                    ReplyToUserCommand(player, Localizer["matchzy.mm.matchisalreadysetup", liveMatchId]);
                     Log($"[LoadMatch] A match is already setup with id: {liveMatchId}, cannot load a new match!");
                     return;
                 }
@@ -57,7 +60,8 @@ namespace MatchZy
                 string filePath = Path.Join(Server.GameDirectory + "/csgo", fileName);
                 if (!File.Exists(filePath)) 
                 {
-                    command.ReplyToCommand($"[LoadMatch] Provided file does not exist! Usage: matchzy_loadmatch <filename>");
+                    // command.ReplyToCommand($"[LoadMatch] Provided file does not exist! Usage: matchzy_loadmatch <filename>");
+                    ReplyToUserCommand(player, Localizer["matchzy.mm.filedoesntexist"]);
                     Log($"[LoadMatch] Provided file does not exist! Usage: matchzy_loadmatch <filename>");
                     return;
                 }
@@ -65,9 +69,11 @@ namespace MatchZy
                 bool success = LoadMatchFromJSON(jsonData);
                 if (!success)
                 {
-                    command.ReplyToCommand("Match load failed! Resetting current match");
+                    // command.ReplyToCommand("Match load failed! Resetting current match");
+                    ReplyToUserCommand(player, Localizer["matchzy.mm.matchloadfailed"]);
                     ResetMatch();
                 }
+                loadedConfigFile = fileName;
             }
             catch (Exception e)
             {
@@ -83,7 +89,8 @@ namespace MatchZy
             if (player != null) return;
             if (isMatchSetup)
             {
-                command.ReplyToCommand($"[LoadMatchDataCommand] A match is already setup with id: {liveMatchId}, cannot load a new match!");
+                // command.ReplyToCommand($"[LoadMatchDataCommand] A match is already setup with id: {liveMatchId}, cannot load a new match!");
+                ReplyToUserCommand(player, Localizer["matchzy.mm.get5matchisalreadysetup", liveMatchId]);
                 Log($"[LoadMatchDataCommand] A match is already setup with id: {liveMatchId}, cannot load a new match!");
                 return;
             }
@@ -96,7 +103,8 @@ namespace MatchZy
 
             if (!IsValidUrl(url))
             {
-                command.ReplyToCommand($"[LoadMatchDataCommand] Invalid URL: {url}. Please provide a valid URL to load the match!");
+                // command.ReplyToCommand($"[LoadMatchDataCommand] Invalid URL: {url}. Please provide a valid URL to load the match!");
+                ReplyToUserCommand(player, Localizer["matchzy.mm.invalidurl", url]);
                 Log($"[LoadMatchDataCommand] Invalid URL: {url}. Please provide a valid URL to load the match!");
                 return;
             }
@@ -117,13 +125,16 @@ namespace MatchZy
                     bool success = LoadMatchFromJSON(jsonData);
                     if (!success)
                     {
-                        command.ReplyToCommand("Match load failed! Resetting current match");
+                        // command.ReplyToCommand("Match load failed! Resetting current match");
+                        ReplyToUserCommand(player, Localizer["matchzy.mm.matchloadfailed"]);
                         ResetMatch();
                     }
+                    loadedConfigFile = url;
                 }
                 else
                 {
-                    command.ReplyToCommand($"[LoadMatchFromURL] HTTP request failed with status code: {response.StatusCode}");
+                    // command.ReplyToCommand($"[LoadMatchFromURL] HTTP request failed with status code: {response.StatusCode}");
+                    ReplyToUserCommand(player, Localizer["matchzy.mm.httprequestfailed", response.StatusCode]);
                     Log($"[LoadMatchFromURL] HTTP request failed with status code: {response.StatusCode}");
                 }
             }
@@ -228,6 +239,7 @@ namespace MatchZy
 
                     case "skip_veto":
                     case "clinch_series":
+                    case "wingman":
                         if (!bool.TryParse(jsonData[field]!.ToString(), out bool result))
                         {
                             return $"{field} should be a boolean!";
@@ -327,18 +339,13 @@ namespace MatchZy
                         }
                     }
                 }
+                string currentMapName = Server.MapName;
                 string mapName = matchConfig.Maplist[0].ToString();
 
-                if (long.TryParse(mapName, out _)) {
-                    Server.ExecuteCommand($"bot_kick");
-                    Server.ExecuteCommand($"host_workshop_map \"{mapName}\"");
-                } else if (Server.IsMapValid(mapName)) {
-                    Server.ExecuteCommand($"bot_kick");
-                    Server.ExecuteCommand($"changelevel \"{mapName}\"");
-                } else {
-                    Log($"[LoadMatchFromJSON] Invalid map name: {mapName}, cannot setup match!");
-                    ResetMatch(false);
-                    return false;
+                if (IsMapReloadRequiredForGameMode(matchConfig.Wingman) || mapReloadRequired || currentMapName != mapName) 
+                {
+                    SetCorrectGameMode();
+                    ChangeMap(mapName, 0);
                 }
             }
             else
@@ -358,12 +365,12 @@ namespace MatchZy
             if(matchConfig.SkipVeto) SetMapSides();
 
             SetTeamNames();
-
             UpdatePlayersMap();
+            UpdateHostname();
 
             var seriesStartedEvent = new MatchZySeriesStartedEvent
             {
-                MatchId = liveMatchId.ToString(),
+                MatchId = liveMatchId,
                 NumberOfMaps = matchConfig.NumMaps,
                 Team1 = new(matchzyTeam1.id, matchzyTeam1.teamName),
                 Team2 = new(matchzyTeam2.id, matchzyTeam2.teamName),
@@ -413,21 +420,21 @@ namespace MatchZy
         {
             try
             {
-                if (jsonDataObject["cvars"] != null)
-                {
-                    foreach (JProperty cvarData in jsonDataObject["cvars"]!)
-                    {
-                        string cvarName = cvarData.Name;
-                        string cvarValue = cvarData.Value.ToString();
+                if (jsonDataObject["cvars"] == null) return;
 
-                        var cvar = ConVar.Find(cvarName);
-                        matchConfig.ChangedCvars[cvarName] = cvarValue;
-                        if (cvar != null)
-                        {
-                            matchConfig.OriginalCvars[cvarName] = GetConvarStringValue(cvar);
-                        }
+                foreach (JProperty cvarData in jsonDataObject["cvars"]!)
+                {
+                    string cvarName = cvarData.Name;
+                    string cvarValue = cvarData.Value.ToString();
+
+                    var cvar = ConVar.Find(cvarName);
+                    matchConfig.ChangedCvars[cvarName] = cvarValue;
+                    if (cvar != null)
+                    {
+                        matchConfig.OriginalCvars[cvarName] = GetConvarStringValue(cvar);
                     }
                 }
+
             }
             catch (Exception e)
             {
@@ -455,7 +462,7 @@ namespace MatchZy
             }
             if (jsonDataObject["spectators"] != null && jsonDataObject["spectators"]!["players"] != null)
             {
-                matchConfig.Spectators = jsonDataObject["spectators"]!["players"];
+                matchConfig.Spectators = jsonDataObject["spectators"]!["players"]!;
                 if (matchConfig.Spectators is JArray spectatorsArray && spectatorsArray.Count == 0)
                 {
                     // Convert the empty JArray to an empty JObject
@@ -470,6 +477,10 @@ namespace MatchZy
             {
                 matchConfig.SkipVeto = bool.Parse(jsonDataObject["skip_veto"]!.ToString());
             }
+            if (jsonDataObject["wingman"] != null)
+            {
+                matchConfig.Wingman = bool.Parse(jsonDataObject["wingman"]!.ToString());
+            }
             if (jsonDataObject["veto_mode"] != null)
             {
                 matchConfig.MapBanOrder = jsonDataObject["veto_mode"]!.ToObject<List<string>>()!;
@@ -483,24 +494,32 @@ namespace MatchZy
                 return;
             }
             if (matchStarted) {
-                ReplyToUserCommand(player, "Team names cannot be changed once the match is started!");
+                // ReplyToUserCommand(player, "Team names cannot be changed once the match is started!");
+                ReplyToUserCommand(player, Localizer["matchzy.mm.teamcannotbechanged"]);
                 return;
             }
             teamName = RemoveSpecialCharacters(teamName.Trim());
             if (teamName == "") {
-                ReplyToUserCommand(player, $"Usage: !team{teamNum} <name>");
+                // ReplyToUserCommand(player, $"Usage: !team{teamNum} <name>");
+                ReplyToUserCommand(player, Localizer["matchzy.cc.usage", $"!team{teamNum} <name>"]);
             }
 
             if (teamNum == 1) {
                 matchzyTeam1.teamName = teamName;
                 teamSides[matchzyTeam1] = "CT";
                 reverseTeamSides["CT"] = matchzyTeam1;
-                if (matchzyTeam1.coach != null) matchzyTeam1.coach.Clan = $"[{matchzyTeam1.teamName} COACH]";
+                foreach (var coach in matchzyTeam1.coach)
+                {
+                    coach.Clan = $"[{matchzyTeam1.teamName} COACH]";
+                }
             } else if (teamNum == 2) {
                 matchzyTeam2.teamName = teamName;
                 teamSides[matchzyTeam2] = "TERRORIST";
                 reverseTeamSides["TERRORIST"] = matchzyTeam2;
-                if (matchzyTeam2.coach != null) matchzyTeam2.coach.Clan = $"[{matchzyTeam2.teamName} COACH]";
+                foreach (var coach in matchzyTeam2.coach)
+                {
+                    coach.Clan = $"[{matchzyTeam2.teamName} COACH]";
+                }
             }
             Server.ExecuteCommand($"mp_teamname_{teamNum} {teamName};");
         }
@@ -556,30 +575,56 @@ namespace MatchZy
             return playerTeam;
         }
 
-        public void EndSeries(string winnerName, int restartDelay)
+        public void EndSeries(string? winnerName, int restartDelay, int t1score, int t2score)
         {
-            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{winnerName}{ChatColors.Default} has won the match");
+            long matchId = liveMatchId;
+            (int team1Score, int team2Score) = (matchzyTeam1.seriesScore, matchzyTeam2.seriesScore);
+            if (winnerName == null)
+            {
+                PrintToAllChat($"{ChatColors.Green}{matchzyTeam1.teamName}{ChatColors.Default} and {ChatColors.Green}{matchzyTeam2.teamName}{ChatColors.Default} have tied the match");
+            }
+            else
+            {
+                Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{winnerName}{ChatColors.Default} has won the match");
+            }
 
-            (int t1score, int t2score) = GetTeamsScore();
+            string winnerTeam = (winnerName == null) ? "none" : matchzyTeam1.seriesScore > matchzyTeam2.seriesScore ? "team1" : "team2";
+
             var seriesResultEvent = new MatchZySeriesResultEvent()
             {
-                MatchId = liveMatchId.ToString(),
-                Winner = new Winner(t1score > t2score && reverseTeamSides["CT"] == matchzyTeam1 ? "3" : "2", matchzyTeam1.seriesScore > matchzyTeam2.seriesScore ? "team1" : "team2"),
-                Team1SeriesScore = matchzyTeam1.seriesScore,
-                Team2SeriesScore = matchzyTeam2.seriesScore,
+                MatchId = matchId,
+                Winner = new Winner(t1score > t2score && reverseTeamSides["CT"] == matchzyTeam1 ? "3" : "2", winnerTeam),
+                Team1SeriesScore = team1Score,
+                Team2SeriesScore = team2Score,
                 TimeUntilRestore = 10,
             };
+
             Task.Run(async () => {
+                await database.SetMatchEndData(matchId, winnerName ?? "Draw", team1Score, team2Score);
                 // Making sure that map end event is fired first
                 await Task.Delay(2000);
                 await SendEventAsync(seriesResultEvent);
             });
-            database.SetMatchEndData(liveMatchId, winnerName, matchzyTeam1.seriesScore, matchzyTeam2.seriesScore);
+
             if (resetCvarsOnSeriesEnd) ResetChangedConvars();
             isMatchLive = false;
             AddTimer(restartDelay, () => {
                 ResetMatch(false);
             });
+        }
+
+        public void HandlePlayoutConfig()
+        {
+            if (isPlayOutEnabled) {
+                Server.ExecuteCommand("mp_overtime_enable 0");
+                Server.ExecuteCommand("mp_match_can_clinch false");
+            } else {
+                var absoluteCfgPath = Path.Join(Server.GameDirectory + "/csgo/cfg", GetGameMode() == 1 ? liveCfgPath : liveWingmanCfgPath);
+                string? matchCanClinch = GetConvarValueFromCFGFile(absoluteCfgPath, "mp_match_can_clinch");
+                string? overtimeEnabled = GetConvarValueFromCFGFile(absoluteCfgPath, "mp_overtime_enable");
+                Server.ExecuteCommand($"mp_match_can_clinch {matchCanClinch ?? "1"}");
+                Server.ExecuteCommand($"mp_overtime_enable {overtimeEnabled ?? "1"}");
+            }
         }
 
     }

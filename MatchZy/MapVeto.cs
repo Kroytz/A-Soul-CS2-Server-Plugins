@@ -26,6 +26,7 @@ namespace MatchZy
 
         public void CreateVeto()
         {
+            SwapPlayersToTeams();
             vetoCaptains["team1"] = GetTeamCaptain("team1");
             vetoCaptains["team2"] = GetTeamCaptain("team2");
             // Todo: Implement pauseOnVeto CVAR
@@ -154,7 +155,7 @@ namespace MatchZy
             Server.PrintToChatAll($"{chatPrefix} {action}");
 
             string mapListAsString = string.Join(", ", matchConfig.MapsLeftInVetoPool);
-            Server.PrintToChatAll($"{chatPrefix}  £”‡µÿÕº: {mapListAsString}");
+            Server.PrintToChatAll($"{chatPrefix} Remaining Maps: {mapListAsString}");
 
             playerData[client].PrintToChat($"{chatPrefix} {stepMessage}");
         }
@@ -198,7 +199,7 @@ namespace MatchZy
             if (player.UserId != vetoCaptains[currentTeamToBan]) return;
 
             if (!BanMap(map, playerTeam)) {
-                player.PrintToChat($"{chatPrefix} {map} is not a valid map.");
+                PrintToPlayerChat(player, $"{map} is not a valid map.");
             } else {
                 HandleVetoStep();
             }
@@ -228,7 +229,7 @@ namespace MatchZy
             if (player.UserId != vetoCaptains[currentTeamToPick]) return;
 
             if (!PickMap(map, playerTeam)) {
-                player.PrintToChat($"{chatPrefix} {map} is not a valid map.");
+                PrintToPlayerChat(player, $"{map} is not a valid map.");
             } else {
                 HandleVetoStep();
             }
@@ -251,7 +252,7 @@ namespace MatchZy
 
             var mapPickedEvent = new MatchZyMapPickedEvent
             {
-                MatchId = liveMatchId.ToString(),
+                MatchId = liveMatchId,
                 MapName = mapRemovedName,
                 MapNumber = matchConfig.Maplist.Count,
                 Team = (matchzyTeam == matchzyTeam1) ? "team1" : "team2",
@@ -281,7 +282,7 @@ namespace MatchZy
 
             var mapMapVetoedEvent = new MatchZyMapVetoedEvent
             {
-                MatchId = liveMatchId.ToString(),
+                MatchId = liveMatchId,
                 MapName = mapRemovedName,
                 Team = (matchzyTeam == matchzyTeam1) ? "team1" : "team2",
             };
@@ -378,6 +379,15 @@ namespace MatchZy
             }
 
             return -1;
+        }
+
+        public void SwapPlayersToTeams()
+        {
+            foreach (var key in playerData.Keys)
+            {
+                if (!playerData[key].IsValid || playerData[key].IsBot) continue;
+                playerData[key].SwitchTeam(GetPlayerTeam(playerData[key]));
+            }
         }
 
         public string GetCurrentMapSelectionOption()
@@ -523,7 +533,7 @@ namespace MatchZy
 
             var sidePickedEvent = new MatchZySidePickedEvent
             {
-                MatchId = liveMatchId.ToString(),
+                MatchId = liveMatchId,
                 MapName = mapName,
                 MapNumber = matchConfig.Maplist.Count,
                 Team = (matchzyTeam == matchzyTeam1) ? "team1" : "team2",
@@ -637,6 +647,14 @@ namespace MatchZy
             }
         }
 
+        public void SkipVeto()
+        {
+            isWarmup = true;
+            readyAvailable = true;
+            isPreVeto = false;
+            isVeto = false;
+            StartWarmup();
+        }
     }
 }
 

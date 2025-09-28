@@ -1,24 +1,34 @@
-using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Modules.Commands;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
-using CounterStrikeSharp.API.Modules.Utils;
 using Newtonsoft.Json.Linq;
-
+using System.Text.Json.Serialization;
+using CounterStrikeSharp.API;
 
 namespace MatchZy
 {
 
     public class Team 
     {
+        [JsonPropertyName("id")]
         public string id = "";
+
+        [JsonPropertyName("teamname")]
         public required string teamName;
+
+        [JsonPropertyName("teamflag")]
         public string teamFlag = "";
+
+        [JsonPropertyName("teamtag")]
         public string teamTag = "";
 
+        [JsonPropertyName("teamplayers")]
         public JToken? teamPlayers;
 
-        public CCSPlayerController? coach;
+        [JsonIgnore, Newtonsoft.Json.JsonIgnore]
+        public HashSet<CCSPlayerController> coach = [];
+
+        [JsonPropertyName("seriesscore")]
         public int seriesScore = 0;
     }
 
@@ -39,22 +49,23 @@ namespace MatchZy
                 return;
             }
 
-            Team matchZyCoachTeam;
-
-            if (matchzyTeam1.coach == player) {
-                matchZyCoachTeam = matchzyTeam1;
+            if (matchzyTeam1.coach.Contains(player)) {
+                player.Clan = "";
+                matchzyTeam1.coach.Remove(player);
+                SetPlayerVisible(player);
             }
-            else if (matchzyTeam2.coach == player) {
-                matchZyCoachTeam = matchzyTeam2;
+            else if (matchzyTeam2.coach.Contains(player)) {
+                player.Clan = "";
+                matchzyTeam2.coach.Remove(player);
+                SetPlayerVisible(player);
             }
             else {
                 ReplyToUserCommand(player, "You are not coaching any team!");
                 return;
             }
 
-            player.Clan = "";
             if (player.InGameMoneyServices != null) player.InGameMoneyServices.Account = 0;
-            matchZyCoachTeam.coach = null;
+
             ReplyToUserCommand(player, "You are now not coaching any team!");
         }
 
@@ -74,7 +85,7 @@ namespace MatchZy
             }
             if (command.ArgCount < 3)
             {
-                command.ReplyToCommand("Usage: matchzy_addplayertoteam <steam64> <team> \"<name>\"");
+                command.ReplyToCommand("Usage: matchzy_addplayer <steam64> <team> \"<name>\"");
                 return; 
             }
 
@@ -104,71 +115,44 @@ namespace MatchZy
             command.ReplyToCommand($"Player {playerName} added to {playerTeam} successfully!");
         }
 
-        public void HandleCoachCommand(CCSPlayerController? player, string side) {
-            if (player == null || !player.PlayerPawn.IsValid) return;
-            if (isPractice) {
-                ReplyToUserCommand(player, "Coach command can only be used in match mode!");
-                return;
-            }
-
-            side = side.Trim().ToLower();
-
-            if (side != "t" && side != "ct") {
-                ReplyToUserCommand(player, "Usage: .coach t or .coach ct");
-                return;
-            }
-
-            if (matchzyTeam1.coach == player || matchzyTeam2.coach == player) 
-            {
-                ReplyToUserCommand(player, "You are already coaching a team!");
-                return;
-            }
-
-            Team matchZyCoachTeam;
-
-            if (side == "t") {
-                matchZyCoachTeam = reverseTeamSides["TERRORIST"];
-            } else if (side == "ct") {
-                matchZyCoachTeam = reverseTeamSides["CT"];
-            } else {
-                return;
-            }
-
-            if (matchZyCoachTeam.coach != null) {
-                ReplyToUserCommand(player, "Coach slot for this team has been already taken!");
-                return;
-            }
-
-            matchZyCoachTeam.coach = player;
-            player.Clan = $"[{matchZyCoachTeam.teamName} COACH]";
-            if (player.InGameMoneyServices != null) player.InGameMoneyServices.Account = 0;
-            ReplyToUserCommand(player, $"You are now coaching {matchZyCoachTeam.teamName}! Use .uncoach to stop coaching");
-            Server.PrintToChatAll($"{chatPrefix} {ChatColors.Green}{player.PlayerName}{ChatColors.Default} is now coaching {ChatColors.Green}{matchZyCoachTeam.teamName}{ChatColors.Default}!");
-        }
-
-        public void HandleCoaches() 
+        [ConsoleCommand("matchzy_removeplayer", "Removes the player from all the teams")]
+        [ConsoleCommand("get5_removeplayer", "Removes the player from all the teams")]
+        [CommandHelper(minArgs: 1, usage: "<steam64>")]
+        public void OnRemovePlayerCommand(CCSPlayerController? player, CommandInfo? command)
         {
-            List<CCSPlayerController?> coaches = new List<CCSPlayerController?>
+            if (player != null || command == null) return;
+            if (!isMatchSetup) {
+                command.ReplyToCommand("No match is setup!");
+                return;
+            }
+            if (IsHalfTimePhase())
             {
-                matchzyTeam1.coach,
-                matchzyTeam2.coach
-            };
+                command.ReplyToCommand("Cannot remove players during halftime. Please wait until the next round starts.");
+                return;
+            }
 
-            foreach (var coach in coaches) 
+            string arg = command.GetArg(1);
+
+            if (!ulong.TryParse(arg, out ulong steamId))
             {
-                if (coach == null) continue;
-                Log($"Found coach: {coach.PlayerName}");
-                coach.InGameMoneyServices!.Account = 0;
-                AddTimer(0.5f, () => HandleCoachTeam(coach, true));
-                // AddTimer(1, () => {
-                    // Server.ExecuteCommand("mp_suicide_penalty 0; mp_death_drop_gun 0");
-                    // coach.PlayerPawn.Value.CommitSuicide(false, true);
-                    // Server.ExecuteCommand("mp_suicide_penalty 1; mp_death_drop_gun 1");
-                // });
-                coach.ActionTrackingServices!.MatchStats.Kills = 0;
-                coach.ActionTrackingServices!.MatchStats.Deaths = 0;
-                coach.ActionTrackingServices!.MatchStats.Assists = 0;
-                coach.ActionTrackingServices!.MatchStats.Damage = 0;
+                command.ReplyToCommand($"Invalid Steam64");
+            }
+
+            bool success = RemovePlayerFromTeam(steamId.ToString());
+            if (success)
+            {
+                command.ReplyToCommand($"Successfully removed player {steamId}");
+                CCSPlayerController? removedPlayer = Utilities.GetPlayerFromSteamId(steamId);
+                if (IsPlayerValid(removedPlayer))
+                {
+                    Log($"Kicking player {removedPlayer!.PlayerName} - Not a player in this game (removed).");
+                    PrintToAllChat($"Kicking player {removedPlayer!.PlayerName} - Not a player in this game.");
+                    KickPlayer(removedPlayer);
+                }
+            }
+            else
+            {
+                command.ReplyToCommand($"Player {steamId} not found in any team or the Steam ID was invalid.");
             }
         }
 
@@ -189,6 +173,27 @@ namespace MatchZy
                 jArrayTeam.Add(name);
                 LoadClientNames();
                 return true;
+            }
+            return false;
+        }
+
+        public bool RemovePlayerFromTeam(string steamId)
+        {
+            List<JToken?> teams = [matchzyTeam1.teamPlayers, matchzyTeam2.teamPlayers, matchConfig.Spectators];
+
+            foreach (var team in teams)
+            {
+                if (team is null) continue;
+                if (team is JObject jObjectTeam)
+                {
+                    jObjectTeam.Remove(steamId);
+                    return true;
+                }
+                else if (team is JArray jArrayTeam)
+                {
+                    jArrayTeam.Remove(steamId);
+                    return true;
+                }
             }
             return false;
         }

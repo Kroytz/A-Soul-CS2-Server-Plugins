@@ -2,6 +2,7 @@ using CounterStrikeSharp.API;
 using CounterStrikeSharp.API.Core;
 using CounterStrikeSharp.API.Core.Attributes.Registration;
 using CounterStrikeSharp.API.Modules.Commands;
+using CounterStrikeSharp.API.Modules.Cvars;
 using CounterStrikeSharp.API.Modules.Utils;
 
 
@@ -9,6 +10,25 @@ namespace MatchZy
 {
     public partial class MatchZy
     {
+
+        public FakeConVar<bool> smokeColorEnabled = new("matchzy_smoke_color_enabled", "Whether player-specific smoke color is enabled or not. Default: false", false);
+        public FakeConVar<bool> techPauseEnabled = new("matchzy_enable_tech_pause", "Whether .tech command is enabled or not. Default: true", true);
+        public FakeConVar<string> techPausePermission  = new("matchzy_tech_pause_flag", "Flag required to use tech pause", "");
+        public FakeConVar<int> techPauseDuration  = new("matchzy_tech_pause_duration", "Tech pause duration in seconds. Default value: 300", 300);
+
+        public FakeConVar<int> maxTechPausesAllowed  = new("matchzy_max_tech_pauses_allowed", " Max tech pauses allowed. Default value: 2", 2);
+
+        public FakeConVar<bool> everyoneIsAdmin = new("matchzy_everyone_is_admin", "If set to true, all the players will have admin privilege. Default: false", false);
+
+        public FakeConVar<bool> showCreditsOnMatchStart = new("matchzy_show_credits_on_match_start", "Whether to show 'MatchZy Plugin by WD-' message on match start. Default: true", true);
+
+        public FakeConVar<string> hostnameFormat = new("matchzy_hostname_format", "The server hostname to use. Set to \"\" to disable/use existing. Default: MatchZy | {TEAM1} vs {TEAM2}", "MatchZy | {TEAM1} vs {TEAM2}");
+
+        public FakeConVar<bool> enableDamageReport = new("matchzy_enable_damage_report", "Whether to show damage report after each round or not. Default: true", true);
+
+        public FakeConVar<bool> stopCommandNoDamage = new("matchzy_stop_command_no_damage", "Whether the stop command becomes unavailable if a player damages a player from the opposing team.", false);
+
+        public FakeConVar<string> matchStartMessage = new("matchzy_match_start_message", "Message to show when the match starts. Use $$$ to break message into multiple lines. Set to \"\" to disable.", "");
 
         [ConsoleCommand("matchzy_whitelist_enabled_default", "Whether Whitelist is enabled by default or not. Default value: false")]
         public void MatchZyWLConvar(CCSPlayerController? player, CommandInfo command)
@@ -103,6 +123,15 @@ namespace MatchZy
                     demoNameFormat = format;
                 }
             }
+        }
+
+        [ConsoleCommand("matchzy_demo_recording_enabled", "Whether to automatically start demo recording when the match goes live. Default value: true")]
+        public void MatchZyDemoRecordingEnabled(CCSPlayerController? player, CommandInfo command)
+        {
+            if (player != null) return;
+            string args = command.ArgString;
+
+            isDemoRecordingEnabled = bool.TryParse(args, out bool isDemoRecordingEnabledValue) ? isDemoRecordingEnabledValue : args != "0" && isDemoRecordingEnabled;
         }
 
         [ConsoleCommand("get5_demo_upload_url", "If defined, recorded demos will be uploaded to this URL once the map ends.")]
@@ -203,7 +232,8 @@ namespace MatchZy
                     }
                     else
                     {
-                        ReplyToUserCommand(player, $"Invalid value for matchzy_chat_messages_timer_delay. Please specify a valid non-negative number.");
+                        // ReplyToUserCommand(player, $"Invalid value for matchzy_chat_messages_timer_delay. Please specify a valid non-negative number.");
+                        ReplyToUserCommand(player, Localizer["matchzy.cvars.invalidvalue"]);
                     }
                 }
             } else if (command.ArgCount == 1) {
@@ -246,8 +276,48 @@ namespace MatchZy
             }
             else
             {
-                command.ReplyToCommand("Usage: matchzy_max_saved_last_grenades <number>");
+                // command.ReplyToCommand("Usage: matchzy_max_saved_last_grenades <number>");
+                ReplyToUserCommand(player, Localizer["matchzy.cc.usage", $"matchzy_max_saved_last_grenades <number>"]);
             }
         }
+
+        [ConsoleCommand("get5_remote_backup_url", "A URL to send backup files to over HTTP. Leave empty to disable.")]
+        [ConsoleCommand("matchzy_remote_backup_url", "A URL to send backup files to over HTTP. Leave empty to disable.")]
+        [CommandHelper(minArgs: 1, usage: "<remote_backup_upload_url>")]
+        public void MatchZyBackupUploadURL(CCSPlayerController? player, CommandInfo command)
+        {
+            if (player != null) return;
+            string url = command.ArgByIndex(1);
+            if (url.Trim() == "") return;
+            if (!IsValidUrl(url))
+            {
+                Log($"[MatchZyBackupUploadURL] Invalid URL: {url}. Please provide a valid URL for uploading the backup!");
+                return;
+            }
+            backupUploadURL = url;
+        }
+
+        [ConsoleCommand("get5_remote_backup_header_key", "If defined, a custom HTTP header with this name is added to the backup HTTP request.")]
+        [ConsoleCommand("matchzy_remote_backup_header_key", "If defined, a custom HTTP header with this name is added to the backup HTTP request.")]
+        [CommandHelper(minArgs: 1, usage: "<remote_backup_header_key>")]
+        public void BackupUploadHeaderKeyCommand(CCSPlayerController? player, CommandInfo command)
+        {
+            if (player != null) return;
+            string header = command.ArgByIndex(1).Trim();
+
+            if (header != "") backupUploadHeaderKey = header;
+        }
+
+        [ConsoleCommand("get5_remote_backup_header_value", "If defined, the value of the custom header added to the backup HTTP request.")]
+        [ConsoleCommand("matchzy_remote_backup_header_value", "If defined, the value of the custom header added to the backup HTTP request.")]
+        [CommandHelper(minArgs: 1, usage: "<remote_backup_header_value>")]
+        public void BackupUploadHeaderValueCommand(CCSPlayerController? player, CommandInfo command)
+        {
+            if (player != null) return;
+            string headerValue = command.ArgByIndex(1).Trim();
+
+            if (headerValue != "") backupUploadHeaderValue = headerValue;
+        }
+
     }
 }
