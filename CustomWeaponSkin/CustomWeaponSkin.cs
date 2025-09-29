@@ -115,26 +115,30 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
             manifest.AddResource("soundevents/ub_game_sounds_weapons2.vsndevts");
         });
 
-        VirtualFunctions.GiveNamedItemFunc.Hook(OnGiveNamedItemPost, HookMode.Post);
+        //VirtualFunctions.GiveNamedItemFunc.Hook(OnGiveNamedItemPost, HookMode.Post);
 
         RegisterEventHandler<EventItemEquip>(OnItemEquip);
-        RegisterEventHandler<EventWeaponFire>(OnWeaponFire);
+        //RegisterEventHandler<EventWeaponFire>(OnWeaponFire);
+        RegisterEventHandler<EventExitBuyzone>(OnExitBuyzone);
 
         RegisterListener<Listeners.OnEntityCreated>(OnEntityCreated);
 
         // Late load
-        var players = Utilities.GetPlayers().Where(players => players.IsValid && players.Team >= CsTeam.Spectator && players.Connected == PlayerConnectedState.PlayerConnected).ToList();
-        foreach (var p in players)
+        if (hotReload)
         {
-            RefreshPlayerInventory(p);
-        }
+            var players = Utilities.GetPlayers().Where(players => players.IsValid && players.Team >= CsTeam.Spectator && players.Connected == PlayerConnectedState.PlayerConnected).ToList();
+            foreach (var p in players)
+            {
+                RefreshPlayerInventory(p);
+            }
 
-        Server.PrintToChatAll(PL_PREFIX + "热重载完成!");
+            Server.PrintToChatAll(PL_PREFIX + "热重载完成!");
+        }
     }
 
     public override void Unload(bool hotReload)
     {
-        VirtualFunctions.GiveNamedItemFunc.Unhook(OnGiveNamedItemPost, HookMode.Post);
+        //VirtualFunctions.GiveNamedItemFunc.Unhook(OnGiveNamedItemPost, HookMode.Post);
     }
 
     public CCSPlayerController? GetPlayerFromItemServices(CCSPlayer_ItemServices itemServices)
@@ -633,8 +637,8 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         return HookResult.Continue;
     }
 
-    public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo info)
-    {
+    //public HookResult OnWeaponFire(EventWeaponFire @event, GameEventInfo info)
+    //{
         //CCSPlayerController? player = @event.Userid;
         //if (player == null)
         //    return HookResult.Continue;
@@ -655,6 +659,44 @@ public partial class CustomWeaponSkin : BasePlugin, IPluginConfig<ModelConfig>
         //{
         //    weapon.InReload = false;
         //} 
+
+    //    return HookResult.Continue;
+    //}
+
+    public HookResult OnExitBuyzone(EventExitBuyzone @event, GameEventInfo info)
+    {
+        CCSPlayerController? player = @event.Userid;
+        //Server.PrintToConsole($"OnItemEquip triggered, player {player.Index}");
+        if (player == null || player.IsBot)
+            return HookResult.Continue;
+
+        //Server.PrintToConsole($"{player.Index} pawn Check");
+        CCSPlayerPawn? pawn = player.PlayerPawn.Value;
+        if (pawn == null || !pawn.IsValid)
+            return HookResult.Continue;
+
+        var steam64 = player.SteamID;
+        if (!dictSteamToItemDefModel.ContainsKey(steam64))
+            return HookResult.Continue;
+
+        var weapons = pawn!.WeaponServices?.MyWeapons;
+        if (weapons == null || weapons.Count == 0)
+        {
+            return HookResult.Continue;
+        }
+
+        for (int i = 0; i < weapons.Count; i++)
+        {
+            var weapon = weapons[i].Value;
+            if (weapon == null) continue;
+
+            long itemdef = weapon.AttributeManager.Item.ItemDefinitionIndex;
+            if (dictSteamToItemDefModel[steam64].ContainsKey(itemdef))
+            {
+                Model mod = dictSteamToItemDefModel[steam64][itemdef];
+                ChangeSubclassFunc.Invoke(weapon.Handle, mod.name);
+            }
+        }
 
         return HookResult.Continue;
     }
