@@ -1,7 +1,31 @@
 {
   "tags": {
+    "76561198263983558": {
+      "prefix": "{Purple}✦bigdal✦ ",
+      "nick_color": "{Default}",
+      "message_color": "",
+      "scoreboard": "Big"
+    },
+    "76561198386395038": {
+      "prefix": "{Purple}✦恩师瓦渡哇哦✦ ",
+      "nick_color": "{Default}",
+      "message_color": "",
+      "scoreboard": "Anon"
+    },
+    "76561198313974611": {
+      "prefix": "{Purple}✦超级红色按钮✦ ",
+      "nick_color": "{Default}",
+      "message_color": "",
+      "scoreboard": "Wow"
+    },
+    "76561199805393724": {
+      "prefix": "{Purple}✦守银✦ ",
+      "nick_color": "{Default}",
+      "message_color": "",
+      "scoreboard": "納西妲"
+    },
     "76561198840491548": {
-      "prefix": "{Purple}✦萤烛✦ ",
+      "prefix": "{Purple}✦@me✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "萤火虫"
@@ -13,7 +37,7 @@
       "scoreboard": "拉普兰德"
     },
     "76561199048770008": {
-      "prefix": "{Purple}✦大朗✦ ",
+      "prefix": "{Purple}✦dalang✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
       "scoreboard": "大朗"
@@ -25,10 +49,10 @@
       "scoreboard": "纳西妲"
     },
     "76561198379293428": {
-      "prefix": "{Purple}✦鱼卵✦ ",
+      "prefix": "{Purple}✦321K上海人✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "321K上海人"
+      "scoreboard": "鱼卵"
     },
     "76561199019716291": {
       "prefix": "{Purple}✦若杨✦ ",
@@ -43,10 +67,10 @@
       "scoreboard": "A-QUA"
     },
     "76561198357957183": {
-      "prefix": "{Purple}✦CYC✦ ",
+      "prefix": "{Purple}✦福瑞佬✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "福瑞佬"
+      "scoreboard": "CYC"
     },
     "76561199191528198": {
       "prefix": "{Purple}✦市长✦ ",
@@ -106,7 +130,7 @@
       "prefix": "{Purple}✦瓦度窝✦ ",
       "nick_color": "{DEFAULT}",
       "message_color": "",
-      "scoreboard": "我妈WXY"
+      "scoreboard": "Navi"
     },
     "76561198145110742": {
       "prefix": "{Purple}✦米花糖✦ ",
